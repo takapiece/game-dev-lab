@@ -155,7 +155,7 @@ export class Player {
   }
 
   // Handle release of shot button
-  releaseShot() {
+  releaseShot(contestFactor = 0) {
     if (!this.isChargingShot) return;
     this.isChargingShot = false;
 
@@ -177,8 +177,9 @@ export class Player {
     );
     const isThree = distToHoop >= 6.75;
 
-    // Sound chime if perfect green
-    if (timingQuality >= 0.92) {
+    // Sound chime if perfect green with light or no contest
+    const isGreen = timingQuality >= 0.92 && contestFactor < 0.35;
+    if (isGreen) {
       sounds.playGreenChime();
     }
 
@@ -188,13 +189,14 @@ export class Player {
     const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), this.rotation);
     releaseOrigin.addScaledVector(forward, 0.4);
 
-    this.ball.shoot(releaseOrigin, timingQuality, isThree);
+    this.ball.shoot(releaseOrigin, timingQuality, isThree, contestFactor);
 
     return {
       timingQuality,
-      isGreen: timingQuality >= 0.92,
+      isGreen,
       chargeRatio: this.shotChargeTime / this.idealShotDuration,
       isThree,
+      contestFactor,
     };
   }
 

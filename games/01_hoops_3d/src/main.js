@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { BasketballCourt } from './court.js';
 import { Basketball } from './ball.js';
 import { Player } from './player.js';
+import { Defender } from './defender.js';
 import { InputController } from './controls.js';
 import { sounds } from './audio.js';
 
@@ -60,6 +61,7 @@ class Game {
     this.court = new BasketballCourt(this.scene);
     this.ball = new Basketball(this.scene, this.court);
     this.player = new Player(this.scene, this.court, this.ball);
+    this.defender = new Defender(this.scene, this.court, this.ball);
 
     // Hook scoring event
     this.ball.onScoreCallback = (result) => {
@@ -77,10 +79,20 @@ class Game {
       },
       () => {
         // Shot release
-        const shotResult = this.player.releaseShot();
-        if (shotResult) {
+        const contest = this.defender.calculateContest(this.player);
+        const isBlocked = this.defender.tryBlock(this.player);
+
+        if (isBlocked) {
           this.shotsAttempted++;
-          this.evaluateRelease(shotResult);
+          this.streak = 0;
+          this.showFeedback('✖ BLOCKED BY DEFENSE! ✖', 'late');
+          this.updateHUD();
+        } else {
+          const shotResult = this.player.releaseShot(contest.contestValue);
+          if (shotResult) {
+            this.shotsAttempted++;
+            this.evaluateRelease(shotResult, contest);
+          }
         }
         this.hideShotMeter();
       },
@@ -89,8 +101,9 @@ class Game {
         this.toggleCamera();
       },
       () => {
-        // Reset player
+        // Reset player & defender positions
         this.player.resetPosition();
+        this.defender.resetPosition();
       }
     );
   }
@@ -187,29 +200,35 @@ class Game {
     }
   }
 
-  evaluateRelease(shotResult) {
+  evaluateRelease(shotResult, contest) {
     const ratio = shotResult.chargeRatio;
-    let label = 'GOOD';
+    let timingLabel = 'GOOD';
     let labelClass = 'good';
 
     if (shotResult.isGreen) {
-      label = '★ GREEN LIGHT / PERFECT! ★';
+      timingLabel = '★ PERFECT RELEASE ★';
       labelClass = 'green';
     } else if (ratio < 0.75) {
-      label = 'VERY EARLY';
+      timingLabel = 'VERY EARLY';
       labelClass = 'early';
     } else if (ratio < 0.92) {
-      label = 'SLIGHTLY EARLY';
+      timingLabel = 'SLIGHTLY EARLY';
       labelClass = 'good';
     } else if (ratio > 1.25) {
-      label = 'VERY LATE';
+      timingLabel = 'VERY LATE';
       labelClass = 'late';
     } else {
-      label = 'SLIGHTLY LATE';
+      timingLabel = 'SLIGHTLY LATE';
       labelClass = 'good';
     }
 
-    this.showFeedback(label, labelClass);
+    const contestText = contest ? ` [${contest.label}]` : '';
+    const fullText = `${timingLabel}${contestText}`;
+    
+    // Use contest class if it was heavily contested, otherwise timing class
+    const finalClass = (contest && contest.percent > 45 && !shotResult.isGreen) ? contest.labelClass : labelClass;
+
+    this.showFeedback(fullText, finalClass);
   }
 
   showFeedback(text, typeClass) {
@@ -262,7 +281,12 @@ class Game {
     const input = this.controls.update();
     this.player.update(delta, input);
 
-    // 2. Update Shot Meter fill bar during charging
+    // 2. Update AI Defender
+    if (this.defender) {
+      this.defender.update(delta, this.player);
+    }
+
+    // 3. Update Shot Meter fill bar during charging
     if (this.player.isChargingShot && this.meterFillEl) {
       const ratio = Math.min(1.0, this.player.shotChargeTime / (this.player.idealShotDuration * 1.35));
       this.meterFillEl.style.width = `${ratio * 100}%`;
@@ -281,13 +305,13 @@ class Game {
       }
     }
 
-    // 3. Update Ball Physics
+    // 4. Update Ball Physics
     this.ball.update(delta, this.player);
 
-    // 4. Update Camera position & track player
+    // 5. Update Camera position & track player
     this.updateCameraPosition();
 
-    // 5. Render Scene
+    // 6. Render Scene
     this.renderer.render(this.scene, this.camera);
   }
 }

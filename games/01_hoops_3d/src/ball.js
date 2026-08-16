@@ -24,6 +24,8 @@ export class Basketball {
     // Scoring & shot tracking
     this.isShotAttempt = false;
     this.shotQuality = 0; // 0..1 (1.0 = perfect green)
+    this.contestFactor = 0; // 0.0 (wide open) to 1.0 (smothered)
+    this.isBlocked = false;
     this.isThreePointer = false;
     this.hasHitRim = false;
     this.hasHitBackboard = false;
@@ -88,14 +90,19 @@ export class Basketball {
     this.scene.add(this.mesh);
   }
 
-  shoot(origin, timingQuality, isThree = false) {
+  shoot(origin, timingQuality, isThree = false, contestFactor = 0) {
     this.state = BallState.IN_AIR;
     this.isShotAttempt = true;
-    this.shotQuality = timingQuality; // 0.0 (very early/late) to 1.0 (perfect green)
-    this.isThreePointer = isThree;
+    this.contestFactor = contestFactor;
+    this.isBlocked = false;
     this.hasHitRim = false;
     this.hasHitBackboard = false;
     this.hasScoredThisShot = false;
+    this.isThreePointer = isThree;
+
+    // Effective shot quality degraded by defensive contest
+    const degradedQuality = Math.max(0, timingQuality - contestFactor * 0.4);
+    this.shotQuality = degradedQuality;
 
     this.position.copy(origin);
     this.mesh.position.copy(this.position);
@@ -103,14 +110,15 @@ export class Basketball {
     // Calculate arc to hoop
     const target = this.court.hoopPosition.clone();
     
-    // Perfect green shots go dead-center; imperfect shots deviate slightly
-    const deviationMax = 0.35;
-    const errorFactor = 1.0 - timingQuality;
+    // Perfect green shots go dead-center; imperfect & contested shots deviate
+    const isCleanGreen = timingQuality >= 0.92 && contestFactor < 0.35;
+    const deviationMax = 0.35 + contestFactor * 0.35;
+    const errorFactor = 1.0 - degradedQuality;
     const deviationX = (Math.random() - 0.5) * 2 * deviationMax * errorFactor;
     const deviationZ = (Math.random() - 0.5) * 2 * deviationMax * errorFactor;
     
-    // Add deviation to target if shot is not perfect green
-    if (timingQuality < 0.92) {
+    // Add deviation to target if shot is not a clean green
+    if (!isCleanGreen) {
       target.x += deviationX;
       target.z += deviationZ;
     }
@@ -138,6 +146,30 @@ export class Basketball {
     // Shot backspin
     this.rotationAxis.set(1, 0, 0);
     this.rotationSpeed = -12.0;
+  }
+
+  // Deflect/block ball trajectory when swatted by defender
+  block(blockerPosition) {
+    this.isShotAttempt = false; // Negate scoring chance
+    this.isBlocked = true;
+    this.state = BallState.IN_AIR;
+
+    // Vector away from blocker
+    const swatDir = this.position.clone().sub(blockerPosition);
+    swatDir.y = 0;
+    swatDir.normalize();
+
+    // Deflect downwards/sideways with random spin
+    this.velocity.set(
+      swatDir.x * 3.5 + (Math.random() - 0.5) * 2.5,
+      Math.random() * 2.0 - 2.5, // downward swat
+      swatDir.z * 3.5 + (Math.random() - 0.5) * 2.5
+    );
+
+    this.rotationAxis.set(Math.random(), Math.random(), Math.random()).normalize();
+    this.rotationSpeed = 20.0;
+
+    sounds.playBlock();
   }
 
   update(delta, player) {
