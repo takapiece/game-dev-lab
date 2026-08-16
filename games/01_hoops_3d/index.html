@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>HOOPS 3D - Mobile Basketball Simulator</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <!-- 3D WebGL Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- Dynamic Feedback Banner (Score / Green Light / Release quality) -->
+  <div id="feedback-banner" class="feedback-banner"></div>
+
+  <!-- Shot Meter Center Overlay -->
+  <div id="shot-meter" class="meter-container">
+    <div class="shot-meter-wrapper">
+      <div class="meter-fill" id="meter-fill"></div>
+      <div class="meter-sweetspot"></div>
+    </div>
+    <div class="meter-hint">RELEASE IN GREEN</div>
+  </div>
+
+  <!-- In-Game UI Overlay -->
+  <div class="ui-overlay">
+    <!-- Top Header & Scoreboard -->
+    <header class="top-bar">
+      <div class="brand-card">
+        <div class="brand-title">
+          HOOPS 3D <span class="brand-badge">3D MOCK</span>
+        </div>
+        <div class="brand-sub">Mobile Basketball Simulator</div>
+      </div>
+
+      <div class="scoreboard">
+        <div class="score-box">
+          <span class="score-label">SCORE</span>
+          <span class="score-value gold" id="score-value">0</span>
+        </div>
+        <div class="score-box">
+          <span class="score-label">STREAK</span>
+          <span class="score-value" id="streak-value">0 🔥</span>
+        </div>
+        <div class="score-box">
+          <span class="score-label">FG %</span>
+          <span class="score-value small" id="fg-pct">--</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Bottom Controls & Action Zone -->
+    <footer class="bottom-controls">
+      <!-- Virtual Joystick for Mobile Touch -->
+      <div class="touch-area-left" id="joystick-zone">
+        <div class="joystick-base">
+          <div class="joystick-thumb" id="joystick-thumb"></div>
+        </div>
+      </div>
+
+      <!-- Desktop Keyboard Controls Hint -->
+      <div class="desktop-hints">
+        <div class="hint-row">
+          <span class="key-badge">WASD / ↑↓←→</span>
+          <span>Move & Dribble</span>
+        </div>
+        <div class="hint-row">
+          <span class="key-badge">SPACE / J (Hold & Release)</span>
+          <span>Jump Shot</span>
+        </div>
+        <div class="hint-row">
+          <span class="key-badge">SHIFT</span>
+          <span>Turbo / Sprint</span>
+        </div>
+        <div class="hint-row">
+          <span class="key-badge">C</span>
+          <span>Camera: <b id="cam-mode-text">BROADCAST</b></span>
+        </div>
+        <div class="hint-row">
+          <span class="key-badge">R</span>
+          <span>Reset Position</span>
+        </div>
+      </div>
+
+        <div class="btn-secondary-group">
+          <button class="btn-util" id="btn-help" title="Operation Manual">❓ HELP</button>
+          <button class="btn-util" id="btn-camera" title="Switch Camera View">🎥 CAM</button>
+          <button class="btn-util" id="btn-reset" title="Reset Position">🔄 RESET</button>
+        </div>
+        <button class="action-btn btn-sprint" id="btn-sprint">
+          TURBO
+        </button>
+        <button class="action-btn btn-shoot" id="btn-shoot">
+          SHOOT
+          <span class="btn-sub">HOLD/REL</span>
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Start Screen & Operation Manual Modal -->
+  <div id="start-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-badge">3D BASKETBALL</div>
+        <h2 class="modal-title">HOOPS 3D</h2>
+        <p class="modal-subtitle">Mobile Basketball 3D Prototype - 操作マニュアル</p>
+      </div>
+
+      <div class="modal-body">
+        <div class="guide-grid">
+          <!-- PC Controls -->
+          <div class="guide-card">
+            <div class="guide-card-title">💻 PC 操作 (Keyboard)</div>
+            <ul class="guide-list">
+              <li><span class="key-pill">WASD / 矢印</span> 移動 & ドリブル</li>
+              <li><span class="key-pill">SPACE / J</span> シュート（長押し $\rightarrow$ 緑で離す）</li>
+              <li><span class="key-pill">SHIFT</span> ダッシュ (Turbo)</li>
+              <li><span class="key-pill">C</span> 視点切替 (Broadcast / Follow / Top)</li>
+              <li><span class="key-pill">R</span> 初期位置へリセット</li>
+            </ul>
+          </div>
+
+          <!-- Mobile Controls -->
+          <div class="guide-card">
+            <div class="guide-card-title">📱 スマホ・タッチ操作 (Touch)</div>
+            <ul class="guide-list">
+              <li><span class="key-pill">左下スティック</span> 360° 移動 & ドリブル</li>
+              <li><span class="key-pill">SHOOT ボタン</span> 長押し $\rightarrow$ メーター緑で離す</li>
+              <li><span class="key-pill">TURBO ボタン</span> 高速ダッシュ</li>
+              <li><span class="key-pill">CAM / RESET</span> 視点切替 / リセット</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Shooting Tip -->
+        <div class="tip-card">
+          <div class="tip-icon">🎯</div>
+          <div class="tip-text">
+            <strong>グリーンリリース（Green Light）のコツ:</strong><br>
+            シュートボタンを押すとメーターが溜まります。中央の **「緑ゾーン（約0.55秒後）」** で指を離すと、確実にゴールを射抜くパーフェクトスウィッシュが決まります！
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btn-start-game" class="btn-start-pulse">
+          🏀 GAME START / プレイ開始
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
