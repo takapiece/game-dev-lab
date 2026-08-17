@@ -7,6 +7,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        dashboard: resolve(__dirname, 'dashboard/index.html'),
         phase_01: resolve(__dirname, 'phases/phase_01_3d_mock/index.html'),
         phase_02: resolve(__dirname, 'phases/phase_02_1v1_defender/index.html'),
       },

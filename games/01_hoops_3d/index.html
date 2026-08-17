@@ -276,6 +276,31 @@
       box-shadow: none;
     }
 
+    .btn-dashboard-main {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 28px;
+      background: linear-gradient(135deg, rgba(0, 230, 118, 0.15), rgba(0, 176, 255, 0.15));
+      border: 1px solid rgba(0, 230, 118, 0.4);
+      border-radius: 12px;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(0, 230, 118, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    .btn-dashboard-main:hover {
+      background: linear-gradient(135deg, rgba(0, 230, 118, 0.25), rgba(0, 176, 255, 0.25));
+      border-color: rgba(0, 230, 118, 0.7);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 230, 118, 0.3);
+    }
+
     /* Footer */
     footer {
       text-align: center;
@@ -302,6 +327,12 @@
       <p class="header-desc">
         プログラミング教室のカリキュラムとして、各セッションで進化した内容をいつでも独立してプレイ・比較体験できます。
       </p>
+
+      <a href="./dashboard/index.html" class="btn-dashboard-main">
+        <span>📘</span>
+        <span>学習ダッシュボード & カリキュラム解説（コード・数式・AI指示ガイド）を開く</span>
+        <span>➔</span>
+      </a>
     </header>
 
     <div class="phases-grid">

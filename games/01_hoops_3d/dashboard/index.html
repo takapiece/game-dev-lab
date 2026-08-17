@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOOPS 3D - 学習ダッシュボード & カリキュラムエクスプローラー</title>
+  <link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+  <div class="dashboard-app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">
+          HOOPS 3D <span>STUDIO</span>
+        </div>
+        <a href="../index.html" class="btn-home-link">
+          🏠 ポータル目次へ戻る
+        </a>
+      </div>
+
+      <!-- Game Selector -->
+      <div class="sidebar-section">
+        <span class="section-label">SELECT GAME</span>
+        <div class="game-select-box">
+          <span class="game-select-icon">🏀</span>
+          <div class="game-select-info">
+            <span class="game-select-name">01: HOOPS 3D</span>
+            <span class="game-select-tag">3D Basketball</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase Selector -->
+      <div class="sidebar-section" style="padding-bottom: 8px;">
+        <span class="section-label">PHASES (カリキュラム)</span>
+      </div>
+
+      <div class="phase-list" id="phase-list">
+        <!-- Dynamically injected by dashboard.js -->
+      </div>
+
+      <!-- Quick Launch Button -->
+      <div class="sidebar-footer">
+        <a id="btn-launch-game" href="#" target="_blank" class="btn-sidebar-play">
+          ▶ 選択フェーズを別窓起動
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Navigation Tabs -->
+      <nav class="tab-navbar">
+        <button class="nav-tab active" data-tab="overview">
+          📋 概要 & 要件定義
+        </button>
+        <button class="nav-tab" data-tab="code">
+          💻 ソースコード閲覧
+        </button>
+        <button class="nav-tab" data-tab="knowledge">
+          📐 数学 & 前提知識
+        </button>
+        <button class="nav-tab" data-tab="ai-guide">
+          🤖 AI指示ガイド (プロンプト)
+        </button>
+        <button class="nav-tab" data-tab="troubleshooting">
+          🛠️ トラブルシューティング
+        </button>
+        <button class="nav-tab" data-tab="live-play">
+          🎮 ライブプレイ
+        </button>
+      </nav>
+
+      <!-- Tab Content Panels -->
+      <div class="tab-panels">
+        <!-- Header -->
+        <header class="panel-header">
+          <div class="panel-title-area">
+            <h1 class="panel-title" id="display-phase-name">Phase 2: 1v1 AIディフェンダー対戦</h1>
+            <p class="panel-desc">
+              この画面では、選択したフェーズの仕様・設計思想・ソースコード・AIへのプロンプト指示方法を包括的に学習できます。
+            </p>
+          </div>
+        </header>
+
+        <!-- 1. Overview Tab Panel -->
+        <section class="tab-panel active" id="panel-overview">
+          <div id="overview-content">
+            <!-- Dynamic content -->
+          </div>
+        </section>
+
+        <!-- 2. Code Explorer Tab Panel -->
+        <section class="tab-panel" id="panel-code">
+          <div class="code-explorer">
+            <div class="file-tree">
+              <div class="file-tree-header">FILES</div>
+              <div id="file-tree-list"></div>
+            </div>
+
+            <div class="code-viewer-pane">
+              <div class="code-viewer-header">
+                <span class="code-file-name" id="code-file-name">defender.js</span>
+                <span class="code-annotation-badge" id="code-file-summary">AIディフェンダーロジック</span>
+              </div>
+              <pre class="code-display" id="code-display"></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Knowledge Tab Panel -->
+        <section class="tab-panel" id="panel-knowledge">
+          <div id="knowledge-content">
+            <!-- Dynamic content -->
+          </div>
+        </section>
+
+        <!-- 4. AI Prompting Guide Tab Panel -->
+        <section class="tab-panel" id="panel-ai-guide">
+          <div id="ai-guide-content">
+            <!-- Dynamic content -->
+          </div>
+        </section>
+
+        <!-- 5. Troubleshooting Tab Panel -->
+        <section class="tab-panel" id="panel-troubleshooting">
+          <div id="troubleshooting-content">
+            <!-- Dynamic content -->
+          </div>
+        </section>
+
+        <!-- 6. Live Play Tab Panel -->
+        <section class="tab-panel" id="panel-live-play">
+          <div class="game-preview-container">
+            <iframe id="play-preview-iframe" class="game-preview-iframe" src=""></iframe>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./dashboard.js"></script>
+</body>
+</html>
