@@ -32,6 +32,10 @@ export class InputController {
       if (e.code === 'KeyR' && !e.repeat) {
         if (this.onReset) this.onReset();
       }
+
+      if ((e.code === 'Escape' || e.code === 'KeyM') && !e.repeat) {
+        window.location.href = '../../index.html';
+      }
     });
 
     window.addEventListener('keyup', (e) => {
