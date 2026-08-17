@@ -280,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPhaseList();
   initTabs();
   initControls();
+  initTooltipEvents();
   renderCurrentPhase();
 });
 
@@ -623,7 +624,178 @@ function scrollToCodeMatch(matchText) {
   }
 }
 
-// Lightweight Syntax Highlighter for JavaScript
+// Interactive API Dictionary for Hover Tooltips
+const API_DICTIONARY = {
+  'clone': {
+    category: 'THREE.Vector3 メソッド',
+    desc: 'ベクトルの複製を作成します。元の座標値を書き換えずに一時計算を行いたい時に必須です。',
+    example: 'const tempPos = playerPos.clone();'
+  },
+  'sub': {
+    category: 'THREE.Vector3 メソッド',
+    desc: 'ベクトルの引き算を行います（v1 - v2）。AからBへの方向と直線距離を求める時に使います。',
+    example: 'const toHoop = hoopPos.clone().sub(playerPos);'
+  },
+  'subVectors': {
+    category: 'THREE.Vector3 メソッド',
+    desc: '2つのベクトルの差（a - b）を計算し、自身に結果を代入します。',
+    example: 'direction.subVectors(target, origin);'
+  },
+  'normalize': {
+    category: 'THREE.Vector3 メソッド',
+    desc: 'ベクトルの向きを変えずに長さを「1（単位ベクトル）」にします。移動速度を掛け算する前のベースを作ります。',
+    example: 'const dir = toHoop.normalize();'
+  },
+  'dot': {
+    category: 'THREE.Vector3 メソッド (内積)',
+    desc: '2つのベクトルの内積（向きの一致度）を計算。正面なら1.0、直角なら0.0、背後なら-1.0を返します。',
+    example: 'const alignment = shooterToHoop.dot(shooterToDef);'
+  },
+  'addScaledVector': {
+    category: 'THREE.Vector3 メソッド',
+    desc: 'ベクトルに倍率（速度や距離）を掛け算しながら足し合わせます（v1 + v2 * s）。',
+    example: 'pos.addScaledVector(velocity, delta);'
+  },
+  'distanceTo': {
+    category: 'THREE.Vector3 メソッド',
+    desc: '2点間の直線距離（三平方の定理 √(Δx² + Δz²)）を計算します。ディフェンスとの距離判定に活用。',
+    example: 'const dist = playerPos.distanceTo(defenderPos);'
+  },
+  'applyAxisAngle': {
+    category: 'THREE.Vector3 メソッド',
+    desc: '指定した回転軸（例: Y軸）を中心に、指定した角度（ラジアン）だけベクトルを回転させます。',
+    example: 'offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), angle);'
+  },
+  'set': {
+    category: 'THREE.Vector3 / Object メソッド',
+    desc: 'X, Y, Z の座標値を一度に代入・再設定します。',
+    example: 'velocity.set(vx, vy, vz);'
+  },
+  'Math.sin': {
+    category: 'JavaScript 三角関数',
+    desc: 'サイン波（-1.0 〜 +1.0）を周期的に返します。ドリブルや歩行の上下動ループアニメーションの基本です。',
+    example: 'const bounceY = Math.abs(Math.sin(timer * 8));'
+  },
+  'Math.cos': {
+    category: 'JavaScript 三角関数',
+    desc: 'コサイン波を返します。円運動やサイン波と組み合わせた足の前後スイングに使います。',
+    example: 'const offsetX = Math.cos(angle) * radius;'
+  },
+  'Math.sqrt': {
+    category: 'JavaScript 平方根',
+    desc: '√x（平方根）を計算します。物理の斜方投射で最高点までの到達時間を求める公式に使われます。',
+    example: 'const tUp = Math.sqrt((2 * h) / -g);'
+  },
+  'Math.atan2': {
+    category: 'JavaScript 逆正接',
+    desc: 'XとZの移動量から、プレイヤーが向くべき回転角度（ラジアン）を360度全方位で計算します。',
+    example: 'const angle = Math.atan2(dirX, dirZ);'
+  },
+  'Math.max': {
+    category: 'JavaScript 数値比較',
+    desc: '与えられた数値の中で最も大きい値を返します。ガード節（下限ガード）でよく使われます。',
+    example: 'const successRate = Math.max(0, quality - contest);'
+  },
+  'Math.min': {
+    category: 'JavaScript 数値比較',
+    desc: '与えられた数値の中で最も小さい値を返します。上限リミッター（上限ガード）として活用します。',
+    example: 'const power = Math.min(1.0, chargeTime / 0.55);'
+  },
+  'CanvasTexture': {
+    category: 'Three.js テクスチャ',
+    desc: 'HTML5 Canvas にプログラム描画した図形（木目コートや白線）を3D表面に貼り付けるテクスチャ。',
+    example: 'const texture = new THREE.CanvasTexture(canvas);'
+  },
+  'MeshStandardMaterial': {
+    category: 'Three.js マテリアル',
+    desc: '光の反射（粗さ roughness や金属感 metalness）を物理ベースでリアルに表現する標準マテリアル。',
+    example: 'new THREE.MeshStandardMaterial({ color: 0xff6600, roughness: 0.4 });'
+  },
+  'AudioContext': {
+    category: 'Web Audio API',
+    desc: 'ブラウザ上でリアルタイムに音波を合成・加工・出力するためのオーディオ処理環境。',
+    example: 'const ctx = new (window.AudioContext || window.webkitAudioContext)();'
+  },
+  'createOscillator': {
+    category: 'Web Audio API 発振器',
+    desc: 'サイン波や矩形波、三角波などの基本音波を発振します。周波数を急降下させてバウンド音を合成。',
+    example: 'const osc = ctx.createOscillator(); osc.frequency.setValueAtTime(140, ctx.currentTime);'
+  },
+  'createBiquadFilter': {
+    category: 'Web Audio API フィルター',
+    desc: '高音をカット（ローパス）したり特定の周波数を強調する音響フィルター。体育館の響きを再現。',
+    example: 'const filter = ctx.createBiquadFilter(); filter.type = "lowpass";'
+  },
+  'requestAnimationFrame': {
+    category: 'Web API アニメーション',
+    desc: 'ブラウザの画面リフレッシュレート（60FPS/120FPS）に合わせて次フレームの更新関数を呼び出します。',
+    example: 'requestAnimationFrame(this.animate.bind(this));'
+  }
+};
+
+// Tooltip Management
+function initTooltipEvents() {
+  const tooltipEl = document.getElementById('code-tooltip');
+  const codeDisplayEl = document.getElementById('code-display');
+  if (!tooltipEl || !codeDisplayEl) return;
+
+  codeDisplayEl.addEventListener('mouseover', (e) => {
+    const glossaryTarget = e.target.closest('.tok-glossary');
+    if (glossaryTarget) {
+      const termKey = glossaryTarget.dataset.term;
+      const dictItem = API_DICTIONARY[termKey];
+      if (dictItem) {
+        tooltipEl.innerHTML = `
+          <div class="tooltip-header">
+            <span class="tooltip-term">${termKey}()</span>
+            <span class="tooltip-category">${dictItem.category}</span>
+          </div>
+          <div class="tooltip-desc">${dictItem.desc}</div>
+          ${dictItem.example ? `<div class="tooltip-example">${dictItem.example}</div>` : ''}
+        `;
+        tooltipEl.classList.remove('hidden');
+        positionTooltip(e, tooltipEl);
+      }
+    }
+  });
+
+  codeDisplayEl.addEventListener('mousemove', (e) => {
+    if (!tooltipEl.classList.contains('hidden')) {
+      positionTooltip(e, tooltipEl);
+    }
+  });
+
+  codeDisplayEl.addEventListener('mouseout', (e) => {
+    const glossaryTarget = e.target.closest('.tok-glossary');
+    if (glossaryTarget) {
+      tooltipEl.classList.add('hidden');
+    }
+  });
+}
+
+function positionTooltip(e, tooltipEl) {
+  const padding = 16;
+  let x = e.clientX + padding;
+  let y = e.clientY + padding;
+
+  const tooltipWidth = tooltipEl.offsetWidth || 320;
+  const tooltipHeight = tooltipEl.offsetHeight || 140;
+
+  // Prevent right overflow
+  if (x + tooltipWidth > window.innerWidth - padding) {
+    x = e.clientX - tooltipWidth - padding;
+  }
+
+  // Prevent bottom overflow
+  if (y + tooltipHeight > window.innerHeight - padding) {
+    y = e.clientY - tooltipHeight - padding;
+  }
+
+  tooltipEl.style.left = `${Math.max(padding, x)}px`;
+  tooltipEl.style.top = `${Math.max(padding, y)}px`;
+}
+
+// Lightweight Syntax Highlighter for JavaScript with Glossary Detection
 function highlightSyntaxLine(line) {
   if (!line) return '&nbsp;';
 
@@ -649,15 +821,28 @@ function highlightCodeTokens(str) {
   const types = ['THREE', 'Vector3', 'Group', 'Mesh', 'PerspectiveCamera', 'WebGLRenderer', 'Scene', 'Color', 'FogExp2', 'BoxGeometry', 'SphereGeometry', 'CylinderGeometry', 'TorusGeometry', 'MeshStandardMaterial', 'MeshPhysicalMaterial', 'CanvasTexture', 'AudioContext', 'OscillatorNode', 'Math', 'Date', 'document', 'window'];
   const typeRegex = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
 
-  return str
-    // Strings ('...' or "...")
-    .replace(/(['"`])(.*?)\1/g, '<span class="tok-str">$1$2$1</span>')
-    // Numbers (including hex 0x...)
-    .replace(/\b(0x[0-9a-fA-F]+|\d+(\.\d+)?)\b/g, '<span class="tok-num">$1</span>')
-    // Types
-    .replace(typeRegex, '<span class="tok-type">$1</span>')
-    // Keywords
-    .replace(keywordRegex, '<span class="tok-kw">$1</span>')
-    // Function calls: foo(...)
-    .replace(/\b([a-zA-Z0-9_$]+)\s*(?=\()/g, '<span class="tok-func">$1</span>');
+  // 1. Strings ('...' or "...")
+  str = str.replace(/(['"`])(.*?)\1/g, '<span class="tok-str">$1$2$1</span>');
+
+  // 2. Numbers (including hex 0x...)
+  str = str.replace(/\b(0x[0-9a-fA-F]+|\d+(\.\d+)?)\b/g, '<span class="tok-num">$1</span>');
+
+  // 3. Types
+  str = str.replace(typeRegex, '<span class="tok-type">$1</span>');
+
+  // 4. Keywords
+  str = str.replace(keywordRegex, '<span class="tok-kw">$1</span>');
+
+  // 5. Glossary Terms
+  Object.keys(API_DICTIONARY).forEach(term => {
+    // Escape dots in term
+    const escapedTerm = term.replace('.', '\\.');
+    const termRegex = new RegExp(`\\b(${escapedTerm})\\b`, 'g');
+    str = str.replace(termRegex, `<span class="tok-glossary" data-term="${term}">$1</span>`);
+  });
+
+  // 6. Function calls: foo(...)
+  str = str.replace(/\b([a-zA-Z0-9_$]+)\s*(?=\()/g, '<span class="tok-func">$1</span>');
+
+  return str;
 }

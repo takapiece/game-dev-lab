@@ -35,6 +35,7 @@ graph TD
 ### 1. [00_roadmap (全体仕様 & 意思決定)](./00_roadmap/)
 * **[requirements.md](./00_roadmap/requirements.md)**: 最終形から逆算した難易度別5段階の要件定義書。
 * **[decisions.md](./00_roadmap/decisions.md)**: **【重要】設計判断ログ (ADR)**。なぜ Three.js を選んだか、なぜマルチエントリー独立スナップショットを採用したかの決定理由。
+* **[dashboard_evolution.md](./00_roadmap/dashboard_evolution.md)**: **【学習システム発展記録】** 学習ダッシュボードと教材UIが段階的にどう発展したかの軌跡。
 
 ### 2. [01_sessions (セッション別 制作手順)](./01_sessions/)
 * **[session_01_3d_mock.md](./01_sessions/session_01_3d_mock.md)**: 第1回「3Dコート・物理・シュートメーター・初期モック」の作成手順。
