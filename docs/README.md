@@ -9,7 +9,7 @@
 
 | No | プロジェクト名 | ジャンル / テーマ | 使用技術 | ドキュメント & ソース | ステータス |
 | :-: | :--- | :--- | :--- | :--- | :-: |
-| **01** | **[HOOPS 3D](../games/01_hoops_3d/)** | スマホ向け 3D バスケットボール | Three.js / Web Audio API | [📖 開発ドキュメント](../games/01_hoops_3d/docs/README.md) | **Phase 1 完了** |
+| **01** | **[HOOPS 3D](../games/01_hoops_3d/)** | スマホ向け 3D バスケットボール | Three.js / Web Audio API | [📖 開発ドキュメント](../games/01_hoops_3d/docs/README.md) | **Phase 2 完了 (1v1 AI対戦)** |
 | **02** | *(Next Game)* | *(企画中: 3Dサッカー / レース等)* | - | - | 準備中 |
 
 ---
