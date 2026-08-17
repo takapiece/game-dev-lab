@@ -167,17 +167,148 @@ const CURRICULUM_DATA = {
   }
 };
 
+// Educational Annotations & Quick Jump Map
+const CODE_ANNOTATIONS = {
+  'defender.js': {
+    jumps: [
+      { label: '🧠 ステートマシン定義', match: 'export const DefenderState' },
+      { label: '📐 内分点ポジショニング', match: 'const targetPos = playerPos.clone()' },
+      { label: '🎯 内積による正面判定', match: 'const alignment = Math.max(0, shooterToHoop.dot' },
+      { label: '🚫 近接ブロック判定', match: 'tryBlock(player)' }
+    ],
+    notes: [
+      {
+        match: 'export const DefenderState',
+        title: '🧠 AIステートマシンの定義',
+        desc: 'ディフェンダーの行動を3つの状態（GUARD: マーク, CONTEST: シュート妨害, REBOUND: ルーズボール回収）に分割して管理します。',
+        formula: 'GUARD -> (シュート感知) -> CONTEST -> (ボール浮遊) -> REBOUND -> GUARD'
+      },
+      {
+        match: 'const targetPos = playerPos.clone()',
+        title: '📐 ベクトルの内分点計算（ポジショニング）',
+        desc: 'バスケットボールの原則「ボールマンとゴールの間に入る」ため、プレイヤーからゴールへ向かう単位ベクトルにクッション距離（guardDistance = 1.65m）を足した目標座標を計算します。',
+        formula: 'TargetPos = PlayerPos + (HoopPos - PlayerPos).normalize() * 1.65m'
+      },
+      {
+        match: 'const alignment = Math.max(0, shooterToHoop.dot',
+        title: '📐 ベクトルの内積（Dot Product）による正面判定',
+        desc: '「プレイヤーからゴールへのベクトル」と「プレイヤーからディフェンダーへのベクトル」の内積（dot）を計算。正面に立ちはだかっていれば 1.0、真横なら 0.0 になります。',
+        formula: 'Alignment = Dot(v_hoop, v_defender) = cos(θ)'
+      },
+      {
+        match: 'tryBlock(player)',
+        title: '🚫 近接ブロック判定 & 叩き落とし物理',
+        desc: '至近距離（1.35m以内）かつディフェンダーが最高到達点付近でジャンプしている場合、75%の確率でシュートを叩き落とします。'
+      }
+    ]
+  },
+  'ball.js': {
+    jumps: [
+      { label: '🚀 斜方投射の初速度逆算', match: 'const peakHeight = Math.max' },
+      { label: '🎯 コンテスト減衰', match: 'const degradedQuality = Math.max(0' },
+      { label: '💥 ブロック物理', match: 'block(blockerPosition)' },
+      { label: '🏀 ゴール＆リム衝突判定', match: 'Check Hoop & Rim Collision' }
+    ],
+    notes: [
+      {
+        match: 'const peakHeight = Math.max',
+        title: '🚀 高校物理：斜方投射の初速度逆算',
+        desc: '最高到達点 peakHeight とゴール座標、重力加速度 g = -18.5 から、上昇時間 tUp と下降時間 tDown を計算し、初速度ベクトル (vx, vy, vz) を決定します。',
+        formula: 'tUp = √((2 * (peakHeight - y0)) / -g)\nvy = -g * tUp,  vx = dx / (tUp + tDown)'
+      },
+      {
+        match: 'const degradedQuality = Math.max(0',
+        title: '🎯 ディフェンスコンテストによる成功率低下',
+        desc: 'ディフェンダーのプレッシャー（contestFactor: 0〜1.0）に応じて、タイミング品質を減衰させ、弾道ブレ（deviationMax）を増加させます。'
+      },
+      {
+        match: 'block(blockerPosition)',
+        title: '💥 ブロックによる軌道変更 & 得点キャンセル',
+        desc: '叩き落とされたボールは得点判定フラグ（isShotAttempt）を即座に false にし、ディフェンダーから離れる下向きのベクトルへ初速度を書き換えます。'
+      }
+    ]
+  },
+  'player.js': {
+    jumps: [
+      { label: '🎯 2K風グリーンリリース', match: 'const error = Math.abs(this.shotChargeTime' },
+      { label: '🏀 放物線シュート発射', match: 'releaseShot(contestFactor' },
+      { label: '🌊 サイン波ドリブル同期', match: 'this.dribbleTimer += delta' }
+    ],
+    notes: [
+      {
+        match: 'const error = Math.abs(this.shotChargeTime',
+        title: '🎯 2K風グリーンライト判定機構',
+        desc: 'ボタン長押し時間と理想時間（0.55秒）の誤差を指数関数カーブで評価。誤差が極小の場合、成功率100%のパーフェクトスウィッシュとなります。'
+      },
+      {
+        match: 'this.dribbleTimer += delta',
+        title: '🌊 三角関数（サイン波）によるドリブルバウンド',
+        desc: '三角関数 Math.sin(dribbleTimer) を用いて、プレイヤーの腕とボールの上下動を周期的に同期させます。'
+      }
+    ]
+  },
+  'audio.js': {
+    jumps: [
+      { label: '🔊 ドリブル音合成', match: 'playBounce(intensity' },
+      { label: '🔊 ブロック打撃音合成', match: 'playBlock()' },
+      { label: '🔊 スウィッシュ音合成', match: 'playSwish()' }
+    ],
+    notes: [
+      {
+        match: 'playBounce(intensity',
+        title: '🔊 Web Audio API によるドリブル音合成',
+        desc: '140Hzのサイン波を0.08秒で35Hzへ急降下させ、木目フロアのローパスフィルター(450Hz)を通すことで、リアルなバウンド音を合成。'
+      },
+      {
+        match: 'playBlock()',
+        title: '🔊 ブロック時の重いスラップ音合成',
+        desc: '280Hzの三角波アタック音（打撃感）と、ハイパスフィルター付きホワイトノイズ（手のひらの摩擦音）を合成した専用効果音です。'
+      }
+    ]
+  }
+};
+
 // State
 let currentPhaseIndex = 1; // Default to Phase 2 (latest)
 let currentTabId = 'overview';
 let selectedFileName = 'defender.js';
+let showAnnotations = true;
+let currentRawCode = '';
 
 // DOM Elements
 document.addEventListener('DOMContentLoaded', () => {
   initPhaseList();
   initTabs();
+  initControls();
   renderCurrentPhase();
 });
+
+function initControls() {
+  const chkAnn = document.getElementById('chk-annotations');
+  if (chkAnn) {
+    chkAnn.addEventListener('change', (e) => {
+      showAnnotations = e.target.checked;
+      renderCodeDisplay();
+    });
+  }
+
+  const btnCopy = document.getElementById('btn-copy-code');
+  if (btnCopy) {
+    btnCopy.addEventListener('click', async () => {
+      if (currentRawCode) {
+        try {
+          await navigator.clipboard.writeText(currentRawCode);
+          btnCopy.innerHTML = '<span>✔</span> コピー完了!';
+          setTimeout(() => {
+            btnCopy.innerHTML = '<span>📋</span> コピー';
+          }, 2000);
+        } catch (err) {
+          console.error('Copy failed', err);
+        }
+      }
+    });
+  }
+}
 
 function initPhaseList() {
   const phaseListEl = document.getElementById('phase-list');
@@ -359,8 +490,11 @@ function renderCurrentPhase() {
     playPreviewIframe.src = phase.playUrl;
   }
 
-  // Reset default selected file for Code Explorer
-  selectedFileName = phase.files[0].name;
+  // Default selected file for Code Explorer
+  const availableFiles = phase.files.map(f => f.name);
+  if (!availableFiles.includes(selectedFileName)) {
+    selectedFileName = availableFiles[0];
+  }
   if (currentTabId === 'code') {
     renderCodeExplorer();
   }
@@ -371,10 +505,11 @@ async function renderCodeExplorer() {
   const fileTreeEl = document.getElementById('file-tree-list');
   const codeFileNameEl = document.getElementById('code-file-name');
   const codeAnnotationEl = document.getElementById('code-file-summary');
-  const codeDisplayEl = document.getElementById('code-display');
+  const jumpListEl = document.getElementById('jump-pills-list');
 
   if (!fileTreeEl) return;
 
+  // 1. Render File Tree
   fileTreeEl.innerHTML = '';
   phase.files.forEach(f => {
     const item = document.createElement('div');
@@ -391,17 +526,138 @@ async function renderCodeExplorer() {
   codeFileNameEl.innerText = curFile.name;
   codeAnnotationEl.innerText = curFile.summary;
 
-  // Fetch actual code content from phase folder
+  // 2. Render Quick Jump Pills
+  if (jumpListEl) {
+    jumpListEl.innerHTML = '';
+    const fileAnnotationData = CODE_ANNOTATIONS[curFile.name];
+    if (fileAnnotationData && fileAnnotationData.jumps) {
+      document.getElementById('jump-anchors-bar').style.display = 'flex';
+      fileAnnotationData.jumps.forEach(j => {
+        const pill = document.createElement('button');
+        pill.className = 'jump-pill';
+        pill.innerText = j.label;
+        pill.addEventListener('click', () => {
+          scrollToCodeMatch(j.match);
+        });
+        jumpListEl.appendChild(pill);
+      });
+    } else {
+      document.getElementById('jump-anchors-bar').style.display = 'none';
+    }
+  }
+
+  // 3. Fetch Code Content
   const filePath = `../phases/${phase.id === 'phase_01' ? 'phase_01_3d_mock' : 'phase_02_1v1_defender'}/src/${curFile.name}`;
   try {
     const res = await fetch(filePath);
     if (res.ok) {
-      const codeText = await res.text();
-      codeDisplayEl.textContent = codeText;
+      currentRawCode = await res.text();
+      renderCodeDisplay();
     } else {
-      codeDisplayEl.textContent = `// ${curFile.name} のコードを読み込み中...`;
+      document.getElementById('code-display').innerHTML = `<div style="padding: 20px; color: #94a3b8;">// ${curFile.name} のコードを読み込み中...</div>`;
     }
   } catch (e) {
-    codeDisplayEl.textContent = `// コード読み込みエラー: ${e.message}`;
+    document.getElementById('code-display').innerHTML = `<div style="padding: 20px; color: #ff3d00;">// コード読み込みエラー: ${e.message}</div>`;
   }
+}
+
+function renderCodeDisplay() {
+  const codeDisplayEl = document.getElementById('code-display');
+  if (!codeDisplayEl || !currentRawCode) return;
+
+  const curAnnotationData = CODE_ANNOTATIONS[selectedFileName];
+  const notes = curAnnotationData ? curAnnotationData.notes : [];
+
+  const lines = currentRawCode.split('\n');
+  codeDisplayEl.innerHTML = '';
+
+  lines.forEach((rawLine, idx) => {
+    const lineNum = idx + 1;
+    const lineDiv = document.createElement('div');
+    lineDiv.className = 'code-line';
+    lineDiv.id = `line-${lineNum}`;
+
+    const numSpan = document.createElement('span');
+    numSpan.className = 'line-num';
+    numSpan.innerText = lineNum;
+
+    const contentSpan = document.createElement('span');
+    contentSpan.className = 'line-content';
+    contentSpan.innerHTML = highlightSyntaxLine(rawLine);
+
+    lineDiv.appendChild(numSpan);
+    lineDiv.appendChild(contentSpan);
+    codeDisplayEl.appendChild(lineDiv);
+
+    // Check if this line matches an annotation
+    if (showAnnotations && notes && notes.length > 0) {
+      const matchingNote = notes.find(n => rawLine.includes(n.match));
+      if (matchingNote) {
+        const annotationContainer = document.createElement('div');
+        annotationContainer.className = 'inline-annotation-container';
+        annotationContainer.innerHTML = `
+          <div class="inline-annotation-card">
+            <div class="annotation-header">💡 ${matchingNote.title}</div>
+            <div class="annotation-body">${matchingNote.desc}</div>
+            ${matchingNote.formula ? `<div class="annotation-formula">${matchingNote.formula}</div>` : ''}
+          </div>
+        `;
+        codeDisplayEl.appendChild(annotationContainer);
+      }
+    }
+  });
+}
+
+function scrollToCodeMatch(matchText) {
+  const lines = currentRawCode.split('\n');
+  const lineIdx = lines.findIndex(l => l.includes(matchText));
+  if (lineIdx !== -1) {
+    const targetEl = document.getElementById(`line-${lineIdx + 1}`);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetEl.classList.add('target-highlight');
+      setTimeout(() => {
+        targetEl.classList.remove('target-highlight');
+      }, 2000);
+    }
+  }
+}
+
+// Lightweight Syntax Highlighter for JavaScript
+function highlightSyntaxLine(line) {
+  if (!line) return '&nbsp;';
+
+  const esc = str => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  // Check for line comment
+  if (line.includes('//')) {
+    const splitIdx = line.indexOf('//');
+    const before = line.substring(0, splitIdx);
+    const comment = line.substring(splitIdx);
+    return highlightCodeTokens(esc(before)) + `<span class="tok-comment">${esc(comment)}</span>`;
+  }
+
+  return highlightCodeTokens(esc(line));
+}
+
+function highlightCodeTokens(str) {
+  // Keywords
+  const keywords = ['import', 'export', 'class', 'constructor', 'const', 'let', 'var', 'function', 'return', 'if', 'else', 'new', 'this', 'async', 'await', 'switch', 'case', 'break', 'for', 'while', 'true', 'false', 'null', 'undefined'];
+  const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
+
+  // Types / Built-in Objects
+  const types = ['THREE', 'Vector3', 'Group', 'Mesh', 'PerspectiveCamera', 'WebGLRenderer', 'Scene', 'Color', 'FogExp2', 'BoxGeometry', 'SphereGeometry', 'CylinderGeometry', 'TorusGeometry', 'MeshStandardMaterial', 'MeshPhysicalMaterial', 'CanvasTexture', 'AudioContext', 'OscillatorNode', 'Math', 'Date', 'document', 'window'];
+  const typeRegex = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
+
+  return str
+    // Strings ('...' or "...")
+    .replace(/(['"`])(.*?)\1/g, '<span class="tok-str">$1$2$1</span>')
+    // Numbers (including hex 0x...)
+    .replace(/\b(0x[0-9a-fA-F]+|\d+(\.\d+)?)\b/g, '<span class="tok-num">$1</span>')
+    // Types
+    .replace(typeRegex, '<span class="tok-type">$1</span>')
+    // Keywords
+    .replace(keywordRegex, '<span class="tok-kw">$1</span>')
+    // Function calls: foo(...)
+    .replace(/\b([a-zA-Z0-9_$]+)\s*(?=\()/g, '<span class="tok-func">$1</span>');
 }

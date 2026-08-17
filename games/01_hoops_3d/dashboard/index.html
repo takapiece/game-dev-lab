@@ -101,10 +101,28 @@
 
             <div class="code-viewer-pane">
               <div class="code-viewer-header">
-                <span class="code-file-name" id="code-file-name">defender.js</span>
-                <span class="code-annotation-badge" id="code-file-summary">AIディフェンダーロジック</span>
+                <div class="code-header-left">
+                  <span class="code-file-name" id="code-file-name">defender.js</span>
+                  <span class="code-annotation-badge" id="code-file-summary">AIディフェンダーロジック</span>
+                </div>
+                <div class="code-header-controls">
+                  <label class="toggle-label">
+                    <input type="checkbox" id="chk-annotations" checked>
+                    <span>💡 インライン解説</span>
+                  </label>
+                  <button class="btn-copy-code" id="btn-copy-code">
+                    <span>📋</span> コピー
+                  </button>
+                </div>
               </div>
-              <pre class="code-display" id="code-display"></pre>
+
+              <!-- Quick Jump Bar -->
+              <div class="jump-anchors-bar" id="jump-anchors-bar">
+                <span class="jump-label">📍 重要ロジックへジャンプ:</span>
+                <div id="jump-pills-list" style="display: flex; gap: 6px; overflow-x: auto;"></div>
+              </div>
+
+              <div class="code-display" id="code-display"></div>
             </div>
           </div>
         </section>

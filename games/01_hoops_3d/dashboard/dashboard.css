@@ -431,16 +431,17 @@ body {
 /* Code Explorer Layout */
 .code-explorer {
   display: flex;
-  height: 600px;
+  height: 650px;
   background: var(--code-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
 .file-tree {
   width: 220px;
-  background: rgba(10, 14, 22, 0.9);
+  background: rgba(10, 14, 22, 0.95);
   border-right: 1px solid var(--border-color);
   padding: 14px 10px;
   display: flex;
@@ -492,16 +493,24 @@ body {
 
 .code-viewer-header {
   padding: 10px 16px;
-  background: rgba(20, 26, 40, 0.8);
+  background: rgba(18, 24, 38, 0.95);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.code-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .code-file-name {
   font-family: 'Fira Code', monospace;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: #fff;
   font-weight: 600;
 }
@@ -515,16 +524,188 @@ body {
   border-radius: 4px;
 }
 
+.code-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-label input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: var(--accent-green);
+}
+
+.btn-copy-code {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-copy-code:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Quick Jump Anchors Bar */
+.jump-anchors-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(14, 18, 28, 0.9);
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  font-size: 0.75rem;
+}
+
+.jump-label {
+  color: var(--text-dim);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.jump-pill {
+  background: rgba(0, 230, 118, 0.08);
+  color: #a7f3d0;
+  border: 1px solid rgba(0, 230, 118, 0.25);
+  padding: 3px 9px;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.jump-pill:hover {
+  background: rgba(0, 230, 118, 0.2);
+  color: #fff;
+  border-color: var(--accent-green);
+  transform: translateY(-1px);
+}
+
+/* Code Display & Lines */
 .code-display {
   flex-grow: 1;
   overflow: auto;
-  padding: 16px;
+  padding: 12px 0;
   font-family: 'Fira Code', monospace;
-  font-size: 0.84rem;
-  line-height: 1.6;
+  font-size: 0.82rem;
+  line-height: 1.65;
   color: #e2e8f0;
-  white-space: pre;
 }
+
+.code-line {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 16px;
+  transition: background-color 0.1s ease;
+  min-height: 24px;
+}
+
+.code-line:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.code-line.target-highlight {
+  background-color: rgba(0, 230, 118, 0.18) !important;
+  animation: pulseTarget 1.8s ease-out;
+}
+
+@keyframes pulseTarget {
+  0% { background-color: rgba(0, 230, 118, 0.5); }
+  100% { background-color: rgba(0, 230, 118, 0.18); }
+}
+
+.line-num {
+  width: 44px;
+  flex-shrink: 0;
+  text-align: right;
+  padding-right: 18px;
+  color: #475569;
+  user-select: none;
+  font-size: 0.76rem;
+}
+
+.line-content {
+  flex-grow: 1;
+  white-space: pre;
+  overflow-x: visible;
+}
+
+/* Inline Educational Annotation Box */
+.inline-annotation-container {
+  padding: 8px 16px 12px 60px;
+}
+
+.inline-annotation-card {
+  background: linear-gradient(135deg, rgba(22, 33, 54, 0.95), rgba(16, 24, 38, 0.98));
+  border: 1px solid rgba(0, 230, 118, 0.35);
+  border-left: 4px solid var(--accent-green);
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.annotation-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #a7f3d0;
+}
+
+.annotation-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.annotation-formula {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.76rem;
+  color: #67e8f9;
+  margin-top: 4px;
+  white-space: pre-wrap;
+}
+
+/* Syntax Highlighting Tokens (VS Code Dark+ Style) */
+.tok-kw { color: #f43f5e; font-weight: 600; } /* class, const, let, return, if, new, this */
+.tok-type { color: #f59e0b; font-weight: 500; } /* THREE, Vector3, Mesh, Math */
+.tok-func { color: #818cf8; } /* sub, normalize, shoot, playBounce */
+.tok-str { color: #10b981; } /* '...', "..." */
+.tok-num { color: #38bdf8; } /* 0.55, 18.5, 0x8d5524 */
+.tok-comment { color: #64748b; font-style: italic; } /* // ..., /* ... */
+.tok-op { color: #e2e8f0; } /* =, +, -, *, /, ?, : */
+.tok-prop { color: #cbd5e1; } /* .position, .velocity */
 
 /* AI Prompting Guide Cards */
 .prompt-compare-grid {
