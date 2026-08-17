@@ -802,6 +802,12 @@ body {
   border-color: rgba(168, 85, 247, 0.35);
 }
 
+.tooltip-category.cat-game {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
 .tooltip-desc {
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;

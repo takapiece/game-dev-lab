@@ -718,132 +718,132 @@ const API_DICTIONARY = {
     example: 'if (obj === undefined) { ... }'
   },
 
-  // === Three.js 3D Vector & Math ===
-  'clone': {
-    category: '🎮 Three.js ベクトル',
-    desc: 'ベクトルの複製を作成します。元の座標値を書き換えずに一時計算を行いたい時に必須です。',
-    example: 'const tempPos = playerPos.clone();'
+  // === Three.js 3D 操作メソッド (Functions) ===
+  'add': {
+    category: '🎮 Three.js 操作',
+    desc: 'シーンやグループへの追加。3D空間（scene.add(mesh)）やパーツグループに3Dオブジェクトを配置・登録します。',
+    example: 'this.scene.add(this.mesh);'
   },
-  'sub': {
-    category: '🎮 Three.js ベクトル',
-    desc: 'ベクトルの引き算を行います（v1 - v2）。AからBへの方向と直線距離を求める時に使います。',
-    example: 'const toHoop = hoopPos.clone().sub(playerPos);'
+  'remove': {
+    category: '🎮 Three.js 操作',
+    desc: 'シーンからの削除。3D空間から不要になったオブジェクト（消えたボールなど）を取り除きます。',
+    example: 'this.scene.remove(this.mesh);'
   },
-  'subVectors': {
-    category: '🎮 Three.js ベクトル',
-    desc: '2つのベクトルの差（a - b）を計算し、自身に結果を代入します。',
-    example: 'direction.subVectors(target, origin);'
+  'lookAt': {
+    category: '🎮 Three.js 操作',
+    desc: '目標を向く（視線回転）。オブジェクトやカメラを指定した3D座標（ゴールなど）の方向へ一瞬で回転させます。',
+    example: 'this.mesh.lookAt(targetPosition);'
   },
-  'normalize': {
-    category: '🎮 Three.js ベクトル',
-    desc: 'ベクトルの向きを変えずに長さを「1（単位ベクトル）」にします。移動速度を掛け算する前のベースを作ります。',
-    example: 'const dir = toHoop.normalize();'
-  },
-  'dot': {
-    category: '🎮 Three.js ベクトル (内積)',
-    desc: '2つのベクトルの内積（向きの一致度）を計算。正面なら1.0、直角なら0.0、背後なら-1.0を返します。',
-    example: 'const alignment = shooterToHoop.dot(shooterToDef);'
-  },
-  'addScaledVector': {
-    category: '🎮 Three.js ベクトル',
-    desc: 'ベクトルに倍率（速度や距離）を掛け算しながら足し合わせます（v1 + v2 * s）。',
-    example: 'pos.addScaledVector(velocity, delta);'
-  },
-  'distanceTo': {
-    category: '🎮 Three.js ベクトル',
-    desc: '2点間の直線距離（三平方の定理 √(Δx² + Δz²)）を計算します。ディフェンスとの距離判定に活用。',
-    example: 'const dist = playerPos.distanceTo(defenderPos);'
-  },
-  'applyAxisAngle': {
-    category: '🎮 Three.js ベクトル',
-    desc: '指定した回転軸（例: Y軸）を中心に、指定した角度（ラジアン）だけベクトルを回転させます。',
-    example: 'offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), angle);'
-  },
-  'set': {
-    category: '🎮 Three.js メソッド',
-    desc: 'X, Y, Z の座標値を一度に代入・再設定します。',
-    example: 'velocity.set(vx, vy, vz);'
+  'getDelta': {
+    category: '⏱️ Three.js 時間',
+    desc: '前フレームからの経過時間（秒）。1コマ進むのにかかった時間（通常約0.016秒）を取得し、PCの速度差によらず一定速度で動作させます。',
+    example: 'const delta = this.clock.getDelta();'
   },
 
-  // === JavaScript 数学関数 (Math) ===
-  'Math.sin': {
-    category: '📐 数学・物理',
-    desc: 'サイン波（-1.0 〜 +1.0）を周期的に返します。ドリブルや歩行の上下動ループアニメーションの基本です。',
-    example: 'const bounceY = Math.abs(Math.sin(timer * 8));'
+  // === ゲームロジック主要関数 (Game Logic) ===
+  'update': {
+    category: '🔄 ゲームループ',
+    desc: '毎フレームの更新処理。プレイヤーの移動、ボールの物理、AIの思考などを毎秒60回計算し直すゲームの心臓部関数です。',
+    example: 'this.player.update(delta);'
   },
-  'Math.cos': {
-    category: '📐 数学・物理',
-    desc: 'コサイン波を返します。円運動やサイン波と組み合わせた足の前後スイングに使います。',
-    example: 'const offsetX = Math.cos(angle) * radius;'
+  'animate': {
+    category: '🎬 ゲームループ',
+    desc: '描画ループの実行。requestAnimationFrame を使って画面の再描画と update() を永久に繰り返し実行し続けます。',
+    example: 'animate() { requestAnimationFrame(this.animate.bind(this)); }'
   },
-  'Math.sqrt': {
-    category: '📐 数学・物理',
-    desc: '√x（平方根）を計算します。物理の斜方投射で最高点までの到達時間を求める公式に使われます。',
-    example: 'const tUp = Math.sqrt((2 * h) / -g);'
+  'calculateContest': {
+    category: '🛡️ AIロジック',
+    desc: 'シュート妨害度の計算。ディフェンダーとの距離・角度・手の高さを掛け算して妨害率（0〜100%）を算出します。',
+    example: 'const contest = this.defender.calculateContest(this.player);'
   },
-  'Math.atan2': {
-    category: '📐 数学・物理',
-    desc: 'XとZの移動量から、プレイヤーが向くべき回転角度（ラジアン）を360度全方位で計算します。',
-    example: 'const angle = Math.atan2(dirX, dirZ);'
+  'tryBlock': {
+    category: '🚫 AIロジック',
+    desc: '近接ブロックの判定。至近距離かつジャンプの頂点付近でシュートを叩き落とすかを確率判定します。',
+    example: 'const blocked = this.defender.tryBlock(this.player);'
   },
-  'Math.max': {
-    category: '📐 数学・物理',
-    desc: '与えられた数値の中で最も大きい値を返します。下限ガード（0以下にならないようにする等）で活用。',
-    example: 'const successRate = Math.max(0, quality - contest);'
+  'releaseShot': {
+    category: '⛹️ プレイヤー操作',
+    desc: 'シュートの発射。シュートメーターのタイミング品質とコンテスト妨害度を渡して、ボールに初速度を与えます。',
+    example: 'this.player.releaseShot(contestFactor);'
   },
-  'Math.min': {
-    category: '📐 数学・物理',
-    desc: '与えられた数値の中で最も小さい値を返します。上限リミッター（1.0を超えないようにする等）で活用。',
-    example: 'const power = Math.min(1.0, chargeTime / 0.55);'
+  'shoot': {
+    category: '🚀 ボール物理',
+    desc: '放物線物理の開始。ボールの斜方投射計算を実行し、ゴールに向かってボールを飛ばします。',
+    example: 'this.ball.shoot(origin, target, quality);'
   },
-  'Math.abs': {
-    category: '📐 数学・物理',
-    desc: '絶対値（プラスの大きさ）を返します。目標時間との誤差（ズレの大きさ）を計算する時に使います。',
-    example: 'const error = Math.abs(chargeTime - 0.55);'
+  'block': {
+    category: '💥 ボール物理',
+    desc: 'ブロック物理の適用。叩き落とされたボールの初速度を下向きに書き換え、得点判定をキャンセルします。',
+    example: 'this.ball.block(defenderPos);'
+  },
+  'reset': {
+    category: '🔁 ゲーム管理',
+    desc: '位置や状態のリセット。シュート後やゲーム開始時にプレイヤーやボールを初期位置に戻します。',
+    example: 'this.resetGame();'
+  },
+  'createCourt': {
+    category: '🏟️ 3D生成',
+    desc: '3Dコートの生成。HTML5 Canvas で木目と白線を描き、フロアとゴールを生成します。',
+    example: 'createCourt(scene);'
+  },
+  'createPlayer': {
+    category: '⛹️ 3D生成',
+    desc: 'プレイヤーモデルの生成。頭、胴体、腕、足の3Dパーツを組み立ててプレイヤーを作ります。',
+    example: 'this.createPlayerMesh();'
+  },
+  'createDefender': {
+    category: '🔴 3D生成',
+    desc: 'ディフェンダーモデルの生成。Bullsカラーの敵3Dモデルを組み立てます。',
+    example: 'this.createDefenderMesh();'
+  },
+  'setupLights': {
+    category: '💡 3D演出',
+    desc: '照明・ライトの配置。3D空間を立体的に見せる環境光（AmbientLight）と平行光源（DirectionalLight）を配置します。',
+    example: 'this.setupLighting();'
   },
 
-  // === Three.js 3D Objects & Materials ===
-  'CanvasTexture': {
-    category: '🎨 Three.js テクスチャ',
-    desc: 'HTML5 Canvas にプログラム描画した図形（木目コートや白線）を3D表面に貼り付けるテクスチャ。',
-    example: 'const texture = new THREE.CanvasTexture(canvas);'
+  // === 音響効果音関数 (Web Audio Synthesis) ===
+  'playBounce': {
+    category: '🔊 Web Audio 音響',
+    desc: 'ドリブル音の合成。Web Audio API で木目コートのバウンド音をリアルタイムに鳴らします。',
+    example: 'sounds.playBounce(speed);'
   },
-  'MeshStandardMaterial': {
-    category: '🌟 Three.js マテリアル',
-    desc: '光の反射（粗さ roughness や金属感 metalness）を物理ベースでリアルに表現する標準マテリアル。',
-    example: 'new THREE.MeshStandardMaterial({ color: 0xff6600, roughness: 0.4 });'
+  'playBlock': {
+    category: '🔊 Web Audio 音響',
+    desc: 'ブロック打撃音の合成。叩き落とした時の重いスラップ音を合成して鳴らします。',
+    example: 'sounds.playBlock();'
   },
-  'Mesh': {
-    category: '🧱 Three.js 3D物体',
-    desc: '形状（ジオメトリ）と見た目（マテリアル）を組み合わせた、3D空間に配置できる本物の物体。',
-    example: 'const mesh = new THREE.Mesh(geometry, material);'
+  'playSwish': {
+    category: '🔊 Web Audio 音響',
+    desc: 'スウィッシュ音の合成。ネットを綺麗に通過したときの「シュッ」という爽快音を鳴らします。',
+    example: 'sounds.playSwish();'
   },
-  'Group': {
-    category: '📦 Three.js グループ',
-    desc: '複数の3Dパーツ（頭、胴体、腕、足など）を1つにまとめるフォルダのような入れ物。',
-    example: 'this.mesh = new THREE.Group();'
+  'playRim': {
+    category: '🔊 Web Audio 音響',
+    desc: 'リム衝突音の合成。ボールが鉄のリングに当たったときの金属反響音を鳴らします。',
+    example: 'sounds.playRim();'
   },
 
-  // === Web Audio API ===
-  'AudioContext': {
-    category: '🔊 Web Audio API',
-    desc: 'ブラウザ上でリアルタイムに音波を合成・加工・出力するためのオーディオ処理環境。',
-    example: 'const ctx = new (window.AudioContext || window.webkitAudioContext)();'
+  // === Web イベント & ブラウザ API ===
+  'addEventListener': {
+    category: '🌐 Web イベント',
+    desc: '操作イベントの監視。キーボード入力（keydown）やマウスクリックなどのユーザー操作を検知して関数を実行します。',
+    example: 'window.addEventListener(\'keydown\', (e) => { ... });'
   },
-  'createOscillator': {
-    category: '🔊 Web Audio API',
-    desc: 'サイン波や矩形波、三角波などの基本音波を発振します。周波数を急降下させてバウンド音を合成。',
-    example: 'const osc = ctx.createOscillator(); osc.frequency.setValueAtTime(140, ctx.currentTime);'
+  'removeEventListener': {
+    category: '🌐 Web イベント',
+    desc: 'イベント監視の解除。登録した操作イベントの監視を終了します。',
+    example: 'window.removeEventListener(\'keydown\', handler);'
   },
-  'createBiquadFilter': {
-    category: '🔊 Web Audio API',
-    desc: '高音をカット（ローパス）したり特定の周波数を強調する音響フィルター。体育館の響きを再現。',
-    example: 'const filter = ctx.createBiquadFilter(); filter.type = "lowpass";'
+  'preventDefault': {
+    category: '🌐 Web イベント',
+    desc: 'ブラウザの標準動作を無効化。スペースキーでの画面スクロールや右クリックメニューなどをキャンセルします。',
+    example: 'e.preventDefault();'
   },
-  'requestAnimationFrame': {
-    category: '⏱️ Web API アニメーション',
-    desc: 'ブラウザの画面リフレッシュレート（60FPS/120FPS）に合わせて次フレームの更新関数を呼び出します。',
-    example: 'requestAnimationFrame(this.animate.bind(this));'
+  'stopPropagation': {
+    category: '🌐 Web イベント',
+    desc: 'イベントの伝播停止。クリックやタッチ操作が背面のキャンバスや親要素に突き抜けるのを防ぎます。',
+    example: 'e.stopPropagation();'
   }
 };
 
@@ -864,8 +864,9 @@ function initTooltipEvents() {
         if (dictItem.category.includes('Three.js')) catClass = 'cat-three';
         else if (dictItem.category.includes('数学')) catClass = 'cat-math';
         else if (dictItem.category.includes('Audio')) catClass = 'cat-audio';
+        else if (dictItem.category.includes('ゲーム') || dictItem.category.includes('AI') || dictItem.category.includes('プレイヤー') || dictItem.category.includes('物理') || dictItem.category.includes('生成')) catClass = 'cat-game';
 
-        const isFunc = termKey.includes('Math.') || ['clone', 'sub', 'subVectors', 'normalize', 'dot', 'addScaledVector', 'distanceTo', 'applyAxisAngle', 'set', 'createOscillator', 'createBiquadFilter', 'requestAnimationFrame'].includes(termKey);
+        const isFunc = termKey.includes('Math.') || ['clone', 'sub', 'subVectors', 'normalize', 'dot', 'addScaledVector', 'distanceTo', 'applyAxisAngle', 'set', 'add', 'remove', 'lookAt', 'getDelta', 'update', 'animate', 'calculateContest', 'tryBlock', 'releaseShot', 'shoot', 'block', 'reset', 'createCourt', 'createPlayer', 'createDefender', 'setupLights', 'playBounce', 'playBlock', 'playSwish', 'playRim', 'addEventListener', 'removeEventListener', 'preventDefault', 'stopPropagation', 'createOscillator', 'createBiquadFilter', 'requestAnimationFrame'].includes(termKey);
 
         tooltipEl.innerHTML = `
           <div class="tooltip-header">
@@ -951,17 +952,18 @@ function highlightCodeTokens(str) {
   const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
   str = str.replace(keywordRegex, '<span class="tok-kw">$1</span>');
 
-  // 5. Glossary Terms (Wrap recognized terms with tok-glossary)
+  // 5. Function calls: foo(...) - Mark with tok-func
+  str = str.replace(/\b([a-zA-Z0-9_$]+)\s*(?=\()/g, '<span class="tok-func">$1</span>');
+
+  // 6. Glossary Terms (Wrap recognized terms with tok-glossary)
   // Sort terms by length descending so Math.sin matches before Math
   const dictTerms = Object.keys(API_DICTIONARY).sort((a, b) => b.length - a.length);
   dictTerms.forEach(term => {
     const escapedTerm = term.replace('.', '\\.');
+    // Match word boundary or inside tok-func/tok-kw
     const termRegex = new RegExp(`(?<!data-term=")\\b(${escapedTerm})\\b(?![^<]*>)`, 'g');
     str = str.replace(termRegex, `<span class="tok-glossary" data-term="${term}">$1</span>`);
   });
-
-  // 6. Function calls: foo(...)
-  str = str.replace(/\b([a-zA-Z0-9_$]+)\s*(?=\()/g, '<span class="tok-func">$1</span>');
 
   return str;
 }
