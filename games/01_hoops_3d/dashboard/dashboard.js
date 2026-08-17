@@ -624,110 +624,224 @@ function scrollToCodeMatch(matchText) {
   }
 }
 
-// Interactive API Dictionary for Hover Tooltips
+// Interactive API Dictionary for Hover Tooltips (Beginner to Advanced)
 const API_DICTIONARY = {
+  // === JavaScript 基礎構文 (Beginner Core) ===
+  'this': {
+    category: '📘 JS 基礎構文',
+    desc: '自分自身（インスタンス）を指差すキーワード。クラスで作られた「自分自身のデータ（例: 自分の位置 this.mesh.position、自分の速度）」にアクセスする時に使います。',
+    example: 'this.speed = 8.5; // 自分自身のプロパティに代入'
+  },
+  'class': {
+    category: '📘 JS 基礎構文',
+    desc: '設計図（クラス）を作るキーワード。プレイヤーやボールなど、同じ仕組みを持つオブジェクトを量産するための「金型」を定義します。',
+    example: 'export class Player { ... }'
+  },
+  'constructor': {
+    category: '📘 JS 基礎構文',
+    desc: '初期化関数（コンストラクタ）。new で設計図から実体を生み出した瞬間に、1回だけ自動で実行される「誕生・準備」の特別な関数です。',
+    example: 'constructor(scene, color) { this.scene = scene; }'
+  },
+  'const': {
+    category: '📘 JS 基礎構文',
+    desc: '書き換え禁止の変数（定数）。一度入れた値を後から変更できない安全な入れ物。バグを防ぐため現代のJavaScriptでは基本これを使います。',
+    example: 'const gravity = -18.5;'
+  },
+  'let': {
+    category: '📘 JS 基礎構文',
+    desc: '書き換え可能な変数。スコアの加算やタイマーのカウントアップなど、後から中身を上書き・変更できる入れ物です。',
+    example: 'let score = 0; score += 2;'
+  },
+  'new': {
+    category: '📘 JS 基礎構文',
+    desc: '実体化（インスタンス生成）。クラス（設計図）から、画面上で動く本物のオブジェクトを新しく生み出すキーワードです。',
+    example: 'const ball = new Ball(scene);'
+  },
+  'return': {
+    category: '📘 JS 基礎構文',
+    desc: '計算結果を返す・関数を終了するキーワード。計算した答えを呼び出し元に届けて、その関数の処理を終えます。',
+    example: 'return Math.max(0, result);'
+  },
+  'import': {
+    category: '📘 JS 基礎構文',
+    desc: 'モジュールの輸入。別のファイルで作られた便利なクラスや関数を持ち込んで使えるようにします。',
+    example: 'import * as THREE from \'three\';'
+  },
+  'export': {
+    category: '📘 JS 基礎構文',
+    desc: 'モジュールの輸出。このファイルで作ったクラスや関数を、他のファイルでも使えるように公開します。',
+    example: 'export class Defender { ... }'
+  },
+  'if': {
+    category: '📘 JS 基礎構文',
+    desc: '条件分岐。「もし〜ならAを実行」とプログラムの進行を枝分かれさせる最も基本的な構文です。',
+    example: 'if (this.isShooting) { this.updateShot(); }'
+  },
+  'else': {
+    category: '📘 JS 基礎構文',
+    desc: '条件分岐（それ以外）。if の条件に当てはまらなかった場合に実行する処理を指定します。',
+    example: 'if (hit) { score++; } else { streak = 0; }'
+  },
+  'switch': {
+    category: '📘 JS 基礎構文',
+    desc: 'たくさんの条件分け。AIの状態（GUARD / CONTEST / REBOUND）など、複数の選択肢に応じて処理を綺麗に整理します。',
+    example: 'switch (this.state) { case DefenderState.GUARD: ... }'
+  },
+  'case': {
+    category: '📘 JS 基礎構文',
+    desc: 'switch文の分岐先。「値が〇〇のとき」という個別のケースを定義します。',
+    example: 'case DefenderState.CONTEST: this.contest(); break;'
+  },
+  'break': {
+    category: '📘 JS 基礎構文',
+    desc: '処理の脱出。switch文やループ文（for/while）の処理をそこで終了して外へ抜けます。',
+    example: 'break; // switch文を抜ける'
+  },
+  'async': {
+    category: '📘 JS 基礎構文',
+    desc: '非同期関数。裏で少し時間がかかる処理（ファイル読み込みや通信など）を行う特別な関数を定義します。',
+    example: 'async function loadAudio() { ... }'
+  },
+  'await': {
+    category: '📘 JS 基礎構文',
+    desc: '待ち合わせ。async関数の中で使い、少し時間がかかる非同期処理が終わるのを順番に待ちます。',
+    example: 'const res = await fetch(\'data.json\');'
+  },
+  'null': {
+    category: '📘 JS 基礎構文',
+    desc: '空っぽ（意図的に値が存在しない状態）。「何も入っていない」ことを明示する特別な値です。',
+    example: 'this.target = null;'
+  },
+  'undefined': {
+    category: '📘 JS 基礎構文',
+    desc: '未定義（値がまだセットされていない状態）。変数を宣言した直後などの初期状態です。',
+    example: 'if (obj === undefined) { ... }'
+  },
+
+  // === Three.js 3D Vector & Math ===
   'clone': {
-    category: 'THREE.Vector3 メソッド',
+    category: '🎮 Three.js ベクトル',
     desc: 'ベクトルの複製を作成します。元の座標値を書き換えずに一時計算を行いたい時に必須です。',
     example: 'const tempPos = playerPos.clone();'
   },
   'sub': {
-    category: 'THREE.Vector3 メソッド',
+    category: '🎮 Three.js ベクトル',
     desc: 'ベクトルの引き算を行います（v1 - v2）。AからBへの方向と直線距離を求める時に使います。',
     example: 'const toHoop = hoopPos.clone().sub(playerPos);'
   },
   'subVectors': {
-    category: 'THREE.Vector3 メソッド',
+    category: '🎮 Three.js ベクトル',
     desc: '2つのベクトルの差（a - b）を計算し、自身に結果を代入します。',
     example: 'direction.subVectors(target, origin);'
   },
   'normalize': {
-    category: 'THREE.Vector3 メソッド',
+    category: '🎮 Three.js ベクトル',
     desc: 'ベクトルの向きを変えずに長さを「1（単位ベクトル）」にします。移動速度を掛け算する前のベースを作ります。',
     example: 'const dir = toHoop.normalize();'
   },
   'dot': {
-    category: 'THREE.Vector3 メソッド (内積)',
+    category: '🎮 Three.js ベクトル (内積)',
     desc: '2つのベクトルの内積（向きの一致度）を計算。正面なら1.0、直角なら0.0、背後なら-1.0を返します。',
     example: 'const alignment = shooterToHoop.dot(shooterToDef);'
   },
   'addScaledVector': {
-    category: 'THREE.Vector3 メソッド',
+    category: '🎮 Three.js ベクトル',
     desc: 'ベクトルに倍率（速度や距離）を掛け算しながら足し合わせます（v1 + v2 * s）。',
     example: 'pos.addScaledVector(velocity, delta);'
   },
   'distanceTo': {
-    category: 'THREE.Vector3 メソッド',
+    category: '🎮 Three.js ベクトル',
     desc: '2点間の直線距離（三平方の定理 √(Δx² + Δz²)）を計算します。ディフェンスとの距離判定に活用。',
     example: 'const dist = playerPos.distanceTo(defenderPos);'
   },
   'applyAxisAngle': {
-    category: 'THREE.Vector3 メソッド',
+    category: '🎮 Three.js ベクトル',
     desc: '指定した回転軸（例: Y軸）を中心に、指定した角度（ラジアン）だけベクトルを回転させます。',
     example: 'offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), angle);'
   },
   'set': {
-    category: 'THREE.Vector3 / Object メソッド',
+    category: '🎮 Three.js メソッド',
     desc: 'X, Y, Z の座標値を一度に代入・再設定します。',
     example: 'velocity.set(vx, vy, vz);'
   },
+
+  // === JavaScript 数学関数 (Math) ===
   'Math.sin': {
-    category: 'JavaScript 三角関数',
+    category: '📐 数学・物理',
     desc: 'サイン波（-1.0 〜 +1.0）を周期的に返します。ドリブルや歩行の上下動ループアニメーションの基本です。',
     example: 'const bounceY = Math.abs(Math.sin(timer * 8));'
   },
   'Math.cos': {
-    category: 'JavaScript 三角関数',
+    category: '📐 数学・物理',
     desc: 'コサイン波を返します。円運動やサイン波と組み合わせた足の前後スイングに使います。',
     example: 'const offsetX = Math.cos(angle) * radius;'
   },
   'Math.sqrt': {
-    category: 'JavaScript 平方根',
+    category: '📐 数学・物理',
     desc: '√x（平方根）を計算します。物理の斜方投射で最高点までの到達時間を求める公式に使われます。',
     example: 'const tUp = Math.sqrt((2 * h) / -g);'
   },
   'Math.atan2': {
-    category: 'JavaScript 逆正接',
+    category: '📐 数学・物理',
     desc: 'XとZの移動量から、プレイヤーが向くべき回転角度（ラジアン）を360度全方位で計算します。',
     example: 'const angle = Math.atan2(dirX, dirZ);'
   },
   'Math.max': {
-    category: 'JavaScript 数値比較',
-    desc: '与えられた数値の中で最も大きい値を返します。ガード節（下限ガード）でよく使われます。',
+    category: '📐 数学・物理',
+    desc: '与えられた数値の中で最も大きい値を返します。下限ガード（0以下にならないようにする等）で活用。',
     example: 'const successRate = Math.max(0, quality - contest);'
   },
   'Math.min': {
-    category: 'JavaScript 数値比較',
-    desc: '与えられた数値の中で最も小さい値を返します。上限リミッター（上限ガード）として活用します。',
+    category: '📐 数学・物理',
+    desc: '与えられた数値の中で最も小さい値を返します。上限リミッター（1.0を超えないようにする等）で活用。',
     example: 'const power = Math.min(1.0, chargeTime / 0.55);'
   },
+  'Math.abs': {
+    category: '📐 数学・物理',
+    desc: '絶対値（プラスの大きさ）を返します。目標時間との誤差（ズレの大きさ）を計算する時に使います。',
+    example: 'const error = Math.abs(chargeTime - 0.55);'
+  },
+
+  // === Three.js 3D Objects & Materials ===
   'CanvasTexture': {
-    category: 'Three.js テクスチャ',
+    category: '🎨 Three.js テクスチャ',
     desc: 'HTML5 Canvas にプログラム描画した図形（木目コートや白線）を3D表面に貼り付けるテクスチャ。',
     example: 'const texture = new THREE.CanvasTexture(canvas);'
   },
   'MeshStandardMaterial': {
-    category: 'Three.js マテリアル',
+    category: '🌟 Three.js マテリアル',
     desc: '光の反射（粗さ roughness や金属感 metalness）を物理ベースでリアルに表現する標準マテリアル。',
     example: 'new THREE.MeshStandardMaterial({ color: 0xff6600, roughness: 0.4 });'
   },
+  'Mesh': {
+    category: '🧱 Three.js 3D物体',
+    desc: '形状（ジオメトリ）と見た目（マテリアル）を組み合わせた、3D空間に配置できる本物の物体。',
+    example: 'const mesh = new THREE.Mesh(geometry, material);'
+  },
+  'Group': {
+    category: '📦 Three.js グループ',
+    desc: '複数の3Dパーツ（頭、胴体、腕、足など）を1つにまとめるフォルダのような入れ物。',
+    example: 'this.mesh = new THREE.Group();'
+  },
+
+  // === Web Audio API ===
   'AudioContext': {
-    category: 'Web Audio API',
+    category: '🔊 Web Audio API',
     desc: 'ブラウザ上でリアルタイムに音波を合成・加工・出力するためのオーディオ処理環境。',
     example: 'const ctx = new (window.AudioContext || window.webkitAudioContext)();'
   },
   'createOscillator': {
-    category: 'Web Audio API 発振器',
+    category: '🔊 Web Audio API',
     desc: 'サイン波や矩形波、三角波などの基本音波を発振します。周波数を急降下させてバウンド音を合成。',
     example: 'const osc = ctx.createOscillator(); osc.frequency.setValueAtTime(140, ctx.currentTime);'
   },
   'createBiquadFilter': {
-    category: 'Web Audio API フィルター',
+    category: '🔊 Web Audio API',
     desc: '高音をカット（ローパス）したり特定の周波数を強調する音響フィルター。体育館の響きを再現。',
     example: 'const filter = ctx.createBiquadFilter(); filter.type = "lowpass";'
   },
   'requestAnimationFrame': {
-    category: 'Web API アニメーション',
+    category: '⏱️ Web API アニメーション',
     desc: 'ブラウザの画面リフレッシュレート（60FPS/120FPS）に合わせて次フレームの更新関数を呼び出します。',
     example: 'requestAnimationFrame(this.animate.bind(this));'
   }
@@ -745,10 +859,18 @@ function initTooltipEvents() {
       const termKey = glossaryTarget.dataset.term;
       const dictItem = API_DICTIONARY[termKey];
       if (dictItem) {
+        // Set category class for dynamic coloring
+        let catClass = 'cat-js';
+        if (dictItem.category.includes('Three.js')) catClass = 'cat-three';
+        else if (dictItem.category.includes('数学')) catClass = 'cat-math';
+        else if (dictItem.category.includes('Audio')) catClass = 'cat-audio';
+
+        const isFunc = termKey.includes('Math.') || ['clone', 'sub', 'subVectors', 'normalize', 'dot', 'addScaledVector', 'distanceTo', 'applyAxisAngle', 'set', 'createOscillator', 'createBiquadFilter', 'requestAnimationFrame'].includes(termKey);
+
         tooltipEl.innerHTML = `
           <div class="tooltip-header">
-            <span class="tooltip-term">${termKey}()</span>
-            <span class="tooltip-category">${dictItem.category}</span>
+            <span class="tooltip-term">${termKey}${isFunc ? '()' : ''}</span>
+            <span class="tooltip-category ${catClass}">${dictItem.category}</span>
           </div>
           <div class="tooltip-desc">${dictItem.desc}</div>
           ${dictItem.example ? `<div class="tooltip-example">${dictItem.example}</div>` : ''}
@@ -778,8 +900,8 @@ function positionTooltip(e, tooltipEl) {
   let x = e.clientX + padding;
   let y = e.clientY + padding;
 
-  const tooltipWidth = tooltipEl.offsetWidth || 320;
-  const tooltipHeight = tooltipEl.offsetHeight || 140;
+  const tooltipWidth = tooltipEl.offsetWidth || 340;
+  const tooltipHeight = tooltipEl.offsetHeight || 150;
 
   // Prevent right overflow
   if (x + tooltipWidth > window.innerWidth - padding) {
@@ -795,7 +917,7 @@ function positionTooltip(e, tooltipEl) {
   tooltipEl.style.top = `${Math.max(padding, y)}px`;
 }
 
-// Lightweight Syntax Highlighter for JavaScript with Glossary Detection
+// Lightweight Syntax Highlighter for JavaScript with Beginner & Advanced Glossary Detection
 function highlightSyntaxLine(line) {
   if (!line) return '&nbsp;';
 
@@ -813,31 +935,28 @@ function highlightSyntaxLine(line) {
 }
 
 function highlightCodeTokens(str) {
-  // Keywords
-  const keywords = ['import', 'export', 'class', 'constructor', 'const', 'let', 'var', 'function', 'return', 'if', 'else', 'new', 'this', 'async', 'await', 'switch', 'case', 'break', 'for', 'while', 'true', 'false', 'null', 'undefined'];
-  const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-
-  // Types / Built-in Objects
-  const types = ['THREE', 'Vector3', 'Group', 'Mesh', 'PerspectiveCamera', 'WebGLRenderer', 'Scene', 'Color', 'FogExp2', 'BoxGeometry', 'SphereGeometry', 'CylinderGeometry', 'TorusGeometry', 'MeshStandardMaterial', 'MeshPhysicalMaterial', 'CanvasTexture', 'AudioContext', 'OscillatorNode', 'Math', 'Date', 'document', 'window'];
-  const typeRegex = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
-
-  // 1. Strings ('...' or "...")
+  // 1. Strings ('...' or "..." or `...`)
   str = str.replace(/(['"`])(.*?)\1/g, '<span class="tok-str">$1$2$1</span>');
 
   // 2. Numbers (including hex 0x...)
   str = str.replace(/\b(0x[0-9a-fA-F]+|\d+(\.\d+)?)\b/g, '<span class="tok-num">$1</span>');
 
-  // 3. Types
+  // 3. Types / Built-in Objects
+  const types = ['THREE', 'Vector3', 'Group', 'Mesh', 'PerspectiveCamera', 'WebGLRenderer', 'Scene', 'Color', 'FogExp2', 'BoxGeometry', 'SphereGeometry', 'CylinderGeometry', 'TorusGeometry', 'MeshStandardMaterial', 'MeshPhysicalMaterial', 'CanvasTexture', 'AudioContext', 'OscillatorNode', 'Date', 'document', 'window'];
+  const typeRegex = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
   str = str.replace(typeRegex, '<span class="tok-type">$1</span>');
 
   // 4. Keywords
+  const keywords = ['import', 'export', 'class', 'constructor', 'const', 'let', 'var', 'function', 'return', 'if', 'else', 'new', 'this', 'async', 'await', 'switch', 'case', 'break', 'for', 'while', 'true', 'false', 'null', 'undefined'];
+  const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
   str = str.replace(keywordRegex, '<span class="tok-kw">$1</span>');
 
-  // 5. Glossary Terms
-  Object.keys(API_DICTIONARY).forEach(term => {
-    // Escape dots in term
+  // 5. Glossary Terms (Wrap recognized terms with tok-glossary)
+  // Sort terms by length descending so Math.sin matches before Math
+  const dictTerms = Object.keys(API_DICTIONARY).sort((a, b) => b.length - a.length);
+  dictTerms.forEach(term => {
     const escapedTerm = term.replace('.', '\\.');
-    const termRegex = new RegExp(`\\b(${escapedTerm})\\b`, 'g');
+    const termRegex = new RegExp(`(?<!data-term=")\\b(${escapedTerm})\\b(?![^<]*>)`, 'g');
     str = str.replace(termRegex, `<span class="tok-glossary" data-term="${term}">$1</span>`);
   });
 

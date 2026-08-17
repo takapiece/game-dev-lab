@@ -778,6 +778,30 @@ body {
   border: 1px solid rgba(253, 185, 39, 0.3);
 }
 
+.tooltip-category.cat-js {
+  background: rgba(0, 176, 255, 0.15);
+  color: #38bdf8;
+  border-color: rgba(0, 176, 255, 0.35);
+}
+
+.tooltip-category.cat-three {
+  background: rgba(253, 185, 39, 0.15);
+  color: #fdb927;
+  border-color: rgba(253, 185, 39, 0.35);
+}
+
+.tooltip-category.cat-math {
+  background: rgba(0, 230, 118, 0.15);
+  color: #00e676;
+  border-color: rgba(0, 230, 118, 0.35);
+}
+
+.tooltip-category.cat-audio {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.35);
+}
+
 .tooltip-desc {
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
