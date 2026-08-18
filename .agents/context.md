@@ -33,6 +33,7 @@
 - [x] 共通ポータル・ゲーム・ダッシュボード・フェーズの一括Viteビルド
 - [x] GitHub Pagesワークフローをサイト全体の公開構成へ更新
 - [x] `takapiece/game-dev-lab` への接続とGitHub Pages初回公開
+- [x] Phase 2シュートボタンをPointer Events化し、タッチ操作を安定化
 
 ---
 

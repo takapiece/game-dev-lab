@@ -122,32 +122,35 @@ export class InputController {
 
     // Mobile Action Buttons
     if (shootBtn) {
-      shootBtn.addEventListener('touchstart', (e) => {
+      // Pointer Events でマウス・タッチ・ペンを同じ入力として扱います。
+      // setPointerCapture により、押した指がボタン外へずれても pointerup を受け取れます。
+      const startShot = (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
         e.preventDefault();
+        if (this.isShooting) return;
+
         this.isShooting = true;
         shootBtn.classList.add('active');
+        if (shootBtn.setPointerCapture) {
+          shootBtn.setPointerCapture(e.pointerId);
+        }
         if (this.onShotStart) this.onShotStart();
-      });
-      shootBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
+      };
+
+      const releaseShot = (e) => {
+        if (!this.isShooting) return;
+        if (e?.preventDefault) e.preventDefault();
+
         this.isShooting = false;
         shootBtn.classList.remove('active');
         if (this.onShotRelease) this.onShotRelease();
-      });
-      // Mouse support for clicking button
-      shootBtn.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        this.isShooting = true;
-        shootBtn.classList.add('active');
-        if (this.onShotStart) this.onShotStart();
-      });
-      window.addEventListener('mouseup', () => {
-        if (this.isShooting && shootBtn.classList.contains('active')) {
-          this.isShooting = false;
-          shootBtn.classList.remove('active');
-          if (this.onShotRelease) this.onShotRelease();
-        }
-      });
+      };
+
+      shootBtn.addEventListener('pointerdown', startShot);
+      shootBtn.addEventListener('pointerup', releaseShot);
+      shootBtn.addEventListener('pointercancel', releaseShot);
+      shootBtn.addEventListener('lostpointercapture', releaseShot);
+      window.addEventListener('blur', releaseShot);
     }
 
     if (sprintBtn) {

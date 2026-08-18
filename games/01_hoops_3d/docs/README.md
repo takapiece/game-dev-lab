@@ -41,10 +41,11 @@ graph TD
 * **[session_01_3d_mock.md](./01_sessions/session_01_3d_mock.md)**: 第1回「3Dコート・物理・シュートメーター・初期モック」の作成手順。
 * **[session_02_1v1_defender.md](./01_sessions/session_02_1v1_defender.md)**: 第2回「1v1 AIディフェンダー・コンテスト＆ブロック判定」の作成手順。
 * **[session_03_learning_dashboard.md](./01_sessions/session_03_learning_dashboard.md)**: 第3回「統合学習ダッシュボード・コード解説辞書・起動ガイド」の作成手順。
+* **[session_04_shoot_button_input.md](./01_sessions/session_04_shoot_button_input.md)**: 第4回「Pointer EventsによるPhase 2シュート入力の安定化」。
 * **[template.md](./01_sessions/template.md)**: 今後のセッション用フォーマット。
 
 ### 3. [02_troubleshooting (エラー解決 & デバッグ)](./02_troubleshooting/)
-* **[error_log.md](./02_troubleshooting/error_log.md)**: 発生したエラー（ERR-001, ERR-002）と修正内容、生徒への学び。
+* **[error_log.md](./02_troubleshooting/error_log.md)**: 発生したエラー（ERR-001〜ERR-003）と修正内容、生徒への学び。
 * **[debugging_guide.md](./02_troubleshooting/debugging_guide.md)**: ブラウザ開発者ツールを使ったデバッグ実践ガイド。
 
 ### 4. [03_architecture (数学・物理・仕組みの解説)](./03_architecture/)

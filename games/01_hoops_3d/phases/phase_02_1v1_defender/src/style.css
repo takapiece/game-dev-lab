@@ -371,6 +371,7 @@ html, body {
   font-weight: 900;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   transition: transform 0.1s ease, filter 0.1s ease;
+  touch-action: none;
 }
 
 .action-btn:active, .action-btn.active {
