@@ -1,81 +1,171 @@
-# 🌐 GitHub Pages 公開・デプロイ完全ガイド
+# 🌐 Game Dev Lab GitHub Pages 公開ガイド
 
-本プロジェクト（HOOPS 3D ゲーム本体 ＆ 統合学習ダッシュボード）を **GitHub Pages** で全世界にWeb公開し、生徒や保護者・関係者にURLを共有するための手順書です。
+この資料は、Game Dev LabをGitHubへ接続し、GitHub PagesでWeb公開するまでの考え方と作業を学習用にまとめたものです。
 
----
+## 1. 公開の全体像
 
-## 📋 公開されるページのURL構成
+```text
+ローカルで制作
+  ↓ git commit（変更を記録）
+GitHubへpush（共有できる保管場所）
+  ↓ GitHub Actions
+npm ci → npm run build
+  ↓ dist/ を配置
+GitHub PagesでWeb公開
+```
 
-GitHub Pages を有効化すると、以下のURLで各ページにアクセスできるようになります。
+### 役割の違い
 
-| ページ名 | アクセスURL（例: `https://<username>.github.io/<repo>/`） | 内容・機能 |
-| :--- | :--- | :--- |
-| 🎮 **ゲームメイン / ポータル** | `https://<username>.github.io/<repo>/` | Phase一覧、1v1ゲーム本体、ダッシュボードへのリンク |
-| 📘 **統合学習ダッシュボード** | `https://<username>.github.io/<repo>/dashboard/` | **コード解説辞書、3D数学/物理解説、AIプロンプト集、埋め込みプレイ** |
-| 🏀 **Phase 1 (ソロ練習)** | `https://<username>.github.io/<repo>/phases/phase_01_3d_mock/` | 3Dシューティング基本版 |
-| 🤖 **Phase 2 (1v1 AI対戦)** | `https://<username>.github.io/<repo>/phases/phase_02_1v1_defender/` | ディフェンダーAI対戦版 |
+- **Git:** ファイルの変更履歴を記録する仕組み。
+- **GitHub:** Gitの履歴をインターネット上で保管・共有するサービス。
+- **GitHub Actions:** pushをきっかけに、ビルドなどの作業を自動実行する仕組み。
+- **GitHub Pages:** ビルド済みのHTML、CSS、JavaScriptをWebサイトとして配信する機能。
 
----
+## 2. 公開URLの構成
 
-## 🚀 公開手順（初回セットアップ 3ステップ）
+リポジトリ名を `game-dev-lab` とした場合の例です。
 
-### Step 1: GitHub にリポジトリを作成してプッシュ
+| ページ | URL |
+| :--- | :--- |
+| Game Dev Labトップ | `https://<username>.github.io/game-dev-lab/` |
+| HOOPS 3D | `https://<username>.github.io/game-dev-lab/games/01_hoops_3d/` |
+| 学習ダッシュボード | `https://<username>.github.io/game-dev-lab/games/01_hoops_3d/dashboard/` |
+| Phase 1 | `https://<username>.github.io/game-dev-lab/games/01_hoops_3d/phases/phase_01_3d_mock/` |
+| Phase 2 | `https://<username>.github.io/game-dev-lab/games/01_hoops_3d/phases/phase_02_1v1_defender/` |
 
-まだ GitHub リポジトリを作成していない場合は、[GitHub](https://github.com/) で新規リポジトリを作成（Public 推奨）し、本フォルダのコードをプッシュします。
+## 3. 公開前の準備
+
+### GitHub CLIの確認
 
 ```bash
-# ターミナルでの初回プッシュ例
-git add .
-git commit -m "feat: setup GitHub Pages auto deployment"
-git branch -M main
-git remote add origin https://github.com/<あなたのユーザー名>/<リポジトリ名>.git
+gh --version
+gh auth status
+```
+
+`gh: command not found` と表示された場合は、GitHub CLIをインストールします。
+
+```bash
+# macOS（Homebrew）
+brew install gh
+
+# インストール後にGitHubへログイン
+gh auth login
+```
+
+Windowsでは `winget install --id GitHub.cli`、またはGitHub CLI公式インストーラーを利用できます。
+
+### 公開してよい情報か確認
+
+GitHub Pagesはインターネット公開です。APIキー、パスワード、個人情報、限定公開資料が含まれていないか確認します。`.env` や `node_modules`、`dist` はGitへ登録しません。
+
+## 4. 初回公開手順
+
+リポジトリルートで実行します。
+
+### Step 1: 本番ビルドを確認
+
+```bash
+npm install
+npm run build
+```
+
+`dist/` にGame Dev Labと各ゲームのページが生成されれば成功です。
+
+### Step 2: 公開リポジトリを作成して接続
+
+```bash
+gh repo create game-dev-lab --public --source=. --remote=origin
+```
+
+このコマンドは次をまとめて行います。
+
+1. GitHub上に `game-dev-lab` リポジトリを作る。
+2. 現在のローカルフォルダをそのリポジトリへ接続する。
+3. 接続先を `origin` という名前で登録する。
+
+### Step 3: 変更を記録してpush
+
+```bash
+git add <今回公開するファイル>
+git commit -m "feat: add Game Dev Lab learning portal"
 git push -u origin main
 ```
 
----
+`git add .` は無関係な変更まで含める可能性があるため、公開対象を確認してから使います。
 
-### Step 2: GitHub リポジトリの Pages 設定を変更（1クリック）
+### Step 4: GitHub Pagesを有効化
 
-1. GitHub のリポジトリページを開きます。
-2. 上部メニューの **`Settings`（設定）** をクリックします。
-3. 左サイドバーの **`Pages`** をクリックします。
-4. **`Build and deployment`** のセクションで：
-   - **`Source`** を `Deploy from a branch` から **`GitHub Actions`** に変更します。
+GitHubのリポジトリ画面で以下を設定します。
 
 ```text
 Settings
- └─ Pages
-     └─ Build and deployment
-         └─ Source: [ GitHub Actions ]  👈 ここを選択！
+  └─ Pages
+      └─ Build and deployment
+          └─ Source: GitHub Actions
 ```
 
----
+このリポジトリには `.github/workflows/deploy.yml` があり、mainブランチへのpush時に次を自動実行します。
 
-### Step 3: 自動デプロイの完了を確認
+1. Node.jsを準備する。
+2. `npm ci` で依存関係を再現する。
+3. `npm run build` で `dist/` を生成する。
+4. `dist/` をGitHub Pagesへ配置する。
 
-1. リポジトリ上部メニューの **`Actions`** タブをクリックします。
-2. `Deploy Game & Dashboard to GitHub Pages` というワークフローが自動で実行されます（約1分）。
-3. 緑色のチェックマーク（完了）になったら、画面に表示された **公開URL** をクリックして動作を確認します。
+### Step 5: 公開結果を確認
 
----
+1. GitHubの `Actions` タブを開く。
+2. `Deploy Game & Dashboard to GitHub Pages` を確認する。
+3. 緑色のチェックになったら公開URLを開く。
+4. トップ、ゲーム、ダッシュボード、各フェーズを確認する。
 
-## 🔄 今後の更新方法（日々の開発）
-
-以降は、コードを変更して GitHub にプッシュするだけで、**GitHub Actions が自動で最新版をビルドしてサイトを更新**します。
+## 5. 2回目以降の更新
 
 ```bash
-git add .
-git commit -m "update: ゲームの機能追加や解説の更新"
+git status
+git add <更新したファイル>
+git commit -m "update: 学習内容を更新"
 git push
 ```
 
-数分後には、公開サイト（ダッシュボード含む）が自動で最新状態になります。
+push後はGitHub Actionsが自動的にサイトを更新します。公開中のサイトを直接編集するのではなく、ローカルのソースコードを変更して再公開するのが基本です。
 
----
+## 6. 新しいゲームを公開対象へ追加する
 
-## 💡 トラブルシューティング
+1. `games/02_game_name/` に独立したゲームを作る。
+2. `game.json` を追加し、ポータルへゲーム情報を登録する。
+3. 公開するHTMLをルートの `vite.config.js` の `input` へ追加する。
+4. `npm run build` で新しいページが `dist/games/02_game_name/` に生成されることを確認する。
+5. commitしてpushする。
 
-* **Q. ページを開くと真っ白になる・404になる**
-  - **A:** `Settings` > `Pages` の `Source` が `GitHub Actions` になっているか確認してください。
-* **Q. アセット（CSSやJS）が読み込めない**
-  - **A:** `games/01_hoops_3d/vite.config.js` に `base: './'` が設定されていることを確認してください。
+## 7. トラブルシューティング
+
+### `gh: command not found`
+
+GitHubアカウントがCodexアプリに接続済みでも、ターミナル用のGitHub CLIは別に必要です。GitHub CLIをインストールして `gh auth login` を行います。
+
+### ページが404になる
+
+- `Settings → Pages → Source` が `GitHub Actions` になっているか確認する。
+- Actionsの実行が成功しているか確認する。
+- URLにリポジトリ名が含まれているか確認する。
+
+### CSSやJavaScriptが読み込めない
+
+ルートの `vite.config.js` に `base: './'` が設定されているか確認します。これにより、リポジトリ名が変わっても相対URLでアセットを読み込めます。
+
+### GitHub Actionsの `npm ci` が失敗する
+
+`package.json` と `package-lock.json` の内容が一致しているか確認します。依存関係を変更したときは `npm install` 後のロックファイルも一緒にcommitします。
+
+## 8. 今回の実施状況
+
+- [x] Game Dev Labの共通ポータルを作成
+- [x] サイト全体の本番ビルドに成功
+- [x] GitHub Pages用のActionsワークフローを作成
+- [x] リポジトリ配下でも動く相対URLへ対応
+- [x] GitHub CLIをインストール
+- [x] `game-dev-lab` リポジトリを作成
+- [x] ローカルへ `origin` を登録
+- [ ] 最初のpush
+- [ ] GitHub Pagesを有効化
+- [ ] 公開URLで全ページを確認

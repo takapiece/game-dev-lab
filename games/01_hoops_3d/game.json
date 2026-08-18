@@ -1,0 +1,16 @@
+{
+  "order": 1,
+  "id": "01-hoops-3d",
+  "title": "HOOPS 3D",
+  "description": "3Dバスケットボールを題材に、操作、物理、AIディフェンスが加わる過程を段階的に学びます。",
+  "status": "Phase 2 公開中",
+  "symbol": "🏀",
+  "accentColor": "#f59e0b",
+  "technologies": ["Three.js", "JavaScript", "Web Audio API"],
+  "phaseCount": 2,
+  "progressPercent": 40,
+  "paths": {
+    "portal": "./games/01_hoops_3d/index.html",
+    "dashboard": "./games/01_hoops_3d/dashboard/index.html"
+  }
+}

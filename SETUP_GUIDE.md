@@ -1,4 +1,4 @@
-# 🚀 ゲームスタジオ & 学習ダッシュボード 起動マニュアル (Windows / Mac 対応)
+# 🚀 Game Dev Lab & 学習ダッシュボード 起動マニュアル (Windows / Mac 対応)
 
 本リポジトリは、**Windows** と **Mac (macOS / MacBook)** のどちらの環境でも100%同じように動作する完全クロスプラットフォーム設計になっています。
 
@@ -29,8 +29,8 @@
 
 ### 2. ゲームフォルダへ移動して起動
 ```powershell
-# 1. ゲームのディレクトリへ移動
-cd games/01_hoops_3d
+# 1. リポジトリのルートディレクトリへ移動
+# （SETUP_GUIDE.md があるフォルダで実行）
 
 # 2. 必要な部品のインストール（初回のみ）
 npm install
@@ -56,8 +56,8 @@ npm run dev
 
 ### 2. ゲームフォルダへ移動して起動
 ```bash
-# 1. ゲームのディレクトリへ移動
-cd games/01_hoops_3d
+# 1. リポジトリのルートディレクトリへ移動
+# （SETUP_GUIDE.md があるフォルダで実行）
 
 # 2. 必要な部品のインストール（初回のみ）
 npm install
@@ -94,10 +94,11 @@ npm run dev
 └───────────────────────────────┴─────────────────────────────┘
 ```
 
-* **🏠 ポータル目次画面**: [http://localhost:5173/](http://localhost:5173/)
-* **📘 学習ダッシュボード**: [http://localhost:5173/dashboard/index.html](http://localhost:5173/dashboard/index.html)
-* **🏀 Phase 1（ソロ練習）**: [http://localhost:5173/phases/phase_01_3d_mock/index.html](http://localhost:5173/phases/phase_01_3d_mock/index.html)
-* **🔴 Phase 2（1v1 AI対戦）**: [http://localhost:5173/phases/phase_02_1v1_defender/index.html](http://localhost:5173/phases/phase_02_1v1_defender/index.html)
+* **🏠 Game Dev Lab**: [http://localhost:5173/](http://localhost:5173/)
+* **🏀 HOOPS 3D**: [http://localhost:5173/games/01_hoops_3d/](http://localhost:5173/games/01_hoops_3d/)
+* **📘 学習ダッシュボード**: [http://localhost:5173/games/01_hoops_3d/dashboard/index.html](http://localhost:5173/games/01_hoops_3d/dashboard/index.html)
+* **🏀 Phase 1（ソロ練習）**: [http://localhost:5173/games/01_hoops_3d/phases/phase_01_3d_mock/index.html](http://localhost:5173/games/01_hoops_3d/phases/phase_01_3d_mock/index.html)
+* **🔴 Phase 2（1v1 AI対戦）**: [http://localhost:5173/games/01_hoops_3d/phases/phase_02_1v1_defender/index.html](http://localhost:5173/games/01_hoops_3d/phases/phase_02_1v1_defender/index.html)
 
 ---
 

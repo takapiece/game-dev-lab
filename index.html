@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ゲームを遊び、制作の段階をたどり、コードと考え方を学べるゲーム開発教材ポータル。">
+    <title>Game Dev Lab | ゲーム制作を段階的に学ぶ</title>
+    <link rel="stylesheet" href="./src/portal.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="./index.html" aria-label="Game Dev Lab トップへ">
+        <span class="brand-mark">G</span>
+        <span>GAME DEV LAB</span>
+      </a>
+      <nav aria-label="メインナビゲーション">
+        <a href="#games">ゲーム</a>
+        <a href="#learning">学び方</a>
+        <a href="#learning">学習コンセプト</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">PLAY · BUILD · UNDERSTAND</p>
+          <h1 id="hero-title">遊ぶだけで終わらない。<br><span>ゲームが育つ過程</span>を学ぼう。</h1>
+          <p class="hero-lead">完成版を楽しみ、過去のフェーズと比べ、コード・数学・AIへの指示まで読み解く。ゲーム制作の変化そのものを教材にしたラボです。</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#games">教材を選ぶ</a>
+            <a class="button button-secondary" href="#learning">学び方を見る</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orbit orbit-large"></div>
+          <div class="orbit orbit-small"></div>
+          <div class="code-card code-card-one"><span>01</span> PROTOTYPE</div>
+          <div class="code-card code-card-two"><span>02</span> GAME LOGIC</div>
+          <div class="code-card code-card-three"><span>03</span> LEARN & SHARE</div>
+          <div class="hero-core">DEV<br>LAB</div>
+        </div>
+      </section>
+
+      <section class="section" id="games" aria-labelledby="games-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">GAME LIBRARY</p>
+            <h2 id="games-title">ゲーム教材</h2>
+          </div>
+          <p>各ゲームは、完成版・制作フェーズ・学習ダッシュボードをひとつの教材として収録しています。</p>
+        </div>
+        <div class="game-grid" id="game-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="section learning-section" id="learning" aria-labelledby="learning-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">LEARNING FLOW</p>
+            <h2 id="learning-title">4つのステップで学ぶ</h2>
+          </div>
+          <p>最初からすべてを理解する必要はありません。体験から入り、少しずつ制作の裏側へ進みます。</p>
+        </div>
+        <ol class="learning-grid">
+          <li><span>01</span><strong>遊ぶ</strong><p>まず完成版に触れて、面白さの中心をつかむ。</p></li>
+          <li><span>02</span><strong>比べる</strong><p>フェーズごとの変化を体験し、追加された仕組みを探す。</p></li>
+          <li><span>03</span><strong>読み解く</strong><p>コード、数学、設計判断をダッシュボードで学ぶ。</p></li>
+          <li><span>04</span><strong>つくる</strong><p>学んだ考え方を使い、自分の変更や次のゲームへ挑戦する。</p></li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      <strong>GAME DEV LAB</strong>
+      <span>ゲーム制作の過程を、次の学びへ。</span>
+    </footer>
+
+    <script type="module" src="./src/portal.js"></script>
+  </body>
+</html>

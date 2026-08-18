@@ -3,6 +3,8 @@
 本リポジトリは、プログラミング教室の生徒さんへ「本格ゲーム開発の手順・技術選定・エラー解決の思考プロセス」を伝えるための**マルチゲーム開発ラボ（教材ポータル）**です。
 すべてのプロジェクトは Windows と macOS の両方で動作するように設計されています。
 
+Webポータルはリポジトリのルートで `npm run dev` を実行し、`http://localhost:5173/` を開くと表示できます。各ゲームの `game.json` が教材一覧の情報源になります。
+
 ---
 
 ## 🎮 開発中・完成ゲーム一覧 (Games List)
@@ -28,10 +30,18 @@
 詳細な Windows / Mac 別の起動マニュアルは **[🚀 起動マニュアル (SETUP_GUIDE.md)](../SETUP_GUIDE.md)** をご覧ください。
 
 ```bash
-# 例: HOOPS 3D の起動
-cd games/01_hoops_3d
+# Game Dev Lab 全体の起動（リポジトリルートで実行）
 npm install
 npm run dev
 
 # ブラウザでアクセス: http://localhost:5173/
 ```
+
+## ➕ 新しいゲーム教材の追加方法
+
+1. `games/02_game_name/` のように、番号付きの独立フォルダを作成する。
+2. ゲーム本体、`dashboard/`、`phases/`、`docs/` をゲームフォルダ内で管理する。
+3. `games/01_hoops_3d/game.json` を参考に `game.json` を作成する。
+4. そのゲームで公開するHTMLをルートの `vite.config.js` のビルド入力へ追加する。
+
+ポータルのゲームカードは `games/*/game.json` を自動検出するため、ポータルHTMLへカードを直接追加する必要はありません。

@@ -1,7 +1,7 @@
 # プロジェクト進捗コンテキスト (Project Context)
 
-- **プロジェクト名:** HOOPS 3D (スマホ向け 3D バスケットボールゲーム)
-- **ディレクトリ:** `games/01_hoops_3d/`
+- **プロジェクト名:** Game Dev Lab（複数ゲーム制作・学習ポータル）
+- **ディレクトリ:** リポジトリルート + `games/<game_name>/`
 - **現在のフェーズ:** Phase 2 (1v1 AIディフェンス & アクション拡張) **[完了]**
 - **次回フェーズ:** Phase 3 (パス機能 & チームメイト / 2v2・3v3拡張)
 - **最終更新日:** 2026-08-18
@@ -28,10 +28,17 @@
 - [x] 初学者向け JavaScript 基礎構文ホバー解説（`this`, `class`, `const`, `let`, `new` 等）
 - [x] Three.js 操作メソッド & ゲームロジック関数のホバー辞書（`update`, `animate`, `add`, `lookAt`, `playBounce` 等）
 - [x] Windows & Mac 完全対応の起動マニュアル（[`SETUP_GUIDE.md`](./SETUP_GUIDE.md)）および発展記録（[`dashboard_evolution.md`](./games/01_hoops_3d/docs/00_roadmap/dashboard_evolution.md)）の作成
+- [x] 複数ゲーム共通のGame Dev Labトップページ
+- [x] 各ゲームの `game.json` を利用した教材カードの自動生成
+- [x] 共通ポータル・ゲーム・ダッシュボード・フェーズの一括Viteビルド
+- [x] GitHub Pagesワークフローをサイト全体の公開構成へ更新
 
 ---
 
 ## 次回セッションの予定タスク (Phase 3 Backlog)
+0. **Game Dev Lab公開・拡張:**
+   - GitHubリポジトリを接続し、GitHub Pagesへ公開する。
+   - 2本目の教材追加時に `game.json` 自動登録を検証する。
 1. **パス機能 & チームメイト（2v2 / 3v3への布石）**:
    - 味方プレイヤーの配置とパスボタンによるボールパス＆操作キャラ切り替え。
 2. **スティール（Steal） & ドリブル衝突判定**:

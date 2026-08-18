@@ -33,14 +33,12 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: 'games/01_hoops_3d/package-lock.json'
+          cache-dependency-path: 'package-lock.json'
 
       - name: Install dependencies
-        working-directory: games/01_hoops_3d
         run: npm ci
 
-      - name: Build Web App & Dashboard
-        working-directory: games/01_hoops_3d
+      - name: Build Game Dev Lab
         run: npm run build
 
       - name: Setup Pages
@@ -49,7 +47,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'games/01_hoops_3d/dist'
+          path: 'dist'
 
       - name: Deploy to GitHub Pages
         id: deployment

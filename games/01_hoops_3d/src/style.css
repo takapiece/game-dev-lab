@@ -101,6 +101,23 @@ html, body {
   margin-top: 2px;
 }
 
+.lab-back-link {
+  color: var(--accent-green);
+  display: inline-block;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 5px;
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+.lab-back-link:hover,
+.lab-back-link:focus-visible {
+  text-decoration: underline;
+}
+
 /* Modern NBA 2K Style Scoreboard */
 .scoreboard {
   display: flex;
