@@ -114,7 +114,7 @@ Settings
 ### Step 5: 公開結果を確認
 
 1. GitHubの `Actions` タブを開く。
-2. `Deploy Game & Dashboard to GitHub Pages` を確認する。
+2. `Deploy Game Dev Lab to GitHub Pages` を確認する。
 3. 緑色のチェックになったら公開URLを開く。
 4. トップ、ゲーム、ダッシュボード、各フェーズを確認する。
 
@@ -166,6 +166,12 @@ GitHubアカウントがCodexアプリに接続済みでも、ターミナル用
 - [x] GitHub CLIをインストール
 - [x] `game-dev-lab` リポジトリを作成
 - [x] ローカルへ `origin` を登録
-- [ ] 最初のpush
-- [ ] GitHub Pagesを有効化
-- [ ] 公開URLで全ページを確認
+- [x] 最初のpush
+- [x] GitHub Pagesを有効化
+- [x] 公開URLで全ページを確認
+
+### 公開結果
+
+- **リポジトリ:** `https://github.com/takapiece/game-dev-lab`
+- **公開サイト:** `https://takapiece.github.io/game-dev-lab/`
+- **確認内容:** Game Dev Labトップ、HOOPS 3D、学習ダッシュボード、Phase 1、Phase 2のすべてで正常応答を確認した。

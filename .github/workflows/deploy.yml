@@ -1,4 +1,4 @@
-name: Deploy Game & Dashboard to GitHub Pages
+name: Deploy Game Dev Lab to GitHub Pages
 
 on:
   push:
