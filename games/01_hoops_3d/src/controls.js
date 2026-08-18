@@ -32,11 +32,6 @@ export class InputController {
       if (e.code === 'KeyR' && !e.repeat) {
         if (this.onReset) this.onReset();
       }
-
-      if ((e.code === 'Escape' || e.code === 'KeyM') && !e.repeat) {
-        // Return to master portal launcher
-        window.location.href = '../../index.html';
-      }
     });
 
     window.addEventListener('keyup', (e) => {

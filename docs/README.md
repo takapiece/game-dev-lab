@@ -14,11 +14,12 @@
 
 ---
 
-## 📚 共通開発ルール & アーキテクチャ
+## 📚 共通開発ルール & 公開ガイド
 
 * **[全体行動規範 & 指導ルール (GEMINI.md)](../GEMINI.md)**
 * **[Win/Mac クロスプラットフォーム規約 (.agents/rules/cross_platform.md)](../.agents/rules/cross_platform.md)**
 * **[教育的指導 & コーディング規約 (.agents/rules/pedagogy_rules.md)](../.agents/rules/pedagogy_rules.md)**
+* **[🌐 GitHub Pages Web公開ガイド (docs/04_deployment/github_pages_guide.md)](./04_deployment/github_pages_guide.md)**
 
 ---
 

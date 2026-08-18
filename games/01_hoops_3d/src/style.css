@@ -71,30 +71,6 @@ html, body {
   padding: 8px 16px;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  pointer-events: auto;
-}
-
-.btn-portal-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: #00e676;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.75rem;
-  background: rgba(0, 230, 118, 0.15);
-  padding: 3px 8px;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 230, 118, 0.35);
-  cursor: pointer;
-  pointer-events: auto;
-  transition: all 0.15s ease;
-}
-
-.btn-portal-back:hover {
-  background: rgba(0, 230, 118, 0.3);
-  transform: translateY(-1px);
-  box-shadow: 0 0 10px rgba(0, 230, 118, 0.4);
 }
 
 .brand-title {
