@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>HOOPS 3D - Mobile Basketball Simulator</title>
+  <title>HOOPS 3D - Phase 3: 2v1 Pass & Shot Clock</title>
   <link rel="stylesheet" href="./src/style.css">
 </head>
 <body>
@@ -32,12 +32,8 @@
         </div>
         <div class="brand-sub" style="display: flex; gap: 8px; align-items: center; margin-top: 6px;">
           <span>2v1 パス & ショットクロック</span>
-          <a href="./dashboard/index.html" class="btn-portal-back" style="color: #ffd700; border-color: rgba(255,215,0,0.4); background: rgba(255,215,0,0.15); font-weight: bold;">📘 学習ダッシュボード</a>
-        </div>
-        <div style="display: flex; gap: 6px; margin-top: 6px;">
-          <a href="./phases/phase_01_3d_mock/index.html" class="btn-portal-back" style="font-size: 0.65rem;">Phase 1 (Solo)</a>
-          <a href="./phases/phase_02_1v1_defender/index.html" class="btn-portal-back" style="font-size: 0.65rem;">Phase 2 (1v1)</a>
-          <a href="./phases/phase_03_2v1_pass_and_steal/index.html" class="btn-portal-back" style="font-size: 0.65rem; color: #38bdf8;">Phase 3 (2v1)</a>
+          <a href="../../index.html" class="btn-portal-back">🏠 目次</a>
+          <a href="../../dashboard/index.html" class="btn-portal-back" style="color: #38bdf8; border-color: rgba(56,189,248,0.4); background: rgba(56,189,248,0.15);">📘 解説</a>
         </div>
       </div>
 
@@ -82,11 +78,11 @@
         </div>
         <div class="hint-row">
           <span class="key-badge">SPACE / J</span>
-          <span>Jump Shot (Release in Green)</span>
+          <span>Jump Shot</span>
         </div>
         <div class="hint-row">
           <span class="key-badge">SHIFT</span>
-          <span>Turbo Sprint</span>
+          <span>Sprint</span>
         </div>
         <div class="hint-row">
           <span class="key-badge">C</span>
@@ -96,12 +92,16 @@
           <span class="key-badge">R</span>
           <span>Reset (24s)</span>
         </div>
+        <div class="hint-row">
+          <span class="key-badge">ESC / M</span>
+          <span>Menu / 目次</span>
+        </div>
       </div>
 
       <!-- Mobile Action Buttons -->
       <div class="touch-area-right">
         <div class="btn-secondary-group">
-          <a href="./dashboard/index.html" class="btn-util" style="text-decoration: none; color: #ffd700;" title="Learning Dashboard">📘 DASHBOARD</a>
+          <a href="../../index.html" class="btn-util" style="text-decoration: none; color: #38bdf8;" title="Return to Portal">🏠 MENU</a>
           <button class="btn-util" id="btn-help" title="Operation Manual">❓ HELP</button>
           <button class="btn-util" id="btn-camera" title="Switch Camera View">🎥 CAM</button>
           <button class="btn-util" id="btn-reset" title="Reset Position">🔄 RESET</button>
@@ -122,62 +122,60 @@
     </footer>
   </div>
 
-  <!-- Start Screen & Operation Manual Modal -->
+  <!-- Start Screen & How to Play Modal -->
   <div id="controls-modal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header">
-        <div class="modal-title">🏀 HOOPS 3D (Phase 3: 2v1 Offense)</div>
-        <div class="modal-tag">味方AI・パス・操作キャラ切替・24秒ショットクロック</div>
+        <div class="modal-title">🏀 PHASE 3: 2v1 PASS & SHOT CLOCK</div>
+        <div class="modal-tag">味方AI・パス・操作キャラ切替・24秒ルール</div>
       </div>
 
       <div class="modal-body">
         <div class="modal-desc">
-          Lakersの味方チームメイトと連携し、Bullsの屈強なAIディフェンダーを崩そう！<br>
+          Lakersのチームメイト（味方AI）と連携し、Bullsの屈強なAIディフェンダーを崩そう！<br>
           味方へのパスが通ると操作キャラクターが瞬時に切り替わります。24秒以内にシュートを決めよう！
         </div>
 
         <div class="modal-grid">
-          <!-- PC Controls -->
           <div class="instruction-box">
-            <div class="inst-title">💻 PC 操作 (Keyboard)</div>
+            <div class="inst-title">💻 PC操作 (Keyboard)</div>
             <ul class="inst-list">
               <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> : ドリブル移動</li>
               <li><kbd>P</kbd> / <kbd>K</kbd> : <b>味方へパス ＆ 操作キャラ交代</b></li>
-              <li><kbd>SPACE</kbd> (長押し) : チャージ $\rightarrow$ <b>緑ゾーンで離す</b></li>
-              <li><kbd>SHIFT</kbd> : 高速ダッシュ (Turbo)</li>
-              <li><kbd>C</kbd> : カメラ視点切替 (Broadcast / Follow / High)</li>
-              <li><kbd>R</kbd> : 初期配置へリセット</li>
+              <li><kbd>SPACE</kbd> (長押し) : シュートメーターチャージ</li>
+              <li><kbd>SPACE</kbd> (離す) : <b>緑ゲージの頂点でリリース！</b></li>
+              <li><kbd>SHIFT</kbd> : ダッシュ移動</li>
+              <li><kbd>C</kbd> : カメラ切替（中継 / 追従 / 俯瞰）</li>
+              <li><kbd>R</kbd> : 24秒リセット・初期配置</li>
+              <li><kbd>ESC</kbd> / <kbd>M</kbd> : ポータル目次へ戻る</li>
             </ul>
           </div>
 
-          <!-- Mobile Controls -->
           <div class="instruction-box">
-            <div class="inst-title">📱 スマホ・タッチ操作 (Touch)</div>
+            <div class="inst-title">📱 スマホ・タッチ操作</div>
             <ul class="inst-list">
-              <li><b>左下スティック</b> : 360° 移動 & ドリブル</li>
-              <li><b>[PASS] ボタン</b> : <b>味方へパス ＆ 操作キャラ交代</b></li>
-              <li><b>[SHOOT] ボタン</b> : 長押し $\rightarrow$ メーター緑で離す</li>
-              <li><b>[DASH] ボタン</b> : 高速ダッシュ</li>
-              <li><b>[CAM] / [RESET]</b> : 視点切替 / リセット</li>
+              <li><b>左スティック</b> : スライドで自由にドリブル移動</li>
+              <li><b>[PASS] ボタン</b> : 味方へパス ＆ 操作キャラ交代</li>
+              <li><b>[SHOOT] ボタン長押し</b> : チャージ開始</li>
+              <li><b>[SHOOT] 離す</b> : 緑ゾーンでシュート！</li>
+              <li><b>[DASH]</b> : 高速ダッシュ</li>
+              <li><b>[CAM] / [RESET] / [MENU]</b> : 画面右上・下部</li>
             </ul>
           </div>
         </div>
 
-        <!-- 2v1 & Passing Tip -->
-        <div class="tip-box" style="border-left: 4px solid #38bdf8; margin-top: 12px;">
+        <div class="tip-box" style="border-left: 4px solid #38bdf8;">
           <div class="tip-title" style="color: #38bdf8;">💡 Phase 3 攻略のコツ</div>
           <div class="tip-text">
-            ・ディフェンダーが寄ってきたら <b>[P] キーでフリーの味方にパス！</b><br>
-            ・正面に突っ込むと <b>スティール</b> され、コース上にパスを出すと <b>パスカット</b> されます。<br>
+            ・ディフェンダーが近づいてきたら <b>[P] キーでフリーの味方にパス！</b><br>
+            ・ディフェンダーの正面に突っ込むと <b>スティール</b> され、コース上にパスを出すと <b>パスカット</b> されます。<br>
             ・<b>24秒ショットクロック</b> が 0 になるとブザーが鳴りターンオーバーになります。
           </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button id="btn-modal-start" class="btn-start-game">
-          🏀 GAME START / プレイ開始
-        </button>
+        <button id="btn-modal-start" class="btn-start-game">▶ START 2v1 GAME</button>
       </div>
     </div>
   </div>

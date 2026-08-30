@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01: 背景画像＋ボタン画像での画面遷移 | 簡易スクリプト集</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <!-- 学習用説明ヘッダー -->
+    <header class="demo-header">
+      <h1>01: 背景画像にボタン画像を載せて画面遷移する</h1>
+      <p>
+        背景画像の上にボタン画像を重ね、クリックで次の画面へ切り替える基本コードです。<br>
+        下記の「遷移モード」を切り替えることで、ゲーム向きの切り替え（SPA方式）と、Webページ遷移（別ファイル遷移）の両方を試せます。
+      </p>
+      <div class="mode-selector">
+        <label>
+          <input type="radio" name="transition-mode" value="spa" checked>
+          <strong>同一ページ内で切り替え (ゲーム向き)</strong>
+        </label>
+        <label>
+          <input type="radio" name="transition-mode" value="page">
+          <strong>別ページへ移動 (next_page.html)</strong>
+        </label>
+      </div>
+    </header>
+
+    <!-- メインゲーム画面枠 (16:9) -->
+    <main class="game-container" role="region" aria-label="ゲームプレビュー画面">
+
+      <!-- =================================================================
+           1. タイトル画面 (初期表示: active)
+           ================================================================= -->
+      <div class="screen active" id="screen-title">
+        <!-- 背景画像 -->
+        <img class="screen-bg" src="./assets/bg_title.svg" alt="タイトル画面背景">
+
+        <!-- 背景の上に載せる画像ボタン (STARTボタン) -->
+        <button class="image-button" id="btn-start-wrapper" aria-label="ゲームスタート">
+          <img src="./assets/btn_start.svg" alt="START">
+        </button>
+      </div>
+
+      <!-- =================================================================
+           2. ゲーム画面 (次画面: 初期状態は非表示)
+           ================================================================= -->
+      <div class="screen" id="screen-game">
+        <!-- 次画面の背景画像 -->
+        <img class="screen-bg" src="./assets/bg_game.svg" alt="ゲーム画面背景">
+
+        <!-- タイトルへ戻るボタン画像 -->
+        <button class="image-button" id="btn-back-wrapper" aria-label="タイトルへ戻る">
+          <img src="./assets/btn_back.svg" alt="タイトルへ戻る">
+        </button>
+      </div>
+
+    </main>
+
+    <!-- フッターナビゲーション -->
+    <footer class="demo-footer">
+      <p>
+        <a href="../README.md">← スクリプト集一覧へ戻る</a> |
+        <a href="./README.md">📖 このコードの解説を見る</a> |
+        <a href="../../index.html">🏠 ポータルトップへ</a>
+      </p>
+    </footer>
+
+    <!-- スクリプト読み込み -->
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

@@ -162,6 +162,86 @@ const CURRICULUM_DATA = {
           { name: 'court.js', summary: '3Dコート＆ゴール' },
           { name: 'controls.js', summary: 'PC/スマホ操作コントローラー（ESC/Mキーでの目次復帰）' }
         ]
+      },
+      {
+        id: 'phase_03',
+        name: 'Phase 3',
+        title: '2v1 オフェンス・パス・操作キャラ切替 & 24秒ルール',
+        badgeClass: 'phase-3',
+        difficulty: '★★★☆☆',
+        playUrl: '../phases/phase_03_2v1_pass_and_steal/index.html',
+        overview: {
+          goal: '味方AIチームメイト（Lakersパープル）と連携し、自律スペーシング、パス機能、操作キャラクター切り替え（Pass & Switch）、ディフェンダーのスティール＆パスカット、および24秒ショットクロックを導入して本格的なバスケットボール戦術を実現する。',
+          points: [
+            '味方AIの自律オフボール・スペーシング（ボールマンと逆サイドの3ptアーク外側をキープ）。',
+            'Pキー/PASSボタンによる高速低弾道チェストパスと、キャッチ瞬間のスムーズな操作権限スイッチ。',
+            'ディフェンダー正面への不用意な突進に対するオンボールスティールと、パスコース上のインターセプト判定。',
+            '24秒ショットクロックのカウントダウン、電子ホーンブザー音響、およびターンオーバー・リセット処理。'
+          ],
+          adr: 'ADR-011 (2v1 パス＆コントローラースイッチ機構), ADR-012 (24秒ショットクロック管理)'
+        },
+        knowledge: [
+          {
+            topic: '⛹️‍♂️ オフボール・スペーシングの幾何学アルゴリズム',
+            desc: 'ボールマン（操作キャラ）のX座標符号を反転させ、反対側のウィング（x ≈ ±4.6m, z ≈ -2.2m）の3ptライン外側に自律移動させることで、コート上の渋滞を防ぎパスコースを確保します。',
+            formula: 'TargetSpacingX = (BallHandler.x > 0) ? -4.6 : 4.6 \nTargetSpacingZ = -2.2 + sin(time) * 0.8'
+          },
+          {
+            topic: '🏀 パス弾道とキャッチ時の操作権限交代（Pass & Switch）',
+            desc: 'パス発射から受け手の胸元（y ≈ 1.15m）へ0.35秒で到達する低弾道物理をシミュレート。ボール到達コールバック内で activePlayer と inactivePlayer の参照をスワップします。',
+            highlight: '操作対象が交代すると足元のゴールドリングとカメラの追従ターゲットも自動的に新ボールマンへ移行します。'
+          },
+          {
+            topic: '🚫 スティール＆パスカット（直線と点の距離判定）',
+            desc: 'ボールマンがディフェンダーの懐（0.92m以内）に突進した際のスティール判定、およびパス飛行中にボールとディフェンダーの距離が0.95m未満となった際のインターセプト判定。',
+            formula: 'Dist(Defender, Ball) < 0.95m ➔ Intercept!'
+          },
+          {
+            topic: '⏱️ 24秒ショットクロックのタイマー管理とブザー音響',
+            desc: 'ポゼッション保持中に delta 秒ずつカウントダウン。0秒になると不協和音のこぎり波（165Hz+220Hz）による本格的なスタジアムホーンブザー（playBuzzer）を鳴らしターンオーバー。',
+            highlight: 'シュートがリムに当たった時や得点時に自動リセットされます。'
+          }
+        ],
+        aiGuide: {
+          tips: [
+            '「味方AIを作って」ではなく「ボールマンの反対側ウィング（3ptライン外側）へ自律移動するスペーシングAI」のように幾何学条件を具体的に指示する。',
+            'パスの操作権限交代は「activePlayer と inactivePlayer の参照をスワップするステート管理」として指示すると破綻しにくい。',
+            'ショットクロックは「毎フレームの delta 減算」と「0秒到達時のブザー＋ターンオーバーリセット」をセットで指示する。'
+          ],
+          prompts: [
+            {
+              title: '2v1 パス＆操作キャラ切替のプロンプト',
+              bad: 'パスボタンを押したら味方にボールを渡して操作できるようにして。',
+              good: 'Three.jsでPキーを押すと、操作中プレイヤーから味方AIの胸元(y=1.15)へ0.35秒で届く低弾道パスを発射し、到達コールバックで activePlayer と inactivePlayer の参照を入れ替えて操作権限をスムーズに交代する仕組みを作って。足元のリングインジケーター（操作中:ゴールド、パス対象:グリーン）も連動させてください。',
+              reason: '到達時間、目標高さ、オブジェクト参照のスワップ、視覚的インジケーターの連動を具体的に指定することで、安全で高品質なマルチキャラ制御コードが得られます。'
+            },
+            {
+              title: '24秒ショットクロックのプロンプト',
+              bad: '24秒のタイマーをつけて。',
+              good: 'バスケの24秒ショットクロック管理機能を作って。オフェンス保持中に delta 秒ずつカウントダウンし、残り5秒以下で赤色強調、0秒でWeb Audio APIのスタジアムホーンブザー(playBuzzer)を鳴らして初期位置にリセットする仕様にしてください。',
+              reason: 'タイマーの減算方式、UIの警告色変化、音響トリガー、バイオレーション後のリセット処理を網羅的に指示できます。'
+            }
+          ]
+        },
+        troubleshooting: [
+          {
+            code: 'ERR-004',
+            title: 'パス到達時の操作キャラ参照不整合と操作不能バグ',
+            symptom: 'パスを出した後にキーボード操作が効かなくなる。',
+            cause: 'パス到達コールバック内で `activePlayer` のフラグ `isActive` を切り替えたが、メインループの入力先ポインタが古いインスタンスを参照し続けていた。',
+            fix: '`this.activePlayer` と `this.inactivePlayer` のポインタ変数を安全にスワップするメソッド `handleCatch()` を作成して一元管理した。',
+            lesson: '複数キャラクターを切り替えるゲームでは、参照の入れ替え処理を一箇所に集約（Single Source of Truth）する。'
+          }
+        ],
+        files: [
+          { name: 'main.js', summary: '2v1 ゲームループ、パス＆キャラ交代処理、24秒ショットクロック管理' },
+          { name: 'player.js', summary: 'Playerクラス（操作モードと自律オフボールスペーシングAIの両対応、足元リングインジケーター）' },
+          { name: 'defender.js', summary: '2v1マーク追従、オンボールスティール、パスカット（Interception）' },
+          { name: 'ball.js', summary: 'PASSING状態、高速低弾道パス物理、スティールファンブル物理' },
+          { name: 'audio.js', summary: 'Web Audio API によるキャッチ音(playCatch)、スティール音(playSteal)、24秒ブザー(playBuzzer)' },
+          { name: 'controls.js', summary: 'P/Kキーおよびモバイル用 [PASS] ボタンの入力制御' },
+          { name: 'court.js', summary: '3Dコート＆ゴール' }
+        ]
       }
     ]
   }
@@ -802,7 +882,16 @@ const API_DICTIONARY = {
     example: 'this.setupLighting();'
   },
 
-  // === 音響効果音関数 (Web Audio Synthesis) ===
+  'pass': {
+    category: '🏀 パス物理',
+    desc: '味方へのパス発射。受け手の胸元へ向けて高速低弾道の直線〜緩やかな放物線でボールを飛ばします。',
+    example: 'this.ball.pass(fromPos, toPos, onCatch);'
+  },
+  'steal': {
+    category: '🚫 スティール物理',
+    desc: 'スティールによるボール弾き。ディフェンダーの手がボールを払った際のファンブル（不規則なスピンと飛び散り）を計算します。',
+    example: 'this.ball.steal(defenderPos);'
+  },
   'playBounce': {
     category: '🔊 Web Audio 音響',
     desc: 'ドリブル音の合成。Web Audio API で木目コートのバウンド音をリアルタイムに鳴らします。',
@@ -812,6 +901,21 @@ const API_DICTIONARY = {
     category: '🔊 Web Audio 音響',
     desc: 'ブロック打撃音の合成。叩き落とした時の重いスラップ音を合成して鳴らします。',
     example: 'sounds.playBlock();'
+  },
+  'playCatch': {
+    category: '🔊 Web Audio 音響',
+    desc: 'パスキャッチ音の合成。両手でボールをしっかり掴んだ時の「パシッ」という乾いた衝撃音を鳴らします。',
+    example: 'sounds.playCatch();'
+  },
+  'playSteal': {
+    category: '🔊 Web Audio 音響',
+    desc: 'スティール打撃音の合成。手がボールを叩いた時の「バシッ」という鋭いスナップ音を鳴らします。',
+    example: 'sounds.playSteal();'
+  },
+  'playBuzzer': {
+    category: '🔊 Web Audio 音響',
+    desc: '24秒ショットクロックブザーの合成。不協和音のこぎり波による本格的なスタジアムホーン音を鳴らします。',
+    example: 'sounds.playBuzzer();'
   },
   'playSwish': {
     category: '🔊 Web Audio 音響',

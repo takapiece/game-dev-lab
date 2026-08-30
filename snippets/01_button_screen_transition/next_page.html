@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>次の画面 (next_page.html) | 簡易スクリプト集</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <header class="demo-header">
+      <h1>別ページへの遷移に成功しました！</h1>
+      <p>
+        ここは <code>next_page.html</code> という別のHTMLファイルです。<br>
+        <code>window.location.href = './next_page.html';</code> によりページ全体が新しく読み込まれました。
+      </p>
+    </header>
+
+    <main class="game-container" role="region" aria-label="ゲーム画面">
+      <!-- ゲーム画面 -->
+      <div class="screen active">
+        <img class="screen-bg" src="./assets/bg_game.svg" alt="ゲーム画面背景">
+        <!-- 最初のページへ戻るボタン (リンクタグで遷移) -->
+        <a href="./index.html" class="image-button" id="btn-back-wrapper" aria-label="タイトル画面に戻る">
+          <img src="./assets/btn_back.svg" alt="タイトル画面に戻る">
+        </a>
+      </div>
+    </main>
+
+    <footer class="demo-footer">
+      <p>
+        <a href="./index.html">← 前のページ（index.html）に戻る</a> |
+        <a href="../README.md">スクリプト集一覧</a>
+      </p>
+    </footer>
+  </body>
+</html>

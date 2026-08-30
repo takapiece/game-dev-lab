@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGameGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="50%" stop-color="#022c22"/>
+      <stop offset="100%" stop-color="#021f18"/>
+    </linearGradient>
+    <radialGradient id="gameGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="rgba(52, 211, 153, 0.2)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 背景ベース -->
+  <rect width="1280" height="720" fill="url(#bgGameGrad)"/>
+  <rect width="1280" height="720" fill="url(#gameGlow)"/>
+
+  <!-- ゲーム画面風のステージ/フィールド線 -->
+  <line x1="140" y1="520" x2="1140" y2="520" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+  <circle cx="640" cy="520" r="120" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none"/>
+
+  <!-- ステージ名 -->
+  <text x="640" y="160" text-anchor="middle" font-family="'Segoe UI', 'Hiragino Sans', sans-serif" font-size="44" font-weight="800" fill="#a7f3d0" letter-spacing="2">
+    STAGE 01 : GAME PLAYING
+  </text>
+  <text x="640" y="210" text-anchor="middle" font-family="'Segoe UI', 'Hiragino Sans', sans-serif" font-size="18" fill="#6ee7b7">
+    画面遷移が成功しました！ここがゲーム画面（次の画面）です。
+  </text>
+
+  <!-- 下部ガイド -->
+  <text x="640" y="680" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#4ade80" opacity="0.7">
+    ※ これは assets/bg_game.svg です
+  </text>
+</svg>

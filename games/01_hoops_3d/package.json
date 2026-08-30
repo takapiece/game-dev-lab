@@ -12,7 +12,6 @@
     "three": "^0.160.0"
   },
   "devDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.60.4",
     "vite": "^5.0.12"
   }
 }

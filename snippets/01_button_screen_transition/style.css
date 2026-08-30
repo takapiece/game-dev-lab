@@ -1,0 +1,188 @@
+/* ==========================================================================
+   01_button_screen_transition - スタイルシート
+   【学習ポイント】
+   1. position: relative / absolute を使った画像の重ね合わせ
+   2. ボタン画像のホバー効果・クリック時の押し込み演出
+   3. 画面の切り替え（フェードイン・フェードアウト）
+   ========================================================================== */
+
+/* 全体のリセットと中央寄せレイアウト */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+  background-color: #0f172a;
+  color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* ページ上部の学習用ナビゲーション・説明バー */
+.demo-header {
+  text-align: center;
+  max-width: 800px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px 24px;
+}
+
+.demo-header h1 {
+  font-size: 1.4rem;
+  color: #38bdf8;
+  margin-bottom: 6px;
+}
+
+.demo-header p {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+/* 画面遷移モードの切り替えラジオボタン */
+.mode-selector {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.mode-selector label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   ゲーム画面コンテナ（16:9のアスペクト比を維持する枠）
+   ========================================================================== */
+.game-container {
+  position: relative; /* 子要素（背景やボタン）を absolute で配置するための基準点 */
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 16 / 9; /* 画面比率を 16:9 に固定 */
+  border-radius: 16px;
+  overflow: hidden; /* 枠からはみ出た部分を隠す */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.1);
+  background-color: #000000;
+}
+
+/* ==========================================================================
+   各シーン（画面）の定義
+   ========================================================================== */
+.screen {
+  position: absolute;
+  inset: 0; /* top:0, left:0, width:100%, height:100% と同等 */
+  opacity: 0;
+  pointer-events: none; /* 非表示時はクリックできないようにする */
+  transition: opacity 0.4s ease; /* スムーズなフェードイン */
+}
+
+/* アクティブな画面（現在表示中の画面） */
+.screen.active {
+  opacity: 1;
+  pointer-events: auto; /* クリック可能にする */
+}
+
+/* ==========================================================================
+   1. 背景画像（親コンテナいっぱいに広げる）
+   ========================================================================== */
+.screen-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 比率を保ちながら全体を覆う */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ==========================================================================
+   2. 画像ボタン（背景画像の上に配置するボタン）
+   ========================================================================== */
+.image-button {
+  position: absolute;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+/* ボタンの画像自体 */
+.image-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none; /* ボタン自体のクリックイベントに統一 */
+}
+
+/* スタートボタンの配置位置（画面中央より少し下） */
+#btn-start-wrapper {
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%); /* 水平方向の中央揃え */
+  width: clamp(180px, 30%, 280px); /* 画面幅に応じてレスポンシブに可変 */
+}
+
+/* 戻るボタンの配置位置 */
+#btn-back-wrapper {
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(160px, 26%, 240px);
+}
+
+/* --------------------------------------------------------------------------
+   ボタンのインタラクション（動きと手応え）
+   -------------------------------------------------------------------------- */
+/* マウスホバー時：少し大きく＆明るく */
+.image-button:hover {
+  transform: translateX(-50%) scale(1.06);
+  filter: brightness(1.1);
+}
+
+/* クリック（タップ）時：押し込まれる演出 */
+.image-button:active {
+  transform: translateX(-50%) scale(0.95);
+  filter: brightness(0.95);
+}
+
+/* フォーカス時（キーボード操作対応） */
+.image-button:focus-visible {
+  filter: drop-shadow(0 0 10px #38bdf8);
+}
+
+/* ==========================================================================
+   フッター・操作ガイド
+   ========================================================================== */
+.demo-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.demo-footer a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.demo-footer a:hover {
+  text-decoration: underline;
+}

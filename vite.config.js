@@ -12,6 +12,8 @@ export default defineConfig({
         hoopsDashboard: resolve(__dirname, 'games/01_hoops_3d/dashboard/index.html'),
         hoopsPhase01: resolve(__dirname, 'games/01_hoops_3d/phases/phase_01_3d_mock/index.html'),
         hoopsPhase02: resolve(__dirname, 'games/01_hoops_3d/phases/phase_02_1v1_defender/index.html'),
+        snippet01: resolve(__dirname, 'snippets/01_button_screen_transition/index.html'),
+        snippet01Next: resolve(__dirname, 'snippets/01_button_screen_transition/next_page.html'),
       },
     },
   },

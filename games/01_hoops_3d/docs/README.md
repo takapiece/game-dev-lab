@@ -41,7 +41,7 @@ graph TD
 * **[session_01_3d_mock.md](./01_sessions/session_01_3d_mock.md)**: 第1回「3Dコート・物理・シュートメーター・初期モック」の作成手順。
 * **[session_02_1v1_defender.md](./01_sessions/session_02_1v1_defender.md)**: 第2回「1v1 AIディフェンダー・コンテスト＆ブロック判定」の作成手順。
 * **[session_03_learning_dashboard.md](./01_sessions/session_03_learning_dashboard.md)**: 第3回「統合学習ダッシュボード・コード解説辞書・起動ガイド」の作成手順。
-* **[session_04_shoot_button_input.md](./01_sessions/session_04_shoot_button_input.md)**: 第4回「Pointer EventsによるPhase 2シュート入力の安定化」。
+* **[session_04_2v1_pass_and_shot_clock.md](./01_sessions/session_04_2v1_pass_and_shot_clock.md)**: 第4回「Phase 3: 2v1 パス・操作キャラ切替・スティール・24秒ショットクロック」の作成手順。
 * **[template.md](./01_sessions/template.md)**: 今後のセッション用フォーマット。
 
 ### 3. [02_troubleshooting (エラー解決 & デバッグ)](./02_troubleshooting/)
