@@ -249,13 +249,21 @@ export class Player {
       this.ringMat.opacity = 0.45 + Math.sin(Date.now() * 0.008) * 0.25;
     }
 
-    // 2. Ball Pick Up Check (if ball is free on floor)
+    // 2. Auto Ball Pick Up / Re-possession after shot or score
     if (this.ball.state === BallState.FREE_BOUNCE || this.ball.state === BallState.SCORED) {
-      const distToBall = this.position.distanceTo(this.ball.position);
-      if (distToBall < 1.3 && this.ball.position.y < 0.35) {
-        this.hasBall = true;
-        this.ball.resetToPlayer(this);
+      if (this.isActive) {
+        this.freeBallTimer = (this.freeBallTimer || 0) + delta;
+        const distToBall = this.position.distanceTo(this.ball.position);
+
+        // Auto return ball to active shooter after brief floor bounce (0.75s) or if close
+        if (this.freeBallTimer > 0.75 || distToBall < 1.4 || (this.freeBallTimer > 0.3 && this.ball.position.y < 0.25)) {
+          this.hasBall = true;
+          this.freeBallTimer = 0;
+          this.ball.resetToPlayer(this);
+        }
       }
+    } else {
+      this.freeBallTimer = 0;
     }
 
     // 3. Branch: Active User Controller vs Off-Ball AI Spacing

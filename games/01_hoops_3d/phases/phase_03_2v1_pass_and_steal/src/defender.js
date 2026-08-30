@@ -20,7 +20,7 @@ export class Defender {
     this.position = new THREE.Vector3(0, 0, -2.2);
     this.velocity = new THREE.Vector3();
     this.rotation = 0;
-    this.speed = 4.3; // Agile to challenge 2v1 offense
+    this.speed = 5.2; // Agile and fast to track 2v1 ballhandler
     this.guardDistance = 1.65; // Optimal defensive cushion
 
     // State machine
@@ -306,13 +306,13 @@ export class Defender {
       moveDelta.y = 0;
       const moveDist = moveDelta.length();
 
-      if (moveDist > 0.08) {
+      if (moveDist > 0.05) {
         moveDelta.normalize();
-        const moveSpeed = Math.min(this.speed, moveDist * 5.2);
+        const moveSpeed = Math.min(this.speed, moveDist * 6.5);
         this.velocity.copy(moveDelta.multiplyScalar(moveSpeed));
         this.position.addScaledVector(this.velocity, delta);
 
-        this.slideTimer += delta * 12;
+        this.slideTimer += delta * 14;
         this.rightLeg.rotation.x = Math.sin(this.slideTimer) * 0.4;
         this.leftLeg.rotation.x = -Math.sin(this.slideTimer) * 0.4;
 
