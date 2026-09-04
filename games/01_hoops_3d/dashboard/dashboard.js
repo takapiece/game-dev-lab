@@ -242,6 +242,87 @@ const CURRICULUM_DATA = {
           { name: 'controls.js', summary: 'P/Kキーおよびモバイル用 [PASS] ボタンの入力制御' },
           { name: 'court.js', summary: '3Dコート＆ゴール' }
         ]
+      },
+      {
+        id: 'phase_04',
+        name: 'Phase 4',
+        title: '2v2 フルゲーム対戦・選手カード編成 & ON-FIRE覚醒',
+        badgeClass: 'phase-4',
+        difficulty: '★★★★☆',
+        playUrl: '../phases/phase_04_2v2_roster_and_fire/index.html',
+        overview: {
+          goal: '敵ディフェンス2人体制による2v2フルゲーム対戦、選手ステータス（3PT, SPD, DEF）を管理する選手カード・ロスター編成（データ駆動型設計）、および3連続シュート成功で能力がブーストされるON-FIRE（炎パーティクル演出）を実現する。',
+          points: [
+            '2v2協調AI（マンマークと、ゴール下へのヘルプディフェンス・ダブルチームの連携）。',
+            '選手ステータス（3PT, SPD, DEF）による移動速度・シュート緑ゾーン幅の動的パラメータ化。',
+            '試合前のロスター編成UI（Kobe & LeBron, Chef & LeBron, Mamba & Worm）。',
+            'Streak 3 で発動するON-FIREモード（炎パーティクル、能力1.25倍、歓声アルペジオジングル）。'
+          ],
+          adr: 'ADR-013 (データ駆動型選手カード設計), ADR-014 (2v2協調AIとON-FIREパーティクルシステム)'
+        },
+        knowledge: [
+          {
+            topic: '🎴 データ駆動型設計（Data-Driven Design）とステータス制御',
+            desc: 'プログラム本体を変更せず、roster.js の数値（threePt: 99, speed: 87等）を変えるだけで選手の移動速度やシュートメーターの緑ゾーン幅が動的に変化する設計。商用ゲーム開発の根幹となる概念です。',
+            formula: 'Speed = 3.6 + (SPD / 100) * 1.8 \nGreenTolerance = 0.25 + (3PT / 100) * 0.16'
+          },
+          {
+            topic: '🛡️ 2v2 協調AI（マンマーク ＆ ヘルプディフェンス）',
+            desc: 'D1がボールマン、D2がオフボールプレイヤーをマーク。ボールマンがペイントエリア（ゴール下 3.8m 以内）に切り込んできた時は、D2が自律的にゴール前へカバーに入りダブルチームを形成します。',
+            formula: 'if (Dist(BallHandler, Hoop) < 3.8m) ➔ State = HELP'
+          },
+          {
+            topic: '🔥 Three.js パーティクルシステムによる炎エフェクト',
+            desc: '外部テクスチャ画像を使わず、Canvas APIでプロシージャル生成した放射状グローテクスチャを PointsMaterial に適用。上方向へ上昇しながら黄色から赤へフェードアウトする軽量炎エフェクト。',
+            highlight: 'GPUに優しい加算合成（AdditiveBlending）と BufferAttribute の配列更新で高速描画を実現。'
+          },
+          {
+            topic: '⚡ 連続成功判定（Streak）と覚醒バフのゲームループ',
+            desc: 'シュート成功ごとに streak を加算し、3に達した瞬間に activateOnFire(true) を発動。能力1.25倍と上昇アルペジオ音響（playOnFire）でプレイヤーのテンションを最大化します。',
+            highlight: 'ミスまたは24秒バイオレーションで鎮火するメリハリあるメタループ。'
+          }
+        ],
+        aiGuide: {
+          tips: [
+            '「選手データを増やして」ではなく「{id, name, stats: {threePt, speed, defense}} のオブジェクト配列を作成し、player.jsでプロパティにバインドする」ようにデータ構造を指示する。',
+            'パーティクルエフェクトは「Points と BufferGeometry を使い、毎フレーム position.y を上昇させて寿命を迎えたら足元でリスポーンさせる」と具体的に指示する。',
+            '2v2のコンテスト計算は「2人のディフェンダーの妨害度を単純加算せず、最大値＋至近距離時のダブルチームボーナス」として指示すると破綻しない。'
+          ],
+          prompts: [
+            {
+              title: '選手ステータス（データ駆動）のプロンプト',
+              bad: '選手ごとに足の速さやシュートの強さを変えて。',
+              good: 'Three.jsのPlayerクラスに options.stats ({ threePt: 90, speed: 88, defense: 85 }) を受け取る機能を追加して。speedプロパティと、releaseShot内の緑ゾーン許容誤差（tolerance）をこのステータス数値から計算する関数 updateStatsValues() を作ってください。',
+              reason: 'ステータスのパラメータ名と、それがクラス内のどの変数にどう影響するかを明示することで、正確にパラメータ連動コードが生成されます。'
+            },
+            {
+              title: 'Three.js 炎パーティクル（ON-FIRE）のプロンプト',
+              bad: '選手が燃えるエフェクトを作って。',
+              good: 'Three.jsで外部画像を使わず、Canvas APIで放射状の光る丸テクスチャを生成して PointsMaterial にセットし、対象座標の足元から上空へ揺らめきながら上昇して黄色から赤へフェードアウトする炎パーティクルクラス FireEffect を作って。',
+              reason: 'プロシージャルテクスチャの生成、マテリアルのブレンドモード、パーティクルの更新ライフサイクルを指定することで、完全独立した高品質なエフェクトクラスが手に入ります。'
+            }
+          ]
+        },
+        troubleshooting: [
+          {
+            code: 'ERR-005',
+            title: '2人目のディフェンダー追加時のコンテスト重複計算とシュート過剰妨害',
+            symptom: '2v2にした途端、フリーでシュートを打っても必ずCONTESTEDになって入らない。',
+            cause: 'D1とD2のコンテスト値を単純に足し算（c1 + c2）していたため、遠くにいるディフェンダーのわずかな妨害度でも合計が大きくなりすぎていた。',
+            fix: '`Math.max(c1, c2)` で主要マークマンの数値をベースにし、双方が2.0m以内の至近距離にいる場合のみダブルチーム補正をかける合成方式に変更した。',
+            lesson: '複数キャラクターの判定を合成する際は、単純な加算ではなく優先度（MAX）と条件付き補正（至近距離判定）を組み合わせる。'
+          }
+        ],
+        files: [
+          { name: 'roster.js', summary: '選手カードマスターデータ（Kobe, LeBron, Curry, Rodman）とステータス定義' },
+          { name: 'fire.js', summary: 'Three.js プロシージャル炎パーティクルシステム（ON-FIRE覚醒演出）' },
+          { name: 'main.js', summary: '2v2 フルゲームループ、ロスター選択機能、ON-FIRE発動＆解除管理' },
+          { name: 'player.js', summary: '選手ステータス（3PT, SPD, DEF）連動、ON-FIREバフ倍率' },
+          { name: 'defender.js', summary: '2v2 協調AI（マンマーク ＆ ペイント侵入時のヘルプディフェンス連携）' },
+          { name: 'audio.js', summary: 'Web Audio API による ON-FIRE 覚醒アルペジオジングル（playOnFire）の追加' },
+          { name: 'ball.js', summary: 'バスケットボール物理' },
+          { name: 'court.js', summary: '3Dコート＆ゴール' }
+        ]
       }
     ]
   }
@@ -916,6 +997,21 @@ const API_DICTIONARY = {
     category: '🔊 Web Audio 音響',
     desc: '24秒ショットクロックブザーの合成。不協和音のこぎり波による本格的なスタジアムホーン音を鳴らします。',
     example: 'sounds.playBuzzer();'
+  },
+  'playOnFire': {
+    category: '🔊 Web Audio 音響',
+    desc: 'ON-FIRE 覚醒サウンドの合成。3連続ゴール時に上昇アルペジオコードで高揚感あるジングルを鳴らします。',
+    example: 'sounds.playOnFire();'
+  },
+  'setOnFire': {
+    category: '🔥 覚醒エフェクト',
+    desc: 'ON-FIRE モードの切り替え。プレイヤーの移動速度1.2倍、シュート緑ゾーン幅1.45倍、炎パーティクルを同期制御します。',
+    example: 'this.player.setOnFire(true);'
+  },
+  'setPlayerProfile': {
+    category: '🎴 ロスター管理',
+    desc: '選手データの動的適用。ロスター編成で選んだ選手のジャージ色・背番号・ステータス（3PT, SPD, DEF）を反映します。',
+    example: 'this.player.setPlayerProfile(profile);'
   },
   'playSwish': {
     category: '🔊 Web Audio 音響',
