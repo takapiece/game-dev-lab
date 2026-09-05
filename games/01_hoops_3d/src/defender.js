@@ -175,29 +175,33 @@ export class Defender {
     const shooterToDef = defPos.clone().sub(playerPos).setY(0).normalize();
     const alignment = Math.max(0, shooterToHoop.dot(shooterToDef));
 
-    let handHeightFactor = 0.5;
+    let handHeightFactor = 0.25; // Passive standing guard only gives light pressure
     if (this.isJumping) {
-      handHeightFactor = 1.0;
+      handHeightFactor = 1.0; // Jump contest has full impact
     } else if (this.state === DefenderState.CONTEST) {
-      handHeightFactor = 0.8;
+      handHeightFactor = 0.65;
     }
 
-    const maxContestDist = 3.8;
-    const minContestDist = 1.1;
+    // Realistic NBA contest distance: > 2.3m is completely Wide Open
+    const maxContestDist = 2.3;
+    const minContestDist = 1.0;
     const distFactor = Math.max(0, Math.min(1.0, 1.0 - (distToShooter - minContestDist) / (maxContestDist - minContestDist)));
 
     const defSkillBonus = (this.stats.defense / 100);
-    let contest = distFactor * alignment * handHeightFactor * (0.8 + defSkillBonus * 0.4);
+    // Needs good alignment between shooter and rim
+    const effectiveAlignment = Math.max(0, (alignment - 0.2) / 0.8);
+    let contest = distFactor * effectiveAlignment * handHeightFactor * (0.7 + defSkillBonus * 0.3);
     contest = Math.min(1.0, Math.max(0.0, contest));
 
     let label = 'WIDE OPEN';
     let labelClass = 'green';
     let percent = Math.round(contest * 100);
 
-    if (percent < 12) {
+    if (percent < 15) {
       label = 'WIDE OPEN';
       labelClass = 'green';
-    } else if (percent < 35) {
+      contest = 0; // Completely free shot
+    } else if (percent < 40) {
       label = `OPEN (${percent}%)`;
       labelClass = 'good';
     } else if (percent < 70) {
@@ -220,13 +224,14 @@ export class Defender {
   // Attempt a defensive block on a close-range shot
   tryBlock(player) {
     const contestInfo = this.calculateContest(player);
+    // Block only occurs on very close contested jumpers
     if (
-      contestInfo.distToShooter < 1.45 &&
+      contestInfo.distToShooter < 1.25 &&
       this.isJumping &&
-      this.jumpProgress > 0.15 &&
-      this.jumpProgress < 0.85
+      this.jumpProgress > 0.2 &&
+      this.jumpProgress < 0.8
     ) {
-      const blockRate = 0.65 + (this.stats.defense / 100) * 0.25;
+      const blockRate = 0.45 + (this.stats.defense / 100) * 0.2;
       if (Math.random() < blockRate) {
         this.ball.block(this.position);
         return true;

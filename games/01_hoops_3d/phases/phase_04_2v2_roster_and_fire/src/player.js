@@ -191,7 +191,8 @@ export class Player {
     const baseSpeed = 3.6 + ((this.stats?.speed || 85) / 100) * 1.8;
     this.speed = baseSpeed * (this.isOnFire ? 1.22 : 1.0);
 
-    const baseTolerance = 0.25 + ((this.stats?.threePt || 85) / 100) * 0.16;
+    // Generous base shot tolerance for responsive, enjoyable shooting (0.42s to 0.62s)
+    const baseTolerance = 0.44 + ((this.stats?.threePt || 85) / 100) * 0.18;
     this.shotTolerance = baseTolerance * (this.isOnFire ? 1.45 : 1.0);
   }
 
@@ -233,9 +234,10 @@ export class Player {
 
     // Calculate timing quality (0.0 to 1.0) with player-specific shotTolerance
     const error = Math.abs(this.shotChargeTime - this.idealShotDuration);
-    const maxTolerance = this.shotTolerance || 0.35;
+    const maxTolerance = this.shotTolerance || 0.48;
     const rawQuality = Math.max(0, 1.0 - error / maxTolerance);
-    const timingQuality = Math.pow(rawQuality, 1.4);
+    // Smooth gentle power curve (1.15) for high forgiveness on good releases
+    const timingQuality = Math.pow(rawQuality, 1.15);
 
     this.action = PlayerAction.JUMP_SHOOT;
     this.jumpProgress = 0;
@@ -248,7 +250,7 @@ export class Player {
     const isThree = distToHoop >= 6.75;
 
     // Sound chime if perfect green with light or no contest
-    const isGreen = timingQuality >= 0.92 && contestFactor < 0.35;
+    const isGreen = timingQuality >= 0.88 && contestFactor < 0.4;
     if (isGreen) {
       sounds.playGreenChime();
     }

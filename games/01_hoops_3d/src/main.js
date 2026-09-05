@@ -270,14 +270,16 @@ class Game {
   showShotMeter() {
     if (this.shotMeterContainer) {
       this.shotMeterContainer.classList.remove('hidden');
+      this.shotMeterContainer.classList.add('visible');
     }
   }
 
   hideShotMeter() {
     if (this.shotMeterContainer) {
+      this.shotMeterContainer.classList.remove('visible');
       this.shotMeterContainer.classList.add('hidden');
       if (this.shotMeterFill) {
-        this.shotMeterFill.style.height = '0%';
+        this.shotMeterFill.style.width = '0%';
         this.shotMeterFill.className = 'meter-fill';
       }
     }
@@ -287,11 +289,12 @@ class Game {
     if (!this.activePlayer || !this.activePlayer.isChargingShot || !this.shotMeterFill) return;
 
     const ratio = Math.min(1.0, this.activePlayer.shotChargeTime / this.activePlayer.idealShotDuration);
-    this.shotMeterFill.style.height = `${ratio * 100}%`;
+    this.shotMeterFill.style.width = `${ratio * 100}%`;
 
-    if (ratio < 0.75) {
+    // Generous visually appealing sweetspot window (0.80 to 1.15)
+    if (ratio < 0.78) {
       this.shotMeterFill.className = 'meter-fill early';
-    } else if (ratio >= 0.88 && ratio <= 1.08) {
+    } else if (ratio >= 0.82 && ratio <= 1.15) {
       this.shotMeterFill.className = 'meter-fill perfect';
     } else {
       this.shotMeterFill.className = 'meter-fill late';
@@ -305,14 +308,14 @@ class Game {
     if (shotResult.isGreen) {
       msg = `🟢 EXCELLENT RELEASE! [${contest.label}]`;
       type = 'green';
-    } else if (shotResult.timingQuality > 0.7) {
+    } else if (shotResult.timingQuality > 0.62) {
       msg = `🟡 GOOD TIMING [${contest.label}]`;
       type = 'good';
-    } else if (shotResult.chargeRatio < 0.8) {
-      msg = `🔴 SLIGHTLY EARLY [${contest.label}]`;
+    } else if (shotResult.chargeRatio < 0.82) {
+      msg = `🔴 EARLY RELEASE [${contest.label}]`;
       type = 'early';
     } else {
-      msg = `🔴 SLIGHTLY LATE [${contest.label}]`;
+      msg = `🔴 LATE RELEASE [${contest.label}]`;
       type = 'late';
     }
 

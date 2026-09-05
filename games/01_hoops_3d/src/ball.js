@@ -108,7 +108,7 @@ export class Basketball {
     this.isThreePointer = isThree;
 
     // Effective shot quality degraded by defensive contest
-    const degradedQuality = Math.max(0, timingQuality - contestFactor * 0.4);
+    const degradedQuality = Math.max(0, timingQuality - contestFactor * 0.35);
     this.shotQuality = degradedQuality;
 
     this.position.copy(origin);
@@ -117,14 +117,14 @@ export class Basketball {
     // Calculate arc to hoop
     const target = this.court.hoopPosition.clone();
     
-    // Perfect green shots go dead-center; imperfect & contested shots deviate
-    const isCleanGreen = timingQuality >= 0.92 && contestFactor < 0.35;
-    const deviationMax = 0.35 + contestFactor * 0.35;
-    const errorFactor = 1.0 - degradedQuality;
+    // Clean green or wide-open good shots go directly to center
+    const isCleanGreen = (timingQuality >= 0.88 && contestFactor < 0.4) || (timingQuality >= 0.75 && contestFactor < 0.15);
+    const deviationMax = 0.18 + contestFactor * 0.22; // Much tighter spread
+    const errorFactor = Math.pow(1.0 - degradedQuality, 1.3);
     const deviationX = (Math.random() - 0.5) * 2 * deviationMax * errorFactor;
     const deviationZ = (Math.random() - 0.5) * 2 * deviationMax * errorFactor;
     
-    // Add deviation to target if shot is not a clean green
+    // Add small deviation only if not a clean shot
     if (!isCleanGreen) {
       target.x += deviationX;
       target.z += deviationZ;
@@ -308,14 +308,36 @@ export class Basketball {
         Math.pow(this.position.x - hoopPos.x, 2) + Math.pow(this.position.z - hoopPos.z, 2)
       );
 
-      // A) Score / Net Entry Detection
+      // Shooter's Touch (Soft Rim Magnetic Attraction for good shots)
       if (
         this.isShotAttempt &&
         !this.hasScoredThisShot &&
-        this.position.y <= hoopPos.y + 0.1 &&
-        this.position.y >= hoopPos.y - 0.25 &&
         this.velocity.y < 0 &&
-        distToHoopCenterXZ < this.court.rimRadius * 0.72
+        this.position.y <= hoopPos.y + 0.35 &&
+        this.position.y >= hoopPos.y - 0.2 &&
+        distToHoopCenterXZ < this.court.rimRadius * 1.35
+      ) {
+        if (this.shotQuality >= 0.55) {
+          // Gently pull towards hoop center
+          const pullStrength = Math.min(1.0, (this.shotQuality - 0.45) * 4.0);
+          this.position.x += (hoopPos.x - this.position.x) * delta * 4.5 * pullStrength;
+          this.position.z += (hoopPos.z - this.position.z) * delta * 4.5 * pullStrength;
+        }
+      }
+
+      // Re-evaluate distance after soft attraction
+      const currentDistXZ = Math.sqrt(
+        Math.pow(this.position.x - hoopPos.x, 2) + Math.pow(this.position.z - hoopPos.z, 2)
+      );
+
+      // A) Score / Net Entry Detection (Generous 0.95 rim radius)
+      if (
+        this.isShotAttempt &&
+        !this.hasScoredThisShot &&
+        this.position.y <= hoopPos.y + 0.15 &&
+        this.position.y >= hoopPos.y - 0.32 &&
+        this.velocity.y < 0 &&
+        currentDistXZ < this.court.rimRadius * 0.96
       ) {
         this.hasScoredThisShot = true;
         this.state = BallState.SCORED;
@@ -323,37 +345,44 @@ export class Basketball {
         sounds.playCheer();
 
         // Slow ball slightly as it travels through net
-        this.velocity.x *= 0.2;
-        this.velocity.z *= 0.2;
-        this.velocity.y *= 0.6;
+        this.velocity.x *= 0.15;
+        this.velocity.z *= 0.15;
+        this.velocity.y *= 0.55;
 
         if (this.onScoreCallback) {
           this.onScoreCallback({
             isThree: this.isThreePointer,
             quality: this.shotQuality,
-            isGreen: this.shotQuality >= 0.92,
+            isGreen: this.shotQuality >= 0.88,
             hasHitRim: this.hasHitRim,
           });
         }
       }
 
       // B) Steel Rim Collision
-      const distFromRimCircle = Math.abs(distToHoopCenterXZ - this.court.rimRadius);
+      const distFromRimCircle = Math.abs(currentDistXZ - this.court.rimRadius);
       if (
-        distFromRimCircle < this.radius + 0.03 &&
+        distFromRimCircle < this.radius + 0.025 &&
         Math.abs(this.position.y - hoopPos.y) < this.radius + 0.04
       ) {
         if (!this.hasHitRim) {
           this.hasHitRim = true;
           sounds.playRim();
 
-          // Elastic bounce off rim torus
-          const normalX = (this.position.x - hoopPos.x) / (distToHoopCenterXZ || 1);
-          const normalZ = (this.position.z - hoopPos.z) / (distToHoopCenterXZ || 1);
+          if (this.shotQuality >= 0.65 && Math.random() < 0.65) {
+            // Soft Friendly Roll: Drop into basket instead of hard reject
+            this.velocity.x *= 0.25;
+            this.velocity.z *= 0.25;
+            this.velocity.y = -0.8;
+          } else {
+            // Elastic bounce off rim torus
+            const normalX = (this.position.x - hoopPos.x) / (currentDistXZ || 1);
+            const normalZ = (this.position.z - hoopPos.z) / (currentDistXZ || 1);
 
-          this.velocity.x += normalX * 2.2;
-          this.velocity.z += normalZ * 2.2;
-          this.velocity.y = Math.abs(this.velocity.y) * 0.55 + 1.5;
+            this.velocity.x += normalX * 1.5;
+            this.velocity.z += normalZ * 1.5;
+            this.velocity.y = Math.abs(this.velocity.y) * 0.45 + 1.2;
+          }
         }
       }
 

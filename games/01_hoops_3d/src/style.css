@@ -211,13 +211,14 @@ html, body {
 
 .meter-sweetspot {
   position: absolute;
-  left: 68%;
+  left: 76%;
   top: 0;
-  width: 16%;
+  width: 22%;
   height: 100%;
-  background: rgba(0, 230, 118, 0.35);
+  background: rgba(0, 230, 118, 0.45);
   border-left: 2px solid var(--accent-green);
   border-right: 2px solid var(--accent-green);
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
   z-index: 2;
 }
 
@@ -227,10 +228,23 @@ html, body {
   top: 0;
   height: 100%;
   width: 0%;
-  background: #ffcc00;
+  background: linear-gradient(90deg, #ffcc00, #ff9100);
   border-radius: 8px;
   transition: width 0.02s linear;
   z-index: 1;
+}
+
+.meter-fill.early {
+  background: linear-gradient(90deg, #ff9100, #ffd700);
+}
+
+.meter-fill.perfect {
+  background: linear-gradient(90deg, #00e676, #00ff88);
+  box-shadow: 0 0 16px rgba(0, 230, 118, 0.9);
+}
+
+.meter-fill.late {
+  background: linear-gradient(90deg, #ffd700, #ff1744);
 }
 
 .meter-hint {
