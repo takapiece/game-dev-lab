@@ -7,6 +7,7 @@ import { InputController } from './controls.js';
 import { sounds } from './audio.js';
 import { ROSTER_PLAYERS } from './roster.js';
 import { FireEffect } from './fire.js';
+import { TuningUI } from './tuning_ui.js';
 
 class Game {
   constructor() {
@@ -243,6 +244,9 @@ class Game {
 
     // Roster Selection Buttons
     this.initRosterUI();
+
+    // Level Design & Game Balance Tuning Panel UI
+    this.tuningUI = new TuningUI();
   }
 
   initRosterUI() {

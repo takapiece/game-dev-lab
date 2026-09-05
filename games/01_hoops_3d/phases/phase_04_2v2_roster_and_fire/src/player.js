@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { sounds } from './audio.js';
 import { BallState } from './ball.js';
+import { tuning } from './tuning.js';
 
 export const PlayerAction = {
   IDLE: 'idle',
@@ -57,6 +58,10 @@ export class Player {
 
     this.initMesh();
     this.resetPosition();
+
+    tuning.subscribe(() => {
+      this.updateStatsValues();
+    });
   }
 
   resetPosition(spawnPos = null) {
@@ -191,9 +196,11 @@ export class Player {
     const baseSpeed = 3.6 + ((this.stats?.speed || 85) / 100) * 1.8;
     this.speed = baseSpeed * (this.isOnFire ? 1.22 : 1.0);
 
-    // Generous base shot tolerance for responsive, enjoyable shooting (0.42s to 0.62s)
-    const baseTolerance = 0.44 + ((this.stats?.threePt || 85) / 100) * 0.18;
+    // Tunable base tolerance plus player 3PT attribute bonus
+    const tunedTolerance = tuning.get('shotTolerance');
+    const baseTolerance = tunedTolerance + ((this.stats?.threePt || 85) / 100) * 0.14;
     this.shotTolerance = baseTolerance * (this.isOnFire ? 1.45 : 1.0);
+    this.idealShotDuration = tuning.get('idealShotDuration');
   }
 
   setOnFire(onFire) {

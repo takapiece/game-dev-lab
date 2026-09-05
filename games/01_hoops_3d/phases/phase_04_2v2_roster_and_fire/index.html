@@ -99,6 +99,7 @@
       <div class="touch-area-right">
         <div class="btn-secondary-group">
           <a href="../../index.html" class="btn-util" style="text-decoration: none; color: #ff9100;" title="Return to Portal">🏠 MENU</a>
+          <button class="btn-util" id="btn-tuning" style="color: #ffd700; border-color: rgba(255,215,0,0.5);" title="Level Design & Tuning">⚙️ TUNING</button>
           <button class="btn-util" id="btn-help" title="Operation Manual">🎴 ROSTER</button>
           <button class="btn-util" id="btn-camera" title="Switch Camera View">🎥 CAM</button>
           <button class="btn-util" id="btn-reset" title="Reset Position">🔄 RESET</button>
@@ -225,6 +226,121 @@
           🏀 GAME START / 2v2 プレイ開始
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Level Design & Game Balance Tuning Panel -->
+  <div id="tuning-panel" class="tuning-panel hidden">
+    <div class="tuning-header">
+      <div class="tuning-title">⚙️ LEVEL DESIGN TUNER</div>
+      <button class="btn-close-tuning" id="btn-close-tuning" title="Close">✕</button>
+    </div>
+
+    <div class="tuning-body">
+      <!-- Presets -->
+      <div>
+        <div class="tuning-section-title">🎯 難易度プリセット (Presets)</div>
+        <div class="preset-group">
+          <button class="btn-preset" data-preset="arcade">🟢 爽快・初心者</button>
+          <button class="btn-preset active" data-preset="normal">🟡 ★標準</button>
+          <button class="btn-preset" data-preset="pro">🔴 NBAプロ</button>
+        </div>
+      </div>
+
+      <!-- 1. Meter & Timing -->
+      <div>
+        <div class="tuning-section-title">1️⃣ メーター ＆ タイミング</div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>緑ゾーンの広さ (Sweetspot):</span>
+            <span class="tune-val" id="tune-sweetspot-val">22%</span>
+          </div>
+          <input type="range" id="tune-sweetspot" class="tune-slider" min="10" max="42" step="1" value="22">
+        </div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>チャージ所要時間 (Ideal Time):</span>
+            <span class="tune-val" id="tune-duration-val">0.55s</span>
+          </div>
+          <input type="range" id="tune-duration" class="tune-slider" min="0.35" max="0.90" step="0.05" value="0.55">
+        </div>
+      </div>
+
+      <!-- 2. Shot Tolerance -->
+      <div>
+        <div class="tuning-section-title">2️⃣ シュート許容度 ＆ 命中率</div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>判定の甘さ (Tolerance):</span>
+            <span class="tune-val" id="tune-tolerance-val">0.48s</span>
+          </div>
+          <input type="range" id="tune-tolerance" class="tune-slider" min="0.20" max="0.75" step="0.02" value="0.48">
+        </div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>弾道のブレ幅 (Spread):</span>
+            <span class="tune-val" id="tune-deviation-val">0.45</span>
+          </div>
+          <input type="range" id="tune-deviation" class="tune-slider" min="0.0" max="1.0" step="0.05" value="0.45">
+        </div>
+      </div>
+
+      <!-- 3. Shooter's Touch & Ring Physics -->
+      <div>
+        <div class="tuning-section-title">3️⃣ シューターズタッチ ＆ リング物理</div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>リング吸い込み磁力 (Magnet):</span>
+            <span class="tune-val" id="tune-magnet-val">4.5</span>
+          </div>
+          <input type="range" id="tune-magnet" class="tune-slider" min="0.0" max="10.0" step="0.5" value="4.5">
+        </div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>リム跳ね拾い率 (Friendly Roll):</span>
+            <span class="tune-val" id="tune-roll-val">65%</span>
+          </div>
+          <input type="range" id="tune-roll" class="tune-slider" min="0" max="100" step="5" value="65">
+        </div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>ゴール判定の広さ (Rim Radius):</span>
+            <span class="tune-val" id="tune-scoreradius-val">0.96x</span>
+          </div>
+          <input type="range" id="tune-scoreradius" class="tune-slider" min="0.70" max="1.15" step="0.02" value="0.96">
+        </div>
+      </div>
+
+      <!-- 4. Defense Pressure -->
+      <div>
+        <div class="tuning-section-title">4️⃣ 敵ディフェンスの強さ</div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>妨害が届く距離 (Contest Dist):</span>
+            <span class="tune-val" id="tune-contestdist-val">2.3m</span>
+          </div>
+          <input type="range" id="tune-contestdist" class="tune-slider" min="1.0" max="4.5" step="0.1" value="2.3">
+        </div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>敵の足の速さ (Def Speed):</span>
+            <span class="tune-val" id="tune-defspeed-val">5.2m/s</span>
+          </div>
+          <input type="range" id="tune-defspeed" class="tune-slider" min="3.0" max="7.0" step="0.2" value="5.2">
+        </div>
+        <div class="tune-row">
+          <div class="tune-label-row">
+            <span>近接ブロック率 (Block Rate):</span>
+            <span class="tune-val" id="tune-blockrate-val">35%</span>
+          </div>
+          <input type="range" id="tune-blockrate" class="tune-slider" min="0" max="80" step="5" value="35">
+        </div>
+      </div>
+    </div>
+
+    <div class="tuning-footer">
+      <button class="btn-tune-action" id="btn-tuning-reset">🔄 デフォルトに戻す</button>
+      <span style="font-size: 0.68rem; color: #a1a1aa;">※変更は即時反映されます</span>
     </div>
   </div>
 

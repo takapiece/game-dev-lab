@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { sounds } from './audio.js';
+import { tuning } from './tuning.js';
 
 export const BallState = {
   DRIBBLE: 'dribble',
@@ -119,7 +120,8 @@ export class Basketball {
     
     // Clean green or wide-open good shots go directly to center
     const isCleanGreen = (timingQuality >= 0.88 && contestFactor < 0.4) || (timingQuality >= 0.75 && contestFactor < 0.15);
-    const deviationMax = 0.18 + contestFactor * 0.22; // Much tighter spread
+    const devFactor = tuning.get('deviationFactor');
+    const deviationMax = (0.18 + contestFactor * 0.22) * (devFactor / 0.45);
     const errorFactor = Math.pow(1.0 - degradedQuality, 1.3);
     const deviationX = (Math.random() - 0.5) * 2 * deviationMax * errorFactor;
     const deviationZ = (Math.random() - 0.5) * 2 * deviationMax * errorFactor;
@@ -309,19 +311,20 @@ export class Basketball {
       );
 
       // Shooter's Touch (Soft Rim Magnetic Attraction for good shots)
+      const magnetStrength = tuning.get('magnetStrength');
       if (
         this.isShotAttempt &&
         !this.hasScoredThisShot &&
         this.velocity.y < 0 &&
         this.position.y <= hoopPos.y + 0.35 &&
         this.position.y >= hoopPos.y - 0.2 &&
-        distToHoopCenterXZ < this.court.rimRadius * 1.35
+        distToHoopCenterXZ < this.court.rimRadius * 1.35 &&
+        magnetStrength > 0
       ) {
         if (this.shotQuality >= 0.55) {
-          // Gently pull towards hoop center
-          const pullStrength = Math.min(1.0, (this.shotQuality - 0.45) * 4.0);
-          this.position.x += (hoopPos.x - this.position.x) * delta * 4.5 * pullStrength;
-          this.position.z += (hoopPos.z - this.position.z) * delta * 4.5 * pullStrength;
+          const pullFactor = Math.min(1.0, (this.shotQuality - 0.45) * 4.0);
+          this.position.x += (hoopPos.x - this.position.x) * delta * magnetStrength * pullFactor;
+          this.position.z += (hoopPos.z - this.position.z) * delta * magnetStrength * pullFactor;
         }
       }
 
@@ -330,14 +333,15 @@ export class Basketball {
         Math.pow(this.position.x - hoopPos.x, 2) + Math.pow(this.position.z - hoopPos.z, 2)
       );
 
-      // A) Score / Net Entry Detection (Generous 0.95 rim radius)
+      // A) Score / Net Entry Detection
+      const scoreRatio = tuning.get('scoreRadiusRatio');
       if (
         this.isShotAttempt &&
         !this.hasScoredThisShot &&
         this.position.y <= hoopPos.y + 0.15 &&
         this.position.y >= hoopPos.y - 0.32 &&
         this.velocity.y < 0 &&
-        currentDistXZ < this.court.rimRadius * 0.96
+        currentDistXZ < this.court.rimRadius * scoreRatio
       ) {
         this.hasScoredThisShot = true;
         this.state = BallState.SCORED;
@@ -369,7 +373,8 @@ export class Basketball {
           this.hasHitRim = true;
           sounds.playRim();
 
-          if (this.shotQuality >= 0.65 && Math.random() < 0.65) {
+          const rollRate = tuning.get('friendlyRollRate') / 100;
+          if (this.shotQuality >= 0.60 && Math.random() < rollRate) {
             // Soft Friendly Roll: Drop into basket instead of hard reject
             this.velocity.x *= 0.25;
             this.velocity.z *= 0.25;

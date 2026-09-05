@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { sounds } from './audio.js';
 import { PlayerAction } from './player.js';
 import { BallState } from './ball.js';
+import { tuning } from './tuning.js';
 
 export const DefenderState = {
   GUARD: 'guard',         // Marking assigned player
@@ -182,8 +183,8 @@ export class Defender {
       handHeightFactor = 0.65;
     }
 
-    // Realistic NBA contest distance: > 2.3m is completely Wide Open
-    const maxContestDist = 2.3;
+    // Tunable contest distance from tuning config
+    const maxContestDist = tuning.get('contestMaxDist');
     const minContestDist = 1.0;
     const distFactor = Math.max(0, Math.min(1.0, 1.0 - (distToShooter - minContestDist) / (maxContestDist - minContestDist)));
 
@@ -231,7 +232,8 @@ export class Defender {
       this.jumpProgress > 0.2 &&
       this.jumpProgress < 0.8
     ) {
-      const blockRate = 0.45 + (this.stats.defense / 100) * 0.2;
+      const tunedBlockRate = tuning.get('blockRate') / 100;
+      const blockRate = tunedBlockRate * (0.8 + (this.stats.defense / 100) * 0.4);
       if (Math.random() < blockRate) {
         this.ball.block(this.position);
         return true;
@@ -338,7 +340,9 @@ export class Defender {
 
       if (moveDist > 0.05) {
         moveDelta.normalize();
-        const moveSpeed = Math.min(this.speed, moveDist * 6.5);
+        const tunedSpeed = tuning.get('defenderSpeed');
+        const effectiveSpeed = (3.8 + (this.stats.speed / 100) * 1.6) * (tunedSpeed / 5.2);
+        const moveSpeed = Math.min(effectiveSpeed, moveDist * 6.5);
         this.velocity.copy(moveDelta.multiplyScalar(moveSpeed));
         this.position.addScaledVector(this.velocity, delta);
 
