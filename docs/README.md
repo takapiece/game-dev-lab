@@ -11,8 +11,8 @@ Webポータルはリポジトリのルートで `npm run dev` を実行し、`h
 
 | No | プロジェクト名 | ジャンル / テーマ | 使用技術 | ドキュメント & ソース | ステータス |
 | :-: | :--- | :--- | :--- | :--- | :-: |
-| **01** | **[HOOPS 3D](../games/01_hoops_3d/)** | スマホ向け 3D バスケットボール | Three.js / Web Audio API | [📖 開発ドキュメント](../games/01_hoops_3d/docs/README.md) | **Phase 2 完了 (1v1 AI対戦)** |
-| **02** | *(Next Game)* | *(企画中: 3Dサッカー / レース等)* | - | - | 準備中 |
+| **01** | **[HOOPS 3D](../games/01_hoops_3d/)** | スマホ向け 3D バスケットボール | Three.js / Web Audio API | [📖 開発ドキュメント](../games/01_hoops_3d/docs/README.md) | **Phase 4 完了 (2v2 & ON-FIRE)** |
+| **02** | **[HOOPS: WORLD TOUR](../games/02_hoops_astra_challenge/)** | Unity × AIエージェント開発実践 | Unity / C# / WebGL | [📖 開発ドキュメント](../games/02_hoops_astra_challenge/README.md) | **Web試遊版 公開中 (8段階進化教材)** |
 
 ---
 

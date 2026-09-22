@@ -14,6 +14,7 @@
 | **[ERR-003](#err-003)** | Phase 2 タッチ操作 | シュートボタンが反応しない・押したままになる | ボタン外での `touchend` / `touchcancel` を確実に取得できない | ✅ 解決 |
 | **[ERR-004](#err-004)** | `src/player.js` / `defender.js` | シュート後にボールが戻らず、敵選手が追従してこない | ボール回収条件の距離依存と、REBOUND状態でのAI立ち往生 | ✅ 解決 |
 | **[ERR-005](#err-005)** | `src/ball.js` / `player.js` | 40本打ってもシュートが入らない（過剰難易度＆メーター不可視） | メーターwidth未更新、20msの超シビア判定、リム判定の厳格化 | ✅ 解決 |
+| **[ERR-006](#err-006)** | CI/CD & ビルド環境 | GitHub Actions デプロイ失敗および Windows Rollup バイナリ欠落 | 未定義のアクションバージョン指定とプラットフォーム固有バイナリ不整合 | ✅ 解決 |
 
 ---
 
@@ -122,5 +123,24 @@
 * **💡 生徒への学び (Key Takeaways for Students):**
   * **ゲームフィールの重要性:** 数学的に厳密すぎる判定は、プレイヤーに「理不尽なストレス」を与えてしまう。ゲーム開発では「少し甘めに判定して気持ちよく成功させる演出（コヨーテタイムやシューターズタッチ）」が非常に大切。
   * **UIのバグがゲーム難易度を破壊する:** 「メーターが見えていない」だけで、ユーザーは何が起きているかわからなくなる。視覚フィードバックの正確性を常に第一に確認すること。
+
+---
+
+### [ERR-006] GitHub Actions デプロイ失敗および Windows Rollup バイナリ欠落
+
+* **発生日:** 2026-09-22
+* **現象:**
+  1. `npm run build` 実行時、`Error: Cannot find module @rollup/rollup-win32-x64-msvc` が発生してビルドが中断した。
+  2. GitHub Actions ワークフロー（`.github/workflows/deploy.yml`）に未定義の将来バージョン（`checkout@v7`, `deploy-pages@v5` 等）が書かれており、CI ランナー上でアクションの解決に失敗する状態だった。
+* **根本原因 (Root Cause):**
+  * npm の `optionalDependencies` において、異なるOS環境（Mac/Linux）で生成された `package-lock.json` が Windows 側のネイティブバイナリと同期していなかった。
+  * CI ワークフローファイルのアクションバージョンが実在しないタグになっていた。
+* **修正方法 (Fix):**
+  1. `.github/workflows/deploy.yml` のアクションを GitHub 公式の安定版（`checkout@v4`, `setup-node@v4`, `configure-pages@v5`, `upload-pages-artifact@v3`, `deploy-pages@v4`）へ更新。
+  2. ルートの `vite.config.js` のビルド対象に `01_hoops_3d` の Phase 3, 4 および `02_hoops_astra_challenge` のダッシュボードを追加。
+* **💡 生徒への学び (Key Takeaways for Students):**
+  * **CI/CD（自動化）のバージョン管理**: クラウド（GitHub Actions）で動かすアクションは、公式ドキュメントで保証されている安定バージョンを指定すること。
+  * **クロスプラットフォームの差異**: Windows と Linux/Mac で動作するネイティブバイナリの違いを理解し、クリーンな依存関係（`package-lock.json`）を保つ大切さを学ぶ。
+
 
 
