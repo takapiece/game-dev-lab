@@ -770,3 +770,264 @@ body {
 .highlight-box .detail-box-label {
   color: var(--accent-gold);
 }
+
+/* Timeline & Game Feel Evolution */
+.evolution-feature-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.feature-badge {
+  display: inline-block;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.12);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.camera-badge {
+  color: var(--accent-gold);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.evolution-feature-card h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.feature-intro {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* Meter Grid */
+.meter-evolution-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px;
+}
+
+@media (max-width: 800px) {
+  .meter-evolution-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.meter-col {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.meter-col-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.defense-tag {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.shot-tag {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.meter-col h4 {
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.meter-col p {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.step-flow-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.step-flow-list li {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+  padding-left: 14px;
+  position: relative;
+}
+
+.step-flow-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent-cyan);
+}
+
+.step-flow-list strong {
+  color: #fff;
+}
+
+/* Orbit Showcase */
+.orbit-showcase-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+@media (max-width: 800px) {
+  .orbit-showcase-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.orbit-text h4 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.orbit-text p {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+  margin-bottom: 16px;
+}
+
+.orbit-tips {
+  background: rgba(245, 158, 11, 0.08);
+  border-left: 3px solid var(--accent-gold);
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #fde68a;
+}
+
+.orbit-tips strong {
+  color: var(--accent-gold);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.orbit-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.img-caption {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* Timeline Steps Gallery */
+.timeline-gallery-section {
+  margin-top: 32px;
+}
+
+.timeline-gallery-section h3 {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.timeline-steps-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.timeline-step-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.timeline-step-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-active);
+}
+
+.step-time {
+  padding: 8px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  background: rgba(11, 20, 38, 0.9);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.step-thumb {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 16 / 10;
+}
+
+.step-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.timeline-step-card:hover .step-thumb img {
+  transform: scale(1.04);
+}
+
+.step-desc {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-desc strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.step-desc p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}

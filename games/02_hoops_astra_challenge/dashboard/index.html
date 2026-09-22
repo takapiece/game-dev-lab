@@ -83,6 +83,9 @@
         <button class="nav-tab active" data-tab="overview">
           📋 企画 & 段階的ゲート
         </button>
+        <button class="nav-tab" data-tab="timeline">
+          🎥 制作タイムライン & 演出の進化
+        </button>
         <button class="nav-tab" data-tab="prompt">
           🤖 AI指示書 (プロンプト)
         </button>
@@ -151,6 +154,155 @@
           <!-- Dynamic Gate Details Area -->
           <div id="gate-detail-view" class="gate-detail-container">
             <!-- Injected by dashboard.js -->
+          </div>
+        </section>
+
+        <!-- Tab: Timeline & Game Feel Evolution -->
+        <section id="tab-timeline" class="tab-pane">
+          <div class="section-title-box">
+            <h2>🎥 1日の開発タイムライン：ただの立体からプロ品質の演出へ</h2>
+            <p>2026年9月20日の実際の制作記録動画（朝08:10〜夜19:36＋最新版）から、ゲームがどう段階的に育っていったかを学びます。</p>
+          </div>
+
+          <!-- Feature 1: UI & Sliders Evolution -->
+          <div class="evolution-feature-card">
+            <div class="feature-badge">UI / UX REFINEMENT</div>
+            <h3>📊 スライダーとメーターの進化：視線誘導の設計</h3>
+            <p class="feature-intro">画面上には役割の異なる2種類のゲージが存在し、プレイヤーが迷わず操作できるよう段階的に改良されました。</p>
+            
+            <div class="meter-evolution-grid">
+              <div class="meter-col">
+                <span class="meter-col-tag defense-tag">下部固定</span>
+                <h4>🛡️ 敵のディフェンス強度 (DEFENSE PRESSURE)</h4>
+                <p>画面最下部に常駐。敵ディフェンダーとの距離や位置関係によってリアルタイムに増減し、シュートの成功率に直接影響します。画面下部に置くことで、中央のプレイ画面を邪魔しません。</p>
+              </div>
+
+              <div class="meter-col">
+                <span class="meter-col-tag shot-tag">4段階進化</span>
+                <h4>🎯 シュートタイミングメーターの変遷</h4>
+                <ol class="step-flow-list">
+                  <li><strong>① 画面下（初期）:</strong> 敵プレッシャーバーと近く、プレイヤーの体と離れていて見づらかった。</li>
+                  <li><strong>② 画面上部（昼）:</strong> キャラクター被りを防ぐため上部へ移動。しかし視線が上下に激しく動く課題が発生。</li>
+                  <li><strong>③ 人物に追従（午後）:</strong> 縦型メーターにしてキャラクターの真横へ！視線移動ゼロで、選手の動きとメーターを同時に見られるように。</li>
+                  <li><strong>④ オン/オフ切替 [M]（完成）:</strong> 上級者や没入感を重視する人のため、キーひとつで非表示にできるハイド設定を追加。</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 2: Camera Work -->
+          <div class="evolution-feature-card">
+            <div class="feature-badge camera-badge">GAME FEEL & CAMERA</div>
+            <h3>🎬 カタルシスを生む「360度オービットカメラ」</h3>
+            <p class="feature-intro">「ただシュートが入って数字が増えるだけ」と「ゲームとして気持ちいい」の差は、カメラワークにあります。</p>
+            
+            <div class="orbit-showcase-grid">
+              <div class="orbit-text">
+                <h4>シュート成功時（BUCKET!）にプレイヤーを一周</h4>
+                <p>
+                  ボールがリングを通過した決定的な瞬間に、カメラが自動的にプレイヤーの周囲を滑らかに旋回（オービット）します。
+                  これにより、成功した瞬間の達成感とドラマチックな余韻が生まれます。
+                </p>
+                <div class="orbit-tips">
+                  <strong>💡 ゲーム開発のポイント:</strong>
+                  通常プレイ中は操作しやすい「斜め俯瞰カメラ（クォータービュー）」を維持し、決定打の瞬間だけ「演出用カメラ」へスムーズに切り替えるのがプロの演出手法です。
+                </div>
+              </div>
+              <div class="orbit-visual">
+                <img src="./assets/timeline/camera_orbit_success2.jpg" alt="シュート成功時のオービットカメラ演出" class="timeline-img">
+                <span class="img-caption">シュートが決まった瞬間、カメラがプレイヤーの周りを旋回する</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Gallery -->
+          <div class="timeline-gallery-section">
+            <h3>⏱️ 朝から夜までの7つの進化ステップ</h3>
+            <div class="timeline-steps-container">
+              <!-- Step 1 -->
+              <div class="timeline-step-card">
+                <div class="step-time">08:10 (朝)</div>
+                <div class="step-thumb">
+                  <img src="./assets/timeline/step_01.jpg" alt="Step 1: G0 環境チェック" class="timeline-img">
+                </div>
+                <div class="step-desc">
+                  <strong>Step 1: 🧱 はじまりは直方体</strong>
+                  <p>キャラクターもリングも置かない。Unity環境とURP（描画エンジン）が正常に動くかだけを確認する最小の第一歩。</p>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="timeline-step-card">
+                <div class="step-time">09:34 (午前)</div>
+                <div class="step-thumb">
+                  <img src="./assets/timeline/step_02.jpg" alt="Step 2: G1 プレイアブル" class="timeline-img">
+                </div>
+                <div class="step-desc">
+                  <strong>Step 2: 🏃 人型モデルとコート登場</strong>
+                  <p>人型3Dモデルとアニメーション、リングを配置。画面下部に横型のタイミングバーと敵ディフェンスAIを実装。</p>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="timeline-step-card">
+                <div class="step-time">10:31 (午前)</div>
+                <div class="step-thumb">
+                  <img src="./assets/timeline/step_03.jpg" alt="Step 3: ポーズと安全設計" class="timeline-img">
+                </div>
+                <div class="step-desc">
+                  <strong>Step 3: ⏸️ ポーズと安全設計</strong>
+                  <p>シュートチャージ中にポーズ（ESC）した際のキャンセル処理や、音量スライダーなど中断処理の安全ガードを追加。</p>
+                </div>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="timeline-step-card">
+                <div class="step-time">11:26 (昼前)</div>
+                <div class="step-thumb">
+                  <img src="./assets/timeline/step_04.jpg" alt="Step 4: タイミングバー位置調整" class="timeline-img">
+                </div>
+                <div class="step-desc">
+                  <strong>Step 4: 🎯 バーを画面上部へ移動</strong>
+                  <p>「中央下にあるとキャラクターと被る」というプレイ体験から、タイミングバーを画面上部へ移動し視認性を改善。</p>
+                </div>
+              </div>
+
+              <!-- Step 5 -->
+              <div class="timeline-step-card">
+                <div class="step-time">14:41 (午後)</div>
+                <div class="step-thumb">
+                  <img src="./assets/timeline/step_05.jpg" alt="Step 5: 縦型メーターとハイド設定" class="timeline-img">
+                </div>
+                <div class="step-desc">
+                  <strong>Step 5: 👁️ プレイヤー横追従 & ハイド設定</strong>
+                  <p>プレイヤーの真横に縦型メーターを追従配置。さらに `[M]` キーでメーターを非表示にできる没入機能を追加。</p>
+                </div>
+              </div>
+
+              <!-- Step 6 -->
+              <div class="timeline-step-card">
+                <div class="step-time">17:45 (夕方)</div>
+                <div class="step-thumb">
+                  <img src="./assets/timeline/step_06.jpg" alt="Step 6: バランス調整と衣装" class="timeline-img">
+                </div>
+                <div class="step-desc">
+                  <strong>Step 6: ⚙️ 難易度調整 & タイトル</strong>
+                  <p>判定の広さ（Green Window）を10%/45%/100%で調整できるスライダーと、4ステージの衣装選択を実装。</p>
+                </div>
+              </div>
+
+              <!-- Step 7 -->
+              <div class="timeline-step-card">
+                <div class="step-time">19:36 (夜)</div>
+                <div class="step-thumb">
+                  <img src="./assets/timeline/step_07.jpg" alt="Step 7: ダンク追加と完成" class="timeline-img">
+                </div>
+                <div class="step-desc">
+                  <strong>Step 7: 💥 Eキーダンク追加 & 完成</strong>
+                  <p>近距離からのダンクシュート（Eキー）を追加し、アクションの爽快感と全体のゲームバランスを整えて完成へ！</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
