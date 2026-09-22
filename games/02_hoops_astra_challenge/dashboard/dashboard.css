@@ -1031,3 +1031,14 @@ body {
   line-height: 1.6;
   color: var(--text-muted);
 }
+
+.highlight-step {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 20px rgba(2, 132, 199, 0.2);
+}
+
+.highlight-step .step-time {
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(56, 189, 248, 0.2));
+  color: #fff;
+  border-bottom-color: rgba(56, 189, 248, 0.3);
+}
