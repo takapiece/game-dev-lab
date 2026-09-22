@@ -1,0 +1,16 @@
+{
+  "order": 2,
+  "id": "02-hoops-astra-challenge",
+  "title": "HOOPS: WORLD TOUR",
+  "description": "Unity × AIエージェント開発。G0（物理コア）からWeb公開まで、AIへの指示出し・段階的検証・デバッグの全思考プロセスを学びます。",
+  "status": "Web試遊版 公開中",
+  "symbol": "🌍",
+  "accentColor": "#0284c7",
+  "technologies": ["Unity", "C#", "AI Pair Programming", "WebGL"],
+  "phaseCount": 4,
+  "progressPercent": 80,
+  "paths": {
+    "portal": "https://takapiece.itch.io/hoops-world-tour-playtest",
+    "dashboard": "./games/02_hoops_astra_challenge/dashboard/index.html"
+  }
+}

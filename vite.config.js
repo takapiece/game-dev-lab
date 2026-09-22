@@ -14,6 +14,7 @@ export default defineConfig({
         hoopsPhase02: resolve(__dirname, 'games/01_hoops_3d/phases/phase_02_1v1_defender/index.html'),
         hoopsPhase03: resolve(__dirname, 'games/01_hoops_3d/phases/phase_03_2v1_pass_and_steal/index.html'),
         hoopsPhase04: resolve(__dirname, 'games/01_hoops_3d/phases/phase_04_2v2_roster_and_fire/index.html'),
+        hoopsWorldTourDashboard: resolve(__dirname, 'games/02_hoops_astra_challenge/dashboard/index.html'),
         snippet01: resolve(__dirname, 'snippets/01_button_screen_transition/index.html'),
         snippet01Next: resolve(__dirname, 'snippets/01_button_screen_transition/next_page.html'),
       },

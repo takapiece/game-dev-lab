@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOOPS: WORLD TOUR - 学習ダッシュボード & AI開発ストーリー</title>
+  <link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+  <div class="dashboard-app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">
+          WORLD TOUR <span>LAB</span>
+        </div>
+        <a href="../../../index.html" class="btn-home-link">
+          🏠 GAME DEV LABへ戻る
+        </a>
+      </div>
+
+      <!-- Game Selector -->
+      <div class="sidebar-section">
+        <span class="section-label">SELECT GAME</span>
+        <div class="game-select-box">
+          <span class="game-select-icon">🌍</span>
+          <div class="game-select-info">
+            <span class="game-select-name">02: WORLD TOUR</span>
+            <span class="game-select-tag">Unity × AI Challenge</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase Selector -->
+      <div class="sidebar-section" style="padding-bottom: 8px;">
+        <span class="section-label">GATES (成長フェーズ)</span>
+      </div>
+
+      <div class="gate-list" id="gate-list">
+        <!-- JSで注入、初期静的モック -->
+        <button class="gate-card active" data-gate="g0">
+          <div class="gate-num">G0</div>
+          <div class="gate-info">
+            <strong>物理コア & シュート判定</strong>
+            <span>プレースホルダーで成立させる最小核</span>
+          </div>
+        </button>
+        <button class="gate-card" data-gate="g1">
+          <div class="gate-num">G1</div>
+          <div class="gate-info">
+            <strong>人型モデル & アニメーション</strong>
+            <span>Mixamo・CC0素材の統合とモーション</span>
+          </div>
+        </button>
+        <button class="gate-card" data-gate="g2">
+          <div class="gate-num">G2</div>
+          <div class="gate-info">
+            <strong>4つの世界 & 環境演出</strong>
+            <span>Street / Gym / Arena / Neon</span>
+          </div>
+        </button>
+        <button class="gate-card" data-gate="g3">
+          <div class="gate-num">G3</div>
+          <div class="gate-info">
+            <strong>スマホ操作 & WebGL公開</strong>
+            <span>横持ちタッチ操作と itch.io 出荷</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Quick Launch Button -->
+      <div class="sidebar-footer">
+        <a id="btn-launch-game" href="https://takapiece.itch.io/hoops-world-tour-playtest" target="_blank" rel="noopener noreferrer" class="btn-sidebar-play">
+          🎮 itch.io でゲームを遊ぶ ↗
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Navigation Tabs -->
+      <nav class="tab-navbar">
+        <button class="nav-tab active" data-tab="overview">
+          📋 企画 & 段階的ゲート
+        </button>
+        <button class="nav-tab" data-tab="prompt">
+          🤖 AI指示書 (プロンプト)
+        </button>
+        <button class="nav-tab" data-tab="comparison">
+          ⚖️ Three.js vs Unity
+        </button>
+        <button class="nav-tab" data-tab="assets">
+          📜 アセット権利 & CC0
+        </button>
+        <button class="nav-tab" data-tab="trouble">
+          🐛 トラブル & デバッグ
+        </button>
+      </nav>
+
+      <!-- Tab Contents Container -->
+      <div class="tab-viewport">
+        <!-- Tab 1: Overview -->
+        <section id="tab-overview" class="tab-pane active">
+          <div class="hero-panel">
+            <div class="hero-badge">AI × UNITY GAME DEVELOPMENT</div>
+            <h2>「一発で完成」を目指さない。<br>動く核（G0）から育てるゲーム開発。</h2>
+            <p class="hero-desc">
+              AIエージェントに「バスケゲームを作って」と頼むだけでは、複雑な3Dゲームは完成しません。
+              本教材では、物理の最小コア（G0）から人型モデル（G1）、4ステージ（G2）、スマホ・Web対応（G3）へと、
+              段階的なゲート（受入試験）をクリアしながらゲームを育てた実際のプロセスを学びます。
+            </p>
+            <div class="hero-cta-group">
+              <a href="https://takapiece.itch.io/hoops-world-tour-playtest" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                ▶ itch.io で最新版（Web G3）を遊ぶ
+              </a>
+              <button class="btn-secondary" onclick="document.querySelector('[data-tab=prompt]').click()">
+                🤖 AIへの指示書を見る
+              </button>
+            </div>
+          </div>
+
+          <div class="content-cards-grid">
+            <div class="info-card">
+              <div class="info-card-header">
+                <span class="icon">🪜</span>
+                <h3>4つの段階的ゲート (Gates)</h3>
+              </div>
+              <p>最初からキャラクターやきれいな背景を置かず、四角と球だけで「シュートが入る」物理を作った理由とは？</p>
+              <ul class="check-list">
+                <li><strong>G0:</strong> 物理コア（ボールとリングの衝突、Green Release判定）</li>
+                <li><strong>G1:</strong> キャラクター統合（人型モデル、シュート/ドリブル）</li>
+                <li><strong>G2:</strong> 4つの世界（Street, Gym, Arena, Neonコートと衣装）</li>
+                <li><strong>G3:</strong> クロスプラットフォーム（スマホタッチ操作、WebGLビルド）</li>
+              </ul>
+            </div>
+
+            <div class="info-card">
+              <div class="info-card-header">
+                <span class="icon">🤝</span>
+                <h3>AIと人間の役割分担</h3>
+              </div>
+              <p>AIに任せる領域と、人間が責任を持つ領域を明確に線引きすることが成功の鍵です。</p>
+              <ul class="check-list">
+                <li><strong>AIの役割:</strong> C#スクリプト実装、物理計算、ビルドスクリプト作成</li>
+                <li><strong>人間の役割:</strong> 企画・要件定義、受入試験（テストプレイ）、面白さの調整</li>
+                <li><strong>共有の記録:</strong> エラーログと意思決定の文書化</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Dynamic Gate Details Area -->
+          <div id="gate-detail-view" class="gate-detail-container">
+            <!-- Injected by dashboard.js -->
+          </div>
+        </section>
+
+        <!-- Tab 2: Prompt -->
+        <section id="tab-prompt" class="tab-pane">
+          <div class="section-title-box">
+            <h2>🤖 AIへの指示書 (プロンプト) のリアル</h2>
+            <p>プロのゲーム開発者がAIエージェント（Astra/LLM）に送った実際の指示書から、指示のコツを学びます。</p>
+          </div>
+
+          <div class="prompt-comparison">
+            <div class="prompt-box bad-prompt">
+              <div class="prompt-label">❌ 失敗しやすい指示（曖昧・丸投げ）</div>
+              <pre class="prompt-code">「3DのバスケゲームをUnityで作ってください。
+かっこいいキャラクターと敵AIもつけて、
+シュートが入るようにしてください。」</pre>
+              <p class="prompt-comment">👉 AIが勝手に複雑な仕組みを作り、どこでバグが起きたか分からなくなる。</p>
+            </div>
+
+            <div class="prompt-box good-prompt">
+              <div class="prompt-label">⭕ 実際に使ったプロンプトの抜粋（ASTRA_BRIEF.md より）</div>
+              <pre class="prompt-code">「G0では素材統合を行わない。
+プレースホルダー（CubeとSphere）だけで、
+① 放物線軌道とリング通過の物理判定
+② タイミング評価（Green Release）と実際の物理判定の分離
+を成立させ、テストが合格するまで人型モデルを入れてはならない。」</pre>
+              <p class="prompt-comment">👉 制約（やってはいけないこと）と合格条件を明確にすることで、AIがブレずに動く核を作る。</p>
+            </div>
+          </div>
+
+          <div class="prompt-keypoints">
+            <h3>💡 生徒が今日から使えるプロンプトの3原則</h3>
+            <div class="keypoint-cards">
+              <div class="kp-card">
+                <span class="kp-num">1</span>
+                <strong>やってはいけない制約を書く</strong>
+                <p>「まだキャラクターは入れない」「外部アセットは使わない」など、AIの先走りを止める。</p>
+              </div>
+              <div class="kp-card">
+                <span class="kp-num">2</span>
+                <strong>合格条件（受入基準）を数値で示す</strong>
+                <p>「シュートが3本入ったら次のコートへ進む」「エラー0件でビルド成功」など客観的な基準を示す。</p>
+              </div>
+              <div class="kp-card">
+                <span class="kp-num">3</span>
+                <strong>失敗したらエラー文をそのまま渡す</strong>
+                <p>「動かない」ではなく、Unityコンソールに出たエラー全文とログを渡して原因を分析させる。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 3: Comparison -->
+        <section id="tab-comparison" class="tab-pane">
+          <div class="section-title-box">
+            <h2>⚖️ Three.js (GAME 01) vs Unity (GAME 02)</h2>
+            <p>同じ「3Dバスケットボール」を2つの技術で作ることで、それぞれの特徴と選び方を理解します。</p>
+          </div>
+
+          <div class="comparison-table-wrapper">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>比較項目</th>
+                  <th>🏀 GAME 01: Three.js (JavaScript)</th>
+                  <th>🌍 GAME 02: Unity (C#)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>開発スタイル</strong></td>
+                  <td>コードだけで画面を構築（HTML/JS）</td>
+                  <td>ビジュアルエディタ（Scene）＋ C#スクリプト</td>
+                </tr>
+                <tr>
+                  <td><strong>物理エンジン</strong></td>
+                  <td>自前計算 または Cannon.js（軽量）</td>
+                  <td>PhysX（高精度なリジッドボディ・コライダー）</td>
+                </tr>
+                <tr>
+                  <td><strong>アニメーション</strong></td>
+                  <td>プログラムによる座標移動や簡易ボーン</td>
+                  <td>Mecanim（Humanoidボーン、ステートマシン）</td>
+                </tr>
+                <tr>
+                  <td><strong>起動・配信速度</strong></td>
+                  <td>⚡ 一瞬（Webページを開くだけ、容量数MB）</td>
+                  <td>⏳ 初回ロード約50MB（WebGLエンジン展開）</td>
+                </tr>
+                <tr>
+                  <td><strong>得意なこと</strong></td>
+                  <td>Web上でサクサク動く学習教材、プロトタイピング</td>
+                  <td>リッチな3Dグラフィック、スマホアプリ・Steam公開</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tab 4: Assets & Rights -->
+        <section id="tab-assets" class="tab-pane">
+          <div class="section-title-box">
+            <h2>📜 アセットの権利とCC0ライセンス</h2>
+            <p>「無料だから使っていい」は大間違い！クリエイターとして絶対に知っておくべき素材のルール。</p>
+          </div>
+
+          <div class="rights-lesson">
+            <div class="rights-alert">
+              <strong>⚠️ プロの開発現場での教訓（ASSET_SOURCES.md より）</strong>
+              <p>「Unity Asset Storeで無料配布されている素材でも、AIへの入力や改変、プロジェクト外での再配布がEULAで禁止されている場合があります。『無料の価格表示』と『自由に使って良い権利』は全く別物です。」</p>
+            </div>
+
+            <div class="rights-grid">
+              <div class="rights-card">
+                <h3>✅ CC0 (パブリックドメイン)</h3>
+                <p>作者が著作権を放棄した素材。商用利用・改変・AI利用も原則自由。本プロジェクトの人物モデルや一部背景に採用。</p>
+              </div>
+              <div class="rights-card">
+                <h3>🔍 Unity Standard EULA</h3>
+                <p>Asset Store素材の標準規約。Unity外へのエクスポートや、素材自体の再配布は禁止。注意深い確認が必要。</p>
+              </div>
+              <div class="rights-card">
+                <h3>🤖 AI生成素材の扱い</h3>
+                <p>商用利用の可否や学習元の権利がプラットフォームごとに異なる。台帳（ASSET_SOURCES.md）を作り、出典を1つずつ記録する。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 5: Troubleshooting -->
+        <section id="tab-trouble" class="tab-pane">
+          <div class="section-title-box">
+            <h2>🐛 トラブル解決（デバッグ）の思考プロセス</h2>
+            <p>AIと開発中に実際に起きたリアルなエラーと、それをどう解決したかの実例（ERROR_LOG.md より）。</p>
+          </div>
+
+          <div class="trouble-list">
+            <article class="trouble-card">
+              <div class="trouble-header">
+                <span class="badge-err">事例 1: 物理のすり抜け</span>
+                <h4>ボールが高速で飛ぶと、リングのコライダーをすり抜けてしまう</h4>
+              </div>
+              <div class="trouble-body">
+                <p><strong>【原因】:</strong> Unityの標準物理判定（Discrete: 離散的）では、フレーム間の移動量がリングの厚みを超えると衝突を検知できない。</p>
+                <p><strong>【AIとの解決法】:</strong> ボールの Rigidbody の Collision Detection を <code>Continuous Dynamic</code> に変更し、さらにリング上部にトリガーゾーンを設けて多重判定を行う二重防御を実装。</p>
+              </div>
+            </article>
+
+            <article class="trouble-card">
+              <div class="trouble-header">
+                <span class="badge-err">事例 2: WebGLビルドでの音の遅延</span>
+                <h4>ブラウザ（itch.io）で起動した際、シュート音が遅れたり鳴らなかったりする</h4>
+              </div>
+              <div class="trouble-body">
+                <p><strong>【原因】:</strong> ブラウザの「ユーザー操作前の自動音声再生禁止（Autoplay Policy）」および圧縮音声のデコード待ち。</p>
+                <p><strong>【AIとの解決法】:</strong> 初回タッチ時にオーディオコンテキストをアンロックし、効果音のロード設定を <code>Decompress On Load</code> に固定して即時発音を担保。</p>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./dashboard.js"></script>
+</body>
+</html>
